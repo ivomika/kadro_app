@@ -1,0 +1,1 @@
+typedef Fetcher = Future<void> Function();

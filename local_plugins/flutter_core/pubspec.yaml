@@ -10,6 +10,22 @@ dependencies:
   flutter:
     sdk: flutter
 
+# Core
+  equatable: ^2.0.8
+
+#  API
+  dio: ^5.9.1
+
+#  Database
+  shared_preferences: ^2.5.4
+
+#  Logs
+  talker: ^5.1.13
+  talker_dio_logger: ^5.1.13
+
+#  Formating
+  intl: ^0.20.2
+
 dev_dependencies:
   flutter_test:
     sdk: flutter
