@@ -21,15 +21,6 @@ class UploadImageFetcher extends BaseFetcher<FormData> {
         FormData? body,
         Map<String, String> headers = const {},
       ]) async {
-    print(body?.files.first.value.headers);
-    print(body?.files.first.value.contentType);
-    print(body?.files.first.value.filename);
-    print(body?.fields);
-    dioClient.options.headers['Connection'] = 'close';
-    dioClient.options
-      ..connectTimeout = const Duration(seconds: 15)
-      ..sendTimeout = const Duration(seconds: 30)
-      ..receiveTimeout = const Duration(seconds: 30);
     return await dioClient.post<Map<String, dynamic>>(
         url,
         data: body,

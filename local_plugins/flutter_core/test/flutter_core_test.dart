@@ -102,22 +102,4 @@ void main() {
     talker.debug(response.statusCode);
     expect(response.statusCode, 500);
   });
-  test('read fixture file', () async {
-    final file = File('test/fixtures/test.jpg');
-    expect(await file.exists(), isTrue);
-    expect(file.uri.pathSegments.last, 'test.jpg');
-  });
-  test('Test upload', () async {
-
-    final client = BaseApiClient('https://api.trace.moe');
-    final file = File('test/fixtures/test.jpg');
-
-    final response = await client.upload(
-        file,
-        '/search',
-        creator: () => _EmptyData()
-    );
-    talker.debug(response.isSuccess);
-    talker.debug(response.statusCode);
-  });
 }

@@ -1,6 +1,6 @@
 import 'dart:async';
-import 'dart:convert';
 import 'dart:io';
+
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_core/api/exception/client_error_exception.dart';
@@ -12,85 +12,16 @@ import 'package:flutter_core/api/fetchers/upload_image_fetcher.dart';
 import 'package:flutter_core/api/methods/request_method.dart';
 import 'package:flutter_core/api/types/fetch_response.dart';
 import 'package:flutter_core/api/types/response_mapper.dart';
-import 'package:flutter_core/logger/logs/request_log.dart';
+import 'package:flutter_core/logger/interceptors/reroute_interceptor.dart';
 import 'package:talker/talker.dart';
 
 class BaseApiClient{
-  void _requestHandler(RequestOptions options){
-    // Headers
-    debugPrint('Headers: ${options.headers}');
-
-    // Query
-    if (options.queryParameters.isNotEmpty) {
-      debugPrint('Query: ${options.queryParameters}');
-    }
-
-    final data = options.data;
-
-    // Body
-    if (data == null) {
-      debugPrint('Body: <empty>');
-    } else if (data is FormData) {
-      debugPrint('Body: <multipart/form-data>');
-      debugPrint('Fields: ${data.fields}');
-      debugPrint('Files: ${data.files.map((e) => {
-        "field": e.key,
-        "filename": e.value.filename,
-        "contentType": e.value.contentType?.toString(),
-        "length": e.value.length,
-      }).toList()}');
-    } else if (data is Map || data is List) {
-      debugPrint('Body(JSON): ${jsonEncode(data)}');
-    } else {
-      debugPrint('Body: $data');
-    }
-
-  }
-
   final Talker _talker = Talker();
   final Dio _dioClient = Dio();
-  int _requestNumber = 0;
   final String baseUrl;
   BaseApiClient(this.baseUrl){
     _dioClient.options.baseUrl = baseUrl;
-    _dioClient.interceptors.add(InterceptorsWrapper(
-      onRequest: (request, handler){
-        _talker.logCustom(RequestLog<BaseApiClient>(
-            url: request.uri.toString(),
-            method: request.method,
-            number: _requestNumber
-        )
-        );
-        _requestHandler(request);
-        handler.next(request);
-      },
-      onError: (exception, handler){
-        _talker.error(exception.message, exception);
-
-        if(exception.response?.unauthorized ?? false){
-          handler.reject(UnauthorizedException.fromDio(exception));
-          return;
-        }
-        if(exception.response?.clientError ?? false){
-          handler.reject(ClientErrorException.fromDio(exception));
-          return;
-        }
-        if(exception.response?.serverError ?? false){
-          handler.reject(ServerErrorException.fromDio(exception));
-          return;
-        }
-
-        handler.reject(exception);
-      }
-    ));
-    _dioClient.interceptors.add(LogInterceptor(
-      request: true,
-      requestHeader: true,
-      requestBody: true,
-      responseHeader: true,
-      responseBody: true,
-      error: true,
-    ));
+    _dioClient.interceptors.add(RerouteInterceptor(_talker));
   }
 
   FutureOr<FetchResponse<T>> fetch<T extends ResponseMapper>(
@@ -152,7 +83,6 @@ extension BaseApiClientLocalInterface on BaseApiClient{
       }
   ) async {
       Response? response;
-      _requestNumber++;
       try {
         response = await fetcher.fetch(
             _dioClient,
@@ -231,7 +161,7 @@ extension BaseApiClientLocalInterface on BaseApiClient{
       }
   ) async {
     final form = FormData.fromMap({
-      'Files': await MultipartFile.fromFile(
+      'file': await MultipartFile.fromFile(
         file.path,
         filename: file.uri.pathSegments.last,
       ),
