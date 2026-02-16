@@ -94,7 +94,6 @@ extension BaseApiClientLocalInterface on BaseApiClient{
       } on UnauthorizedException{
         rethrow;
       } on ClientErrorException catch(e){
-        _talker.debug(e.response?.data);
         response = e.response;
       } on ServerErrorException catch(e){
         response = e.response;
