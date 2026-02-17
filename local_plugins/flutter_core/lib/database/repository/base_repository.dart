@@ -1,4 +1,4 @@
-abstract interface class IBaseRepository<Entity, IdType> {
+abstract class BaseRepository<Entity, IdType> {
   Future<List<Entity>> all();
   Future<Entity> byId(IdType id);
   Future<Entity> create(Entity model);

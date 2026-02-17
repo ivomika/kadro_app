@@ -1,13 +1,14 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:flutter_core/flutter_core.dart';
-import 'package:talker/talker.dart';
 
 import 'data/entity/empty_data.dart';
 import 'data/entity/ip_response.dart';
+import 'repository/test_repository.dart';
 
 void main() {
   const String baseUrl = 'https://httpbin.org';
   final client = BaseApiClient(baseUrl);
+  final repository = TestRepository();
   final talker = Talker();
 
 
@@ -85,5 +86,40 @@ void main() {
     talker.debug(response.statusCode);
     expect(response.data, null);
     expect(response.statusCode, 500);
+  });
+  test('Test get all', () async {
+    final result = await repository.all();
+
+    expect(result.length, 5);
+  });
+  test('Test get by id', () async {
+    final result = await repository.byId('id');
+
+    expect(result, isA<EmptyData>());
+  });
+  test('Test create', () async {
+    final result = await repository.create(EmptyData());
+
+    expect(result, isA<EmptyData>());
+  });
+  test('Test update', () async {
+    final result = await repository.update(EmptyData());
+
+    expect(result, isA<EmptyData>());
+  });
+  test('Test delete', () async {
+    final result = await repository.delete(EmptyData());
+
+    expect(result, isA<EmptyData>());
+  });
+  test('Test by ids', () async {
+    final result = await repository.byIds(['id', 'id-2', 'id-3']);
+
+    expect(result.length, 5);
+  });
+  test('Test search', () async {
+    final result = await repository.search('query');
+
+    expect(result.length, 5);
   });
 }
