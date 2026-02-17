@@ -26,3 +26,11 @@ abstract class Result with _$Result{
 
   factory Result.fromJson(Map<String, Object?> json) => _$ResultFromJson(json);
 }
+
+extension TraceMoeExtension on TraceMoeEntity{
+  Result? get bestMatch => result.reduce(
+          (value, element) => value.similarity >= element.similarity
+          ? value
+          : element
+  );
+}

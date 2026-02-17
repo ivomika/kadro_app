@@ -54,4 +54,29 @@ void main() {
 
     expect(response?.statusCode, 200);
   });
+
+  test('Find best match test', () async {
+    final talker = Talker();
+    FetchResponse<TraceMoeEntity>? response;
+    try {
+      final file = File('test/fixtures/test.jpg');
+
+      response = await client.upload(
+          file,
+          '/search',
+          factory: TraceMoeEntity.fromJson
+      );
+    } on UnauthorizedException catch (e){
+      talker.debug(e.response?.data);
+    }
+    expect(response?.statusCode, 200);
+    expect(response?.data, isNotNull);
+
+
+    final bestMatch = response?.data?.bestMatch;
+    talker.debug(bestMatch);
+
+    expect(bestMatch, isNotNull);
+    expect(bestMatch!.similarity, greaterThanOrEqualTo(0.95));
+  });
 }
