@@ -2,7 +2,7 @@ import 'dart:async';
 import 'package:dio/dio.dart';
 import 'package:flutter_core/api/fetchers/base_fetcher.dart';
 
-class UploadImageFetcher extends BaseFetcher<FormData> {
+class FormDataFetcher extends BaseFetcher<FormData> {
   static const Map<String, String> _headers = {
     "Content-Type": "multipart/form-data",
     "Accept": "application/json",
@@ -11,7 +11,7 @@ class UploadImageFetcher extends BaseFetcher<FormData> {
   @override
   Map<String, String> get headers => _headers;
 
-  const UploadImageFetcher();
+  const FormDataFetcher();
 
   @override
   Future<Response<Map<String, dynamic>>> fetch(

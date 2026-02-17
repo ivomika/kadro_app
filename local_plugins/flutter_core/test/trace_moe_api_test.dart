@@ -69,9 +69,9 @@ void main() {
     } on UnauthorizedException catch (e){
       talker.debug(e.response?.data);
     }
+
     expect(response?.statusCode, 200);
     expect(response?.data, isNotNull);
-
 
     final bestMatch = response?.data?.bestMatch;
     talker.debug(bestMatch);

@@ -8,7 +8,7 @@ import 'package:flutter_core/api/exception/server_error_exception.dart';
 import 'package:flutter_core/api/exception/unauthorized_exception.dart';
 import 'package:flutter_core/api/extensions/response_extension.dart';
 import 'package:flutter_core/api/fetchers/base_fetcher.dart';
-import 'package:flutter_core/api/fetchers/upload_image_fetcher.dart';
+import 'package:flutter_core/api/fetchers/form_data_fetcher.dart';
 import 'package:flutter_core/api/methods/request_method.dart';
 import 'package:flutter_core/api/types/api_types.dart';
 import 'package:flutter_core/api/types/fetch_response.dart';
@@ -166,7 +166,7 @@ extension BaseApiClientLocalInterface on BaseApiClient{
     });
 
     return await _fetch(
-        UploadImageFetcher(),
+        FormDataFetcher(),
         url,
         queryParams: queryParams,
         body: form,
