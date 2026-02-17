@@ -8,7 +8,6 @@ import 'package:flutter_core/logger/interceptors/interceptors.dart';
 import 'package:flutter_core/api/extensions/extensions.dart';
 import 'package:flutter_core/api/exceptions/exceptions.dart';
 import 'package:flutter_core/api/fetchers/fetchers.dart';
-import 'package:flutter_core/api/methods/methods.dart';
 import 'package:flutter_core/api/types/types.dart';
 
 
