@@ -1,6 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:flutter_core/api/client/client.dart';
-import 'package:flutter_core/api/exception/exception.dart';
+import 'package:flutter_core/api/exceptions/exceptions.dart';
 import 'package:flutter_core/api/extensions/extensions.dart';
 import 'package:flutter_core/logger/logger.dart';
 import 'package:talker/talker.dart';
