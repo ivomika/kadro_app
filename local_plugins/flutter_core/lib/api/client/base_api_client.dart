@@ -10,8 +10,8 @@ import 'package:flutter_core/api/extensions/response_extension.dart';
 import 'package:flutter_core/api/fetchers/base_fetcher.dart';
 import 'package:flutter_core/api/fetchers/upload_image_fetcher.dart';
 import 'package:flutter_core/api/methods/request_method.dart';
+import 'package:flutter_core/api/types/api_types.dart';
 import 'package:flutter_core/api/types/fetch_response.dart';
-import 'package:flutter_core/api/types/response_mapper.dart';
 import 'package:flutter_core/logger/interceptors/reroute_interceptor.dart';
 import 'package:talker/talker.dart';
 
@@ -24,13 +24,13 @@ class BaseApiClient{
     _dioClient.interceptors.add(RerouteInterceptor(_talker));
   }
 
-  FutureOr<FetchResponse<T>> fetch<T extends ResponseMapper>(
+  FutureOr<FetchResponse<T>> fetch<T>(
       RequestMethod method,
       String url,
       {
         Map<String, dynamic> queryParams = const {},
         Map<String, dynamic> body = const {},
-        required T Function() creator
+        required JsonFactory<T> factory
       }
   ) async => _processData(
       await _fetch(
@@ -40,16 +40,16 @@ class BaseApiClient{
         body: body,
         retry: _retry()
       ),
-      creator
+      factory
   );
 
-  FutureOr<FetchResponse<T>> upload<T extends ResponseMapper>(
+  FutureOr<FetchResponse<T>> upload<T>(
       File file,
       String url,
       {
         Map<String, dynamic> queryParams = const {},
         Map<String, dynamic> body = const {},
-        required T Function() creator
+        required JsonFactory<T> factory
       }
   ) async => _processData(
       await _upload(
@@ -58,7 +58,7 @@ class BaseApiClient{
           queryParams: queryParams,
           retry: _retry()
       ),
-      creator
+      factory
   );
 }
 
@@ -124,8 +124,7 @@ extension BaseApiClientLocalInterface on BaseApiClient{
       return response;
   }
 
-  FetchResponse<T> _processData<T extends ResponseMapper>(Response? response, T Function() creator){
-    final entity = creator.call();
+  FetchResponse<T> _processData<T>(Response? response, JsonFactory<T> factory){
     if(response == null || response.data == null || response.data is Map == false){
       return FetchResponse(
           statusCode: response?.statusCode ?? 0,
@@ -137,7 +136,7 @@ extension BaseApiClientLocalInterface on BaseApiClient{
     if(response.success){
       return FetchResponse<T>(
           statusCode: response.statusCode ?? 0,
-          data: entity..fromJson(response.data),
+          data: factory(response.data),
           headers: response.headers.map
       );
     }
@@ -150,7 +149,7 @@ extension BaseApiClientLocalInterface on BaseApiClient{
     );
   }
 
-  Future<Response?> _upload<T extends ResponseMapper>(
+  Future<Response?> _upload<T>(
       File file,
       String url,
       {

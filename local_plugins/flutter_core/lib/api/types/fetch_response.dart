@@ -1,7 +1,6 @@
 import 'package:equatable/equatable.dart';
-import 'package:flutter_core/api/types/response_mapper.dart';
 
-class FetchResponse<T extends ResponseMapper> extends Equatable{
+class FetchResponse<T> extends Equatable{
   final int statusCode;
   final T? data;
   final Map<String, dynamic>? error;
@@ -17,5 +16,5 @@ class FetchResponse<T extends ResponseMapper> extends Equatable{
 
 
   @override
-  List<Object?> get props => [];
+  List<Object?> get props => [statusCode, data, error, headers];
 }

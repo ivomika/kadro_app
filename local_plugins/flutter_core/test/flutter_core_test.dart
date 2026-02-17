@@ -1,22 +1,11 @@
 import 'package:flutter_core/api/client/base_api_client.dart';
 import 'package:flutter_core/api/exception/unauthorized_exception.dart';
 import 'package:flutter_core/api/methods/request_method.dart';
-import 'package:flutter_core/api/types/response_mapper.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:talker/talker.dart';
 
-import 'entity/empty_data.dart';
-
-class _IpResponse extends ResponseMapper{
-  String? origin;
-
-  _IpResponse();
-
-  @override
-  void fromJson(Map<String, dynamic> json) {
-    origin = json['origin'];
-  }
-}
+import 'data/entity/empty_data.dart';
+import 'data/entity/ip_response.dart';
 
 void main() {
   const String baseUrl = 'https://httpbin.org';
@@ -25,42 +14,42 @@ void main() {
 
 
   test('Test Get', () async {
-    final response = await client.fetch(RequestMethod.get, '/get', creator: () => EmptyData());
+    final response = await client.fetch(RequestMethod.get, '/get', factory: (json) => EmptyData());
     talker.debug(response.isSuccess);
     talker.debug(response.statusCode);
     expect(response.statusCode, 200);
   });
   test('Test Post', () async {
-    final response = await client.fetch(RequestMethod.post, '/post', creator: () => EmptyData());
+    final response = await client.fetch(RequestMethod.post, '/post', factory: (json) => EmptyData());
     talker.debug(response.isSuccess);
     talker.debug(response.statusCode);
     expect(response.statusCode, 200);
   });
   test('Test Put', () async {
-    final response = await client.fetch(RequestMethod.put, '/put', creator: () => EmptyData());
+    final response = await client.fetch(RequestMethod.put, '/put', factory: (json) => EmptyData());
     talker.debug(response.isSuccess);
     talker.debug(response.statusCode);
     expect(response.statusCode, 200);
   });
   test('Test Delete', () async {
-    final response = await client.fetch(RequestMethod.delete, '/delete', creator: () => EmptyData());
+    final response = await client.fetch(RequestMethod.delete, '/delete', factory: (json) => EmptyData());
     talker.debug(response.isSuccess);
     talker.debug(response.statusCode);
     expect(response.statusCode, 200);
   });
   test('Test response mapping', () async {
-    final response = await client.fetch(RequestMethod.get, '/ip', creator: () => _IpResponse());
+    final response = await client.fetch(RequestMethod.get, '/ip', factory: IpResponse.fromJson);
     talker.debug(response.isSuccess);
     talker.debug(response.statusCode);
     talker.debug(response.data?.origin);
     expect(response.statusCode, 200);
     expect(response.data, isNotNull);
+    expect(response.data, isA<IpResponse>());
     expect(response.data?.origin, isNotNull);
-    expect(response.data, isA<_IpResponse>());
     expect(response.data?.origin, isA<String>());
   });
   test('Test 200 response', () async {
-    final response = await client.fetch(RequestMethod.get, '/status/200', creator: () => EmptyData());
+    final response = await client.fetch(RequestMethod.get, '/status/200', factory: (json) => EmptyData());
     talker.debug(response.isSuccess);
     talker.debug(response.statusCode);
 
@@ -68,7 +57,7 @@ void main() {
   });
   test('Test 401 response', () async {
     try {
-      final response = await client.fetch(RequestMethod.get, '/status/401', creator: () => EmptyData());
+      final response = await client.fetch(RequestMethod.get, '/status/401', factory: (json) => EmptyData());
       talker.debug(response.isSuccess);
       talker.debug(response.statusCode);
       expect(response.statusCode, 200);
@@ -80,21 +69,23 @@ void main() {
     }
   });
   test('Test 400 response', () async {
-    final response = await client.fetch(RequestMethod.get, '/status/400', creator: () => EmptyData());
+    final response = await client.fetch(RequestMethod.get, '/status/400', factory: (json) => EmptyData());
     talker.debug(response.isSuccess);
     talker.debug(response.statusCode);
     expect(response.statusCode, 400);
   });
   test('Test 500 response', () async {
-    final response = await client.fetch(RequestMethod.get, '/status/500', creator: () => EmptyData());
+    final response = await client.fetch(RequestMethod.get, '/status/500', factory: (json) => EmptyData());
     talker.debug(response.isSuccess);
     talker.debug(response.statusCode);
+    expect(response.data, null);
     expect(response.statusCode, 500);
   });
   test('Test 500 response retry', () async {
-    final response = await client.fetch(RequestMethod.get, '/status/500', creator: () => EmptyData());
+    final response = await client.fetch(RequestMethod.get, '/status/500', factory: (json) => EmptyData());
     talker.debug(response.isSuccess);
     talker.debug(response.statusCode);
+    expect(response.data, null);
     expect(response.statusCode, 500);
   });
 }
