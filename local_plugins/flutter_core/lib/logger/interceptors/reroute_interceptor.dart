@@ -1,10 +1,8 @@
 import 'package:dio/dio.dart';
-import 'package:flutter_core/api/client/base_api_client.dart';
-import 'package:flutter_core/api/exception/client_error_exception.dart';
-import 'package:flutter_core/api/exception/server_error_exception.dart';
-import 'package:flutter_core/api/exception/unauthorized_exception.dart';
-import 'package:flutter_core/api/extensions/response_extension.dart';
-import 'package:flutter_core/logger/logs/request_log.dart';
+import 'package:flutter_core/api/client/client.dart';
+import 'package:flutter_core/api/exception/exception.dart';
+import 'package:flutter_core/api/extensions/extensions.dart';
+import 'package:flutter_core/logger/logger.dart';
 import 'package:talker/talker.dart';
 
 class RerouteInterceptor implements InterceptorsWrapper{

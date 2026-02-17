@@ -2,18 +2,15 @@ import 'dart:async';
 import 'dart:io';
 
 import 'package:dio/dio.dart';
-import 'package:flutter/foundation.dart';
-import 'package:flutter_core/api/exception/client_error_exception.dart';
-import 'package:flutter_core/api/exception/server_error_exception.dart';
-import 'package:flutter_core/api/exception/unauthorized_exception.dart';
-import 'package:flutter_core/api/extensions/response_extension.dart';
-import 'package:flutter_core/api/fetchers/base_fetcher.dart';
-import 'package:flutter_core/api/fetchers/form_data_fetcher.dart';
-import 'package:flutter_core/api/methods/request_method.dart';
-import 'package:flutter_core/api/types/api_types.dart';
-import 'package:flutter_core/api/types/fetch_response.dart';
-import 'package:flutter_core/logger/interceptors/reroute_interceptor.dart';
 import 'package:talker/talker.dart';
+import 'package:flutter/foundation.dart';
+import 'package:flutter_core/logger/interceptors/interceptors.dart';
+import 'package:flutter_core/api/extensions/extensions.dart';
+import 'package:flutter_core/api/exception/exception.dart';
+import 'package:flutter_core/api/fetchers/fetchers.dart';
+import 'package:flutter_core/api/methods/methods.dart';
+import 'package:flutter_core/api/types/types.dart';
+
 
 class BaseApiClient{
   final Talker _talker = Talker();

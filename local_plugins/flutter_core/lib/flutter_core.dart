@@ -1,2 +1,2 @@
 export './api/api.dart';
-export './logger/logger.dart'; 
+export './logger/logger.dart';
