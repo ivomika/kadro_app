@@ -22,7 +22,7 @@ Map<String, dynamic> _$AnimeMatchResponseToJson(_AnimeMatchResponse instance) =>
 
 _Result _$ResultFromJson(Map<String, dynamic> json) => _Result(
   anilist: (json['anilist'] as num).toInt(),
-  episode: (json['episode'] as num).toInt(),
+  episode: (json['episode'] as num?)?.toInt(),
   similarity: (json['similarity'] as num).toDouble(),
   filename: json['filename'] as String,
   video: json['video'] as String,

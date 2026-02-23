@@ -1,21 +1,18 @@
 import 'dart:io';
 
-import 'package:flutter_core/flutter_core.dart';
+import 'package:kadro_app/shared/data/datasource/trace_moe_client.dart';
 import 'package:kadro_app/shared/data/models/anime_match_response/anime_match_response.dart';
 import 'package:kadro_app/shared/domain/entities/anime_match.dart';
 import 'package:kadro_app/shared/domain/repository/i_anime_match_repository.dart';
 
-final class AnimeMatchRepositoryImpl extends BaseApiClient implements IAnimeMatchRepository {
-  static const String _baseUrl = 'https://api.trace.moe';
-  AnimeMatchRepositoryImpl() : super(_baseUrl);
+final class AnimeMatchRepositoryImpl implements IAnimeMatchRepository {
+  final TraceMoeClient _client;
+
+  AnimeMatchRepositoryImpl(this._client);
 
   @override
   Future<List<AnimeMatch>> searchByImage(File file) async {
-    final result = await upload(
-        file,
-        '/search',
-        factory: AnimeMatchResponse.fromJson
-    );
+    final result = await _client.searchByImage(file);
 
     if(result.isSuccess == false) return [];
     return result

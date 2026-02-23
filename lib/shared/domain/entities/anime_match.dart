@@ -3,7 +3,7 @@ import 'package:flutter_core/flutter_core.dart';
 class AnimeMatch extends Equatable{
   final int anilist;
   final String filename;
-  final int episode;
+  final int? episode;
   final double similarity;
   final String video;
   final String image;

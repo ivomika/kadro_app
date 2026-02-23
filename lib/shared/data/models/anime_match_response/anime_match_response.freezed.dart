@@ -283,18 +283,25 @@ as List<AnimeMatchResult>,
 
 }
 
+AnimeMatchResult _$AnimeMatchResultFromJson(
+  Map<String, dynamic> json
+) {
+    return _Result.fromJson(
+      json
+    );
+}
 
 /// @nodoc
 mixin _$AnimeMatchResult {
 
- int get anilist; int get episode; double get similarity; String get filename; String get video; String get image;
-/// Create a copy of Result
+ int get anilist; int? get episode; double get similarity; String get filename; String get video; String get image;
+/// Create a copy of AnimeMatchResult
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
 @pragma('vm:prefer-inline')
-$ResultCopyWith<AnimeMatchResult> get copyWith => _$ResultCopyWithImpl<AnimeMatchResult>(this as AnimeMatchResult, _$identity);
+$AnimeMatchResultCopyWith<AnimeMatchResult> get copyWith => _$AnimeMatchResultCopyWithImpl<AnimeMatchResult>(this as AnimeMatchResult, _$identity);
 
-  /// Serializes this Result to a JSON map.
+  /// Serializes this AnimeMatchResult to a JSON map.
   Map<String, dynamic> toJson();
 
 
@@ -309,18 +316,18 @@ int get hashCode => Object.hash(runtimeType,anilist,episode,similarity,filename,
 
 @override
 String toString() {
-  return 'Result(anilist: $anilist, episode: $episode, similarity: $similarity, filename: $filename, video: $video, image: $image)';
+  return 'AnimeMatchResult(anilist: $anilist, episode: $episode, similarity: $similarity, filename: $filename, video: $video, image: $image)';
 }
 
 
 }
 
 /// @nodoc
-abstract mixin class $ResultCopyWith<$Res>  {
-  factory $ResultCopyWith(AnimeMatchResult value, $Res Function(AnimeMatchResult) _then) = _$ResultCopyWithImpl;
+abstract mixin class $AnimeMatchResultCopyWith<$Res>  {
+  factory $AnimeMatchResultCopyWith(AnimeMatchResult value, $Res Function(AnimeMatchResult) _then) = _$AnimeMatchResultCopyWithImpl;
 @useResult
 $Res call({
- int anilist, int episode, double similarity, String filename, String video, String image
+ int anilist, int? episode, double similarity, String filename, String video, String image
 });
 
 
@@ -328,20 +335,20 @@ $Res call({
 
 }
 /// @nodoc
-class _$ResultCopyWithImpl<$Res>
-    implements $ResultCopyWith<$Res> {
-  _$ResultCopyWithImpl(this._self, this._then);
+class _$AnimeMatchResultCopyWithImpl<$Res>
+    implements $AnimeMatchResultCopyWith<$Res> {
+  _$AnimeMatchResultCopyWithImpl(this._self, this._then);
 
   final AnimeMatchResult _self;
   final $Res Function(AnimeMatchResult) _then;
 
-/// Create a copy of Result
+/// Create a copy of AnimeMatchResult
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? anilist = null,Object? episode = null,Object? similarity = null,Object? filename = null,Object? video = null,Object? image = null,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? anilist = null,Object? episode = freezed,Object? similarity = null,Object? filename = null,Object? video = null,Object? image = null,}) {
   return _then(_self.copyWith(
 anilist: null == anilist ? _self.anilist : anilist // ignore: cast_nullable_to_non_nullable
-as int,episode: null == episode ? _self.episode : episode // ignore: cast_nullable_to_non_nullable
-as int,similarity: null == similarity ? _self.similarity : similarity // ignore: cast_nullable_to_non_nullable
+as int,episode: freezed == episode ? _self.episode : episode // ignore: cast_nullable_to_non_nullable
+as int?,similarity: null == similarity ? _self.similarity : similarity // ignore: cast_nullable_to_non_nullable
 as double,filename: null == filename ? _self.filename : filename // ignore: cast_nullable_to_non_nullable
 as String,video: null == video ? _self.video : video // ignore: cast_nullable_to_non_nullable
 as String,image: null == image ? _self.image : image // ignore: cast_nullable_to_non_nullable
@@ -353,7 +360,7 @@ as String,
 
 
 /// Adds pattern-matching-related methods to [AnimeMatchResult].
-extension ResultPatterns on AnimeMatchResult {
+extension AnimeMatchResultPatterns on AnimeMatchResult {
 /// A variant of `map` that fallback to returning `orElse`.
 ///
 /// It is equivalent to doing:
@@ -430,7 +437,7 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( int anilist,  int episode,  double similarity,  String filename,  String video,  String image)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( int anilist,  int? episode,  double similarity,  String filename,  String video,  String image)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _Result() when $default != null:
 return $default(_that.anilist,_that.episode,_that.similarity,_that.filename,_that.video,_that.image);case _:
@@ -451,7 +458,7 @@ return $default(_that.anilist,_that.episode,_that.similarity,_that.filename,_tha
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( int anilist,  int episode,  double similarity,  String filename,  String video,  String image)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( int anilist,  int? episode,  double similarity,  String filename,  String video,  String image)  $default,) {final _that = this;
 switch (_that) {
 case _Result():
 return $default(_that.anilist,_that.episode,_that.similarity,_that.filename,_that.video,_that.image);case _:
@@ -471,7 +478,7 @@ return $default(_that.anilist,_that.episode,_that.similarity,_that.filename,_tha
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( int anilist,  int episode,  double similarity,  String filename,  String video,  String image)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( int anilist,  int? episode,  double similarity,  String filename,  String video,  String image)?  $default,) {final _that = this;
 switch (_that) {
 case _Result() when $default != null:
 return $default(_that.anilist,_that.episode,_that.similarity,_that.filename,_that.video,_that.image);case _:
@@ -486,17 +493,17 @@ return $default(_that.anilist,_that.episode,_that.similarity,_that.filename,_tha
 @JsonSerializable()
 
 class _Result implements AnimeMatchResult {
-  const _Result({required this.anilist, required this.episode, required this.similarity, required this.filename, required this.video, required this.image});
+  const _Result({required this.anilist, this.episode, required this.similarity, required this.filename, required this.video, required this.image});
   factory _Result.fromJson(Map<String, dynamic> json) => _$ResultFromJson(json);
 
 @override final  int anilist;
-@override final  int episode;
+@override final  int? episode;
 @override final  double similarity;
 @override final  String filename;
 @override final  String video;
 @override final  String image;
 
-/// Create a copy of Result
+/// Create a copy of AnimeMatchResult
 /// with the given fields replaced by the non-null parameter values.
 @override @JsonKey(includeFromJson: false, includeToJson: false)
 @pragma('vm:prefer-inline')
@@ -518,18 +525,18 @@ int get hashCode => Object.hash(runtimeType,anilist,episode,similarity,filename,
 
 @override
 String toString() {
-  return 'Result(anilist: $anilist, episode: $episode, similarity: $similarity, filename: $filename, video: $video, image: $image)';
+  return 'AnimeMatchResult(anilist: $anilist, episode: $episode, similarity: $similarity, filename: $filename, video: $video, image: $image)';
 }
 
 
 }
 
 /// @nodoc
-abstract mixin class _$ResultCopyWith<$Res> implements $ResultCopyWith<$Res> {
+abstract mixin class _$ResultCopyWith<$Res> implements $AnimeMatchResultCopyWith<$Res> {
   factory _$ResultCopyWith(_Result value, $Res Function(_Result) _then) = __$ResultCopyWithImpl;
 @override @useResult
 $Res call({
- int anilist, int episode, double similarity, String filename, String video, String image
+ int anilist, int? episode, double similarity, String filename, String video, String image
 });
 
 
@@ -544,13 +551,13 @@ class __$ResultCopyWithImpl<$Res>
   final _Result _self;
   final $Res Function(_Result) _then;
 
-/// Create a copy of Result
+/// Create a copy of AnimeMatchResult
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? anilist = null,Object? episode = null,Object? similarity = null,Object? filename = null,Object? video = null,Object? image = null,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? anilist = null,Object? episode = freezed,Object? similarity = null,Object? filename = null,Object? video = null,Object? image = null,}) {
   return _then(_Result(
 anilist: null == anilist ? _self.anilist : anilist // ignore: cast_nullable_to_non_nullable
-as int,episode: null == episode ? _self.episode : episode // ignore: cast_nullable_to_non_nullable
-as int,similarity: null == similarity ? _self.similarity : similarity // ignore: cast_nullable_to_non_nullable
+as int,episode: freezed == episode ? _self.episode : episode // ignore: cast_nullable_to_non_nullable
+as int?,similarity: null == similarity ? _self.similarity : similarity // ignore: cast_nullable_to_non_nullable
 as double,filename: null == filename ? _self.filename : filename // ignore: cast_nullable_to_non_nullable
 as String,video: null == video ? _self.video : video // ignore: cast_nullable_to_non_nullable
 as String,image: null == image ? _self.image : image // ignore: cast_nullable_to_non_nullable
