@@ -2,7 +2,6 @@ import 'dart:io';
 
 import 'package:flutter_core/flutter_core.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:talker/talker.dart';
 
 import 'data/entity/trace_moe_entity.dart';
 
