@@ -15,4 +15,15 @@ final class TraceMoeClient extends BaseApiClient{
         factory: AnimeMatchResponse.fromJson
     );
   }
+
+  Future<FetchResponse<AnimeMatchResponse>> searchBuUrl(String url) async {
+    return await fetch(
+        RequestMethod.get,
+        '/search',
+        queryParams: {
+          'url': url.trim()
+        },
+        factory: AnimeMatchResponse.fromJson
+    );
+  }
 }

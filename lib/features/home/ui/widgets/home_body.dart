@@ -21,7 +21,7 @@ class HomeBody extends StatelessWidget {
           sliver: SliverToBoxAdapter(
             child: HomeSearchInput(
               onAttach: () => _searchButtonTap(context),
-              onSend: (String value) {  },
+              onSend: (value) => _searchByUrl(value, context),
             )
           ),
         ),
@@ -95,10 +95,16 @@ class HomeBody extends StatelessWidget {
 
     if (result != null) {
       File file = File(result.files.single.path!);
-      bloc.add(FindAnimeEvent(file));
+      bloc.add(FindAnimeByFileEvent(file));
     } else {
       messenger.showSnackBar(SnackBar(content: Text('Файл не выбран')));
     }
+  }
+
+  void _searchByUrl(String value, BuildContext context) {
+    final bloc = context.read<HomeScreenBloc>();
+
+    bloc.add(FindAnimeByUrlEvent(value));
   }
 
   void _homeListener(BuildContext context, HomeScreenState state) {

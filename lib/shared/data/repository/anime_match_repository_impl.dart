@@ -22,4 +22,17 @@ final class AnimeMatchRepositoryImpl implements IAnimeMatchRepository {
         .map((e) => e.toDomain()!)
         .toList(growable: false);
   }
+
+  @override
+  Future<List<AnimeMatch>> searchByUrl(String url) async {
+    final result = await _client.searchBuUrl(url);
+
+    if(result.isSuccess == false) return [];
+    return result
+        .data
+        !.result
+            .where((e) => e.toDomain() != null)
+            .map((e) => e.toDomain()!)
+            .toList(growable: false);
+  }
 }
