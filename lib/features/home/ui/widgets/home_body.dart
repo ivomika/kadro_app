@@ -4,6 +4,7 @@ import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kadro_app/features/home/ui/bloc/home_screen_bloc.dart';
+import 'package:kadro_app/features/home/ui/widgets/home_search_input.dart';
 
 class HomeBody extends StatelessWidget {
   const HomeBody({super.key});
@@ -15,12 +16,17 @@ class HomeBody extends StatelessWidget {
         SliverAppBar(
           title: Text('Домашняя'),
         ),
-        SliverToBoxAdapter(
-          child: FilledButton.icon(
-            onPressed: () => _searchButtonTap(context),
-            label: Text('Поиск'),
-            icon: Icon(Icons.search),
+        SliverPadding(
+          padding: const EdgeInsets.symmetric(horizontal: 16),
+          sliver: SliverToBoxAdapter(
+            child: HomeSearchInput(
+              onAttach: () => _searchButtonTap(context),
+              onSend: (String value) {  },
+            )
           ),
+        ),
+        const SliverToBoxAdapter(
+          child: SizedBox(height: 16),
         ),
         SliverFillRemaining(
           child: BlocConsumer<HomeScreenBloc, HomeScreenState>(
@@ -33,10 +39,43 @@ class HomeBody extends StatelessWidget {
               }
 
               if (state is HomeScreenLoaded) {
-                return Card(
-                    child: ListTile(
-                      title: Text(state.match.filename),
+                return DecoratedBox(
+                  decoration: BoxDecoration(
+                    color: Theme.of(context).colorScheme.surfaceContainer,
+                    borderRadius: BorderRadius.only(
+                      topLeft: Radius.circular(16),
+                      topRight: Radius.circular(16)
+                    )
+                  ),
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 8.0),
+                    child: Column(
+                      children: [
+                        SizedBox(
+                          height: 4,
+                          width: 42,
+                          child: DecoratedBox(
+                              decoration: BoxDecoration(
+                                color: Theme.of(context).dividerColor,
+                                borderRadius: BorderRadius.circular(4)
+                              )
+                          ),
+                        ),
+                        ListTile(
+                          title: Text(state.match.filename),
+                          subtitle: Text('Название'),
+                        ),
+                        ListTile(
+                          title: Text(state.match.episode?.toString() ?? ''),
+                          subtitle: Text('Серия'),
+                        ),
+                        ListTile(
+                          title: Text(state.match.anilist.toString()),
+                          subtitle: Text('Anilist'),
+                        ),
+                      ],
                     ),
+                  ),
                 );
               }
 
