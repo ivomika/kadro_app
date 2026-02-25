@@ -1,25 +1,35 @@
 import 'dart:io';
 
 import 'package:flutter_core/flutter_core.dart';
+import 'package:kadro_app/shared/domain/entities/anime_detail.dart';
 import 'package:kadro_app/shared/domain/entities/anime_match.dart';
+import 'package:kadro_app/shared/domain/repository/i_anime_detail_repository.dart';
 import 'package:kadro_app/shared/domain/repository/i_anime_match_repository.dart';
 
-final class FindBestByFileUseCase implements IUseCase<File, Future<AnimeMatch?>>{
-  final IAnimeMatchRepository _repository;
+final class FindBestByFileUseCase implements IUseCase<File, Future<AnimeDetail?>>{
+  final IAnimeMatchRepository _matchRepository;
+  final IAnimeDetailRepository _detailRepository;
 
-  FindBestByFileUseCase(this._repository);
+
+  FindBestByFileUseCase(
+      this._matchRepository,
+      this._detailRepository
+  );
 
   @override
-  Future<AnimeMatch?> execute([File? matchedAnime]) async {
+  Future<AnimeDetail?> execute([File? matchedAnime]) async {
     if(matchedAnime == null) return null;
 
-    final result = await _repository.searchByImage(matchedAnime);
+    final result = await _matchRepository.searchByImage(matchedAnime);
     if(result.isEmpty) return null;
 
-    return result.reduce(
+    final bestMatch = result.reduce(
         (value, element) => value.similarity >= element.similarity
             ? value
             : element
     );
+
+    final detailResult = await _detailRepository.searchByAnilistId(bestMatch.anilist);
+    return detailResult;
   }
 }

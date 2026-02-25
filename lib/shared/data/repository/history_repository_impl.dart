@@ -12,9 +12,7 @@ final class HistoryRepositoryImpl implements IHistoryRepository{
     return AnimeHistory(
       id: row.uuid,
       anilist: row.anilist,
-      filename: row.filename,
-      episode: row.episode,
-      video: row.video,
+      name: row.name,
       image: row.image,
     );
   }
@@ -23,9 +21,7 @@ final class HistoryRepositoryImpl implements IHistoryRepository{
     return AnimeHistoryTableCompanion.insert(
       uuid: Value(model.id),
       anilist: model.anilist,
-      filename: model.filename,
-      episode: Value(model.episode),
-      video: model.video,
+      name: model.name,
       image: model.image,
     );
   }
@@ -34,9 +30,7 @@ final class HistoryRepositoryImpl implements IHistoryRepository{
     return AnimeHistoryTableCompanion(
       uuid: Value(model.id),
       anilist: Value(model.anilist),
-      filename: Value(model.filename),
-      episode: Value(model.episode),
-      video: Value(model.video),
+      name: Value(model.name),
       image: Value(model.image),
     );
   }
@@ -104,7 +98,7 @@ final class HistoryRepositoryImpl implements IHistoryRepository{
       ..where(
             (table) =>
         table.uuid.like(likePattern) |
-        table.filename.like(likePattern)
+        table.name.like(likePattern)
       )
       ..orderBy([(table) => OrderingTerm.desc(table.id)]))
       .get();

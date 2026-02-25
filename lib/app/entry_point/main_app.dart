@@ -3,10 +3,13 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kadro_app/app/router/routing.dart';
 import 'package:kadro_app/features/history/ui/bloc/history_screen_bloc.dart';
 import 'package:kadro_app/features/home/ui/bloc/home_screen_bloc.dart';
+import 'package:kadro_app/shared/data/datasource/anilist_client.dart';
 import 'package:kadro_app/shared/data/datasource/history_database.dart';
 import 'package:kadro_app/shared/data/datasource/trace_moe_client.dart';
+import 'package:kadro_app/shared/data/repository/anime_detail_repository_impl.dart';
 import 'package:kadro_app/shared/data/repository/anime_match_repository_impl.dart';
 import 'package:kadro_app/shared/data/repository/history_repository_impl.dart';
+import 'package:kadro_app/shared/domain/repository/i_anime_detail_repository.dart';
 import 'package:kadro_app/shared/domain/repository/i_anime_match_repository.dart';
 import 'package:kadro_app/shared/domain/repository/i_history_repository.dart';
 
@@ -20,6 +23,9 @@ class MainApp extends StatelessWidget {
         RepositoryProvider<TraceMoeClient>(
             create: (context) => TraceMoeClient()
         ),
+        RepositoryProvider<AnilistClient>(
+            create: (context) => AnilistClient()
+        ),
         RepositoryProvider<HistoryDriftDatabase>(
             create: (context) => HistoryDriftDatabase()
         ),
@@ -27,6 +33,12 @@ class MainApp extends StatelessWidget {
             create: (context) =>
                 AnimeMatchRepositoryImpl(
                     context.read<TraceMoeClient>()
+                )
+        ),
+        RepositoryProvider<IAnimeDetailRepository>(
+            create: (context) =>
+                AnimeDetailRepositoryImpl(
+                    context.read<AnilistClient>()
                 )
         ),
         RepositoryProvider<IHistoryRepository>(
@@ -47,7 +59,8 @@ class MainApp extends StatelessWidget {
           BlocProvider(
             create: (context) =>
                 HomeScreenBloc(
-                    context.read<IAnimeMatchRepository>()
+                    context.read<IAnimeMatchRepository>(),
+                    context.read<IAnimeDetailRepository>(),
                 ),
           ),
         ],

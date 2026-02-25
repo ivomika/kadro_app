@@ -12,7 +12,7 @@ final class HomeScreenInitial extends HomeScreenState {}
 final class HomeScreenLoading extends HomeScreenState{}
 
 final class HomeScreenLoaded extends HomeScreenState{
-  final AnimeMatch match;
+  final AnimeDetail match;
 
   const HomeScreenLoaded(this.match);
   

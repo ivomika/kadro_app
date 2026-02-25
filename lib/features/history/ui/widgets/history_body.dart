@@ -28,7 +28,7 @@ class HistoryBody extends StatelessWidget {
                   itemBuilder: (context, index){
                     return Card(
                       child: ListTile(
-                        title: Text(state.history.elementAt(index).filename),
+                        title: Text(state.history.elementAt(index).name),
                       ),
                     );
                   }

@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_core/flutter_core.dart';
 import 'package:kadro_app/features/home/ui/bloc/home_screen_bloc.dart';
 import 'package:kadro_app/features/home/ui/widgets/home_search_input.dart';
 
@@ -28,7 +29,7 @@ class HomeBody extends StatelessWidget {
         const SliverToBoxAdapter(
           child: SizedBox(height: 16),
         ),
-        SliverFillRemaining(
+        SliverToBoxAdapter(
           child: BlocConsumer<HomeScreenBloc, HomeScreenState>(
             listener: _homeListener,
             builder: (context, state) {
@@ -39,43 +40,36 @@ class HomeBody extends StatelessWidget {
               }
 
               if (state is HomeScreenLoaded) {
-                return DecoratedBox(
-                  decoration: BoxDecoration(
-                    color: Theme.of(context).colorScheme.surfaceContainer,
-                    borderRadius: BorderRadius.only(
-                      topLeft: Radius.circular(16),
-                      topRight: Radius.circular(16)
-                    )
-                  ),
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 8.0),
-                    child: Column(
+                Talker talker = Talker();
+                talker.log(state.match);
+                return BottomSheet(
+                  enableDrag: false,
+                  showDragHandle: true,
+                  onClosing: () {  },
+                  builder: (BuildContext context) {
+                    return Column(
                       children: [
-                        SizedBox(
-                          height: 4,
-                          width: 42,
-                          child: DecoratedBox(
-                              decoration: BoxDecoration(
-                                color: Theme.of(context).dividerColor,
-                                borderRadius: BorderRadius.circular(4)
-                              )
-                          ),
+                        if(state.match.coverImage.large != null && state.match.coverImage.large!.isNotEmpty)
+                          Image.network(state.match.coverImage.large!),
+                        ListTile(
+                          title: Text('Название'),
+                          subtitle: Text(state.match.title.english ?? ''),
                         ),
                         ListTile(
-                          title: Text(state.match.filename),
-                          subtitle: Text('Название'),
+                          title: Text('Описание'),
+                          subtitle: Text(state.match.description),
                         ),
                         ListTile(
-                          title: Text(state.match.episode?.toString() ?? ''),
-                          subtitle: Text('Серия'),
+                          title: Text('url'),
+                          subtitle: Text(state.match.siteUrl),
                         ),
                         ListTile(
-                          title: Text(state.match.anilist.toString()),
-                          subtitle: Text('Anilist'),
+                          title: Text('Anilist'),
+                          subtitle: Text(state.match.id.toString()),
                         ),
                       ],
-                    ),
-                  ),
+                    );
+                  },
                 );
               }
 

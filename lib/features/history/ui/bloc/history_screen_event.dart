@@ -5,7 +5,7 @@ sealed class HistoryScreenEvent extends Equatable {
 }
 
 final class UpdateHistory extends HistoryScreenEvent{
-  final AnimeMatch? match;
+  final AnimeDetail? match;
 
   const UpdateHistory(this.match);
 

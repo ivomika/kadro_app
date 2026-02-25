@@ -44,32 +44,10 @@ class $AnimeHistoryTableTable extends AnimeHistoryTable
     type: DriftSqlType.int,
     requiredDuringInsert: true,
   );
-  static const VerificationMeta _filenameMeta = const VerificationMeta(
-    'filename',
-  );
+  static const VerificationMeta _nameMeta = const VerificationMeta('name');
   @override
-  late final GeneratedColumn<String> filename = GeneratedColumn<String>(
-    'filename',
-    aliasedName,
-    false,
-    type: DriftSqlType.string,
-    requiredDuringInsert: true,
-  );
-  static const VerificationMeta _episodeMeta = const VerificationMeta(
-    'episode',
-  );
-  @override
-  late final GeneratedColumn<int> episode = GeneratedColumn<int>(
-    'episode',
-    aliasedName,
-    true,
-    type: DriftSqlType.int,
-    requiredDuringInsert: false,
-  );
-  static const VerificationMeta _videoMeta = const VerificationMeta('video');
-  @override
-  late final GeneratedColumn<String> video = GeneratedColumn<String>(
-    'video',
+  late final GeneratedColumn<String> name = GeneratedColumn<String>(
+    'name',
     aliasedName,
     false,
     type: DriftSqlType.string,
@@ -85,15 +63,7 @@ class $AnimeHistoryTableTable extends AnimeHistoryTable
     requiredDuringInsert: true,
   );
   @override
-  List<GeneratedColumn> get $columns => [
-    id,
-    uuid,
-    anilist,
-    filename,
-    episode,
-    video,
-    image,
-  ];
+  List<GeneratedColumn> get $columns => [id, uuid, anilist, name, image];
   @override
   String get aliasedName => _alias ?? actualTableName;
   @override
@@ -123,27 +93,13 @@ class $AnimeHistoryTableTable extends AnimeHistoryTable
     } else if (isInserting) {
       context.missing(_anilistMeta);
     }
-    if (data.containsKey('filename')) {
+    if (data.containsKey('name')) {
       context.handle(
-        _filenameMeta,
-        filename.isAcceptableOrUnknown(data['filename']!, _filenameMeta),
+        _nameMeta,
+        name.isAcceptableOrUnknown(data['name']!, _nameMeta),
       );
     } else if (isInserting) {
-      context.missing(_filenameMeta);
-    }
-    if (data.containsKey('episode')) {
-      context.handle(
-        _episodeMeta,
-        episode.isAcceptableOrUnknown(data['episode']!, _episodeMeta),
-      );
-    }
-    if (data.containsKey('video')) {
-      context.handle(
-        _videoMeta,
-        video.isAcceptableOrUnknown(data['video']!, _videoMeta),
-      );
-    } else if (isInserting) {
-      context.missing(_videoMeta);
+      context.missing(_nameMeta);
     }
     if (data.containsKey('image')) {
       context.handle(
@@ -174,17 +130,9 @@ class $AnimeHistoryTableTable extends AnimeHistoryTable
         DriftSqlType.int,
         data['${effectivePrefix}anilist'],
       )!,
-      filename: attachedDatabase.typeMapping.read(
+      name: attachedDatabase.typeMapping.read(
         DriftSqlType.string,
-        data['${effectivePrefix}filename'],
-      )!,
-      episode: attachedDatabase.typeMapping.read(
-        DriftSqlType.int,
-        data['${effectivePrefix}episode'],
-      ),
-      video: attachedDatabase.typeMapping.read(
-        DriftSqlType.string,
-        data['${effectivePrefix}video'],
+        data['${effectivePrefix}name'],
       )!,
       image: attachedDatabase.typeMapping.read(
         DriftSqlType.string,
@@ -204,17 +152,13 @@ class AnimeHistoryTableData extends DataClass
   final int id;
   final String uuid;
   final int anilist;
-  final String filename;
-  final int? episode;
-  final String video;
+  final String name;
   final String image;
   const AnimeHistoryTableData({
     required this.id,
     required this.uuid,
     required this.anilist,
-    required this.filename,
-    this.episode,
-    required this.video,
+    required this.name,
     required this.image,
   });
   @override
@@ -223,11 +167,7 @@ class AnimeHistoryTableData extends DataClass
     map['id'] = Variable<int>(id);
     map['uuid'] = Variable<String>(uuid);
     map['anilist'] = Variable<int>(anilist);
-    map['filename'] = Variable<String>(filename);
-    if (!nullToAbsent || episode != null) {
-      map['episode'] = Variable<int>(episode);
-    }
-    map['video'] = Variable<String>(video);
+    map['name'] = Variable<String>(name);
     map['image'] = Variable<String>(image);
     return map;
   }
@@ -237,11 +177,7 @@ class AnimeHistoryTableData extends DataClass
       id: Value(id),
       uuid: Value(uuid),
       anilist: Value(anilist),
-      filename: Value(filename),
-      episode: episode == null && nullToAbsent
-          ? const Value.absent()
-          : Value(episode),
-      video: Value(video),
+      name: Value(name),
       image: Value(image),
     );
   }
@@ -255,9 +191,7 @@ class AnimeHistoryTableData extends DataClass
       id: serializer.fromJson<int>(json['id']),
       uuid: serializer.fromJson<String>(json['uuid']),
       anilist: serializer.fromJson<int>(json['anilist']),
-      filename: serializer.fromJson<String>(json['filename']),
-      episode: serializer.fromJson<int?>(json['episode']),
-      video: serializer.fromJson<String>(json['video']),
+      name: serializer.fromJson<String>(json['name']),
       image: serializer.fromJson<String>(json['image']),
     );
   }
@@ -268,9 +202,7 @@ class AnimeHistoryTableData extends DataClass
       'id': serializer.toJson<int>(id),
       'uuid': serializer.toJson<String>(uuid),
       'anilist': serializer.toJson<int>(anilist),
-      'filename': serializer.toJson<String>(filename),
-      'episode': serializer.toJson<int?>(episode),
-      'video': serializer.toJson<String>(video),
+      'name': serializer.toJson<String>(name),
       'image': serializer.toJson<String>(image),
     };
   }
@@ -279,17 +211,13 @@ class AnimeHistoryTableData extends DataClass
     int? id,
     String? uuid,
     int? anilist,
-    String? filename,
-    Value<int?> episode = const Value.absent(),
-    String? video,
+    String? name,
     String? image,
   }) => AnimeHistoryTableData(
     id: id ?? this.id,
     uuid: uuid ?? this.uuid,
     anilist: anilist ?? this.anilist,
-    filename: filename ?? this.filename,
-    episode: episode.present ? episode.value : this.episode,
-    video: video ?? this.video,
+    name: name ?? this.name,
     image: image ?? this.image,
   );
   AnimeHistoryTableData copyWithCompanion(AnimeHistoryTableCompanion data) {
@@ -297,9 +225,7 @@ class AnimeHistoryTableData extends DataClass
       id: data.id.present ? data.id.value : this.id,
       uuid: data.uuid.present ? data.uuid.value : this.uuid,
       anilist: data.anilist.present ? data.anilist.value : this.anilist,
-      filename: data.filename.present ? data.filename.value : this.filename,
-      episode: data.episode.present ? data.episode.value : this.episode,
-      video: data.video.present ? data.video.value : this.video,
+      name: data.name.present ? data.name.value : this.name,
       image: data.image.present ? data.image.value : this.image,
     );
   }
@@ -310,17 +236,14 @@ class AnimeHistoryTableData extends DataClass
           ..write('id: $id, ')
           ..write('uuid: $uuid, ')
           ..write('anilist: $anilist, ')
-          ..write('filename: $filename, ')
-          ..write('episode: $episode, ')
-          ..write('video: $video, ')
+          ..write('name: $name, ')
           ..write('image: $image')
           ..write(')'))
         .toString();
   }
 
   @override
-  int get hashCode =>
-      Object.hash(id, uuid, anilist, filename, episode, video, image);
+  int get hashCode => Object.hash(id, uuid, anilist, name, image);
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
@@ -328,9 +251,7 @@ class AnimeHistoryTableData extends DataClass
           other.id == this.id &&
           other.uuid == this.uuid &&
           other.anilist == this.anilist &&
-          other.filename == this.filename &&
-          other.episode == this.episode &&
-          other.video == this.video &&
+          other.name == this.name &&
           other.image == this.image);
 }
 
@@ -339,47 +260,36 @@ class AnimeHistoryTableCompanion
   final Value<int> id;
   final Value<String> uuid;
   final Value<int> anilist;
-  final Value<String> filename;
-  final Value<int?> episode;
-  final Value<String> video;
+  final Value<String> name;
   final Value<String> image;
   const AnimeHistoryTableCompanion({
     this.id = const Value.absent(),
     this.uuid = const Value.absent(),
     this.anilist = const Value.absent(),
-    this.filename = const Value.absent(),
-    this.episode = const Value.absent(),
-    this.video = const Value.absent(),
+    this.name = const Value.absent(),
     this.image = const Value.absent(),
   });
   AnimeHistoryTableCompanion.insert({
     this.id = const Value.absent(),
     this.uuid = const Value.absent(),
     required int anilist,
-    required String filename,
-    this.episode = const Value.absent(),
-    required String video,
+    required String name,
     required String image,
   }) : anilist = Value(anilist),
-       filename = Value(filename),
-       video = Value(video),
+       name = Value(name),
        image = Value(image);
   static Insertable<AnimeHistoryTableData> custom({
     Expression<int>? id,
     Expression<String>? uuid,
     Expression<int>? anilist,
-    Expression<String>? filename,
-    Expression<int>? episode,
-    Expression<String>? video,
+    Expression<String>? name,
     Expression<String>? image,
   }) {
     return RawValuesInsertable({
       if (id != null) 'id': id,
       if (uuid != null) 'uuid': uuid,
       if (anilist != null) 'anilist': anilist,
-      if (filename != null) 'filename': filename,
-      if (episode != null) 'episode': episode,
-      if (video != null) 'video': video,
+      if (name != null) 'name': name,
       if (image != null) 'image': image,
     });
   }
@@ -388,18 +298,14 @@ class AnimeHistoryTableCompanion
     Value<int>? id,
     Value<String>? uuid,
     Value<int>? anilist,
-    Value<String>? filename,
-    Value<int?>? episode,
-    Value<String>? video,
+    Value<String>? name,
     Value<String>? image,
   }) {
     return AnimeHistoryTableCompanion(
       id: id ?? this.id,
       uuid: uuid ?? this.uuid,
       anilist: anilist ?? this.anilist,
-      filename: filename ?? this.filename,
-      episode: episode ?? this.episode,
-      video: video ?? this.video,
+      name: name ?? this.name,
       image: image ?? this.image,
     );
   }
@@ -416,14 +322,8 @@ class AnimeHistoryTableCompanion
     if (anilist.present) {
       map['anilist'] = Variable<int>(anilist.value);
     }
-    if (filename.present) {
-      map['filename'] = Variable<String>(filename.value);
-    }
-    if (episode.present) {
-      map['episode'] = Variable<int>(episode.value);
-    }
-    if (video.present) {
-      map['video'] = Variable<String>(video.value);
+    if (name.present) {
+      map['name'] = Variable<String>(name.value);
     }
     if (image.present) {
       map['image'] = Variable<String>(image.value);
@@ -437,9 +337,7 @@ class AnimeHistoryTableCompanion
           ..write('id: $id, ')
           ..write('uuid: $uuid, ')
           ..write('anilist: $anilist, ')
-          ..write('filename: $filename, ')
-          ..write('episode: $episode, ')
-          ..write('video: $video, ')
+          ..write('name: $name, ')
           ..write('image: $image')
           ..write(')'))
         .toString();
@@ -464,9 +362,7 @@ typedef $$AnimeHistoryTableTableCreateCompanionBuilder =
       Value<int> id,
       Value<String> uuid,
       required int anilist,
-      required String filename,
-      Value<int?> episode,
-      required String video,
+      required String name,
       required String image,
     });
 typedef $$AnimeHistoryTableTableUpdateCompanionBuilder =
@@ -474,9 +370,7 @@ typedef $$AnimeHistoryTableTableUpdateCompanionBuilder =
       Value<int> id,
       Value<String> uuid,
       Value<int> anilist,
-      Value<String> filename,
-      Value<int?> episode,
-      Value<String> video,
+      Value<String> name,
       Value<String> image,
     });
 
@@ -504,18 +398,8 @@ class $$AnimeHistoryTableTableFilterComposer
     builder: (column) => ColumnFilters(column),
   );
 
-  ColumnFilters<String> get filename => $composableBuilder(
-    column: $table.filename,
-    builder: (column) => ColumnFilters(column),
-  );
-
-  ColumnFilters<int> get episode => $composableBuilder(
-    column: $table.episode,
-    builder: (column) => ColumnFilters(column),
-  );
-
-  ColumnFilters<String> get video => $composableBuilder(
-    column: $table.video,
+  ColumnFilters<String> get name => $composableBuilder(
+    column: $table.name,
     builder: (column) => ColumnFilters(column),
   );
 
@@ -549,18 +433,8 @@ class $$AnimeHistoryTableTableOrderingComposer
     builder: (column) => ColumnOrderings(column),
   );
 
-  ColumnOrderings<String> get filename => $composableBuilder(
-    column: $table.filename,
-    builder: (column) => ColumnOrderings(column),
-  );
-
-  ColumnOrderings<int> get episode => $composableBuilder(
-    column: $table.episode,
-    builder: (column) => ColumnOrderings(column),
-  );
-
-  ColumnOrderings<String> get video => $composableBuilder(
-    column: $table.video,
+  ColumnOrderings<String> get name => $composableBuilder(
+    column: $table.name,
     builder: (column) => ColumnOrderings(column),
   );
 
@@ -588,14 +462,8 @@ class $$AnimeHistoryTableTableAnnotationComposer
   GeneratedColumn<int> get anilist =>
       $composableBuilder(column: $table.anilist, builder: (column) => column);
 
-  GeneratedColumn<String> get filename =>
-      $composableBuilder(column: $table.filename, builder: (column) => column);
-
-  GeneratedColumn<int> get episode =>
-      $composableBuilder(column: $table.episode, builder: (column) => column);
-
-  GeneratedColumn<String> get video =>
-      $composableBuilder(column: $table.video, builder: (column) => column);
+  GeneratedColumn<String> get name =>
+      $composableBuilder(column: $table.name, builder: (column) => column);
 
   GeneratedColumn<String> get image =>
       $composableBuilder(column: $table.image, builder: (column) => column);
@@ -644,17 +512,13 @@ class $$AnimeHistoryTableTableTableManager
                 Value<int> id = const Value.absent(),
                 Value<String> uuid = const Value.absent(),
                 Value<int> anilist = const Value.absent(),
-                Value<String> filename = const Value.absent(),
-                Value<int?> episode = const Value.absent(),
-                Value<String> video = const Value.absent(),
+                Value<String> name = const Value.absent(),
                 Value<String> image = const Value.absent(),
               }) => AnimeHistoryTableCompanion(
                 id: id,
                 uuid: uuid,
                 anilist: anilist,
-                filename: filename,
-                episode: episode,
-                video: video,
+                name: name,
                 image: image,
               ),
           createCompanionCallback:
@@ -662,17 +526,13 @@ class $$AnimeHistoryTableTableTableManager
                 Value<int> id = const Value.absent(),
                 Value<String> uuid = const Value.absent(),
                 required int anilist,
-                required String filename,
-                Value<int?> episode = const Value.absent(),
-                required String video,
+                required String name,
                 required String image,
               }) => AnimeHistoryTableCompanion.insert(
                 id: id,
                 uuid: uuid,
                 anilist: anilist,
-                filename: filename,
-                episode: episode,
-                video: video,
+                name: name,
                 image: image,
               ),
           withReferenceMapper: (p0) => p0
