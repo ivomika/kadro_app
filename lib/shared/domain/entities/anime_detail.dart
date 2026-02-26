@@ -20,7 +20,7 @@ class AnimeDetail extends Equatable {
   final AnimeFuzzyDate startDate;
   final AnimeFuzzyDate endDate;
   final AnimeStudios studios;
-  final AnimeTrailer? trailer;
+  final AnimeTrailer trailer;
   final String siteUrl;
 
   const AnimeDetail({
@@ -96,14 +96,14 @@ class AnimeDetail extends Equatable {
         'trailer: $trailer, '
         'siteUrl: $siteUrl, '
         'similarity: $similarity'
-        ')';
+    ')';
   }
 }
 
 class AnimeTitle extends Equatable {
-  final String? romaji;
-  final String? english;
-  final String? nativeTitle;
+  final String romaji;
+  final String english;
+  final String nativeTitle;
 
   const AnimeTitle({
     required this.romaji,
@@ -121,9 +121,9 @@ class AnimeTitle extends Equatable {
 }
 
 class AnimeCoverImage extends Equatable {
-  final String? large;
-  final String? extraLarge;
-  final String? color;
+  final String large;
+  final String extraLarge;
+  final String color;
 
   const AnimeCoverImage({
     required this.large,
@@ -141,9 +141,9 @@ class AnimeCoverImage extends Equatable {
 }
 
 class AnimeFuzzyDate extends Equatable {
-  final int? year;
-  final int? month;
-  final int? day;
+  final int year;
+  final int month;
+  final int day;
 
   const AnimeFuzzyDate({
     required this.year,
@@ -195,9 +195,9 @@ class AnimeStudioNode extends Equatable {
 }
 
 class AnimeTrailer extends Equatable {
-  final String? id;
-  final String? site;
-  final String? thumbnail;
+  final String id;
+  final String site;
+  final String thumbnail;
 
   const AnimeTrailer({
     required this.id,

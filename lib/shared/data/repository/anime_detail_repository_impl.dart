@@ -25,9 +25,9 @@ extension ResultExtension on AnilistMedia{
         id: id,
         idMal: idMal ?? -1,
         title: AnimeTitle(
-          romaji: title.romaji,
-          english: title.english,
-          nativeTitle: title.nativeTitle,
+          romaji: title.romaji ?? '',
+          english: title.english ?? '',
+          nativeTitle: title.nativeTitle ?? '',
         ),
         description: description ?? '',
         format: format ?? '',
@@ -40,20 +40,20 @@ extension ResultExtension on AnilistMedia{
         popularity: popularity ?? -1,
         genres: List<String>.unmodifiable(genres),
         coverImage: AnimeCoverImage(
-          large: coverImage.large,
-          extraLarge: coverImage.extraLarge,
-          color: coverImage.color,
+          large: coverImage.large ?? '',
+          extraLarge: coverImage.extraLarge ?? '',
+          color: coverImage.color ?? '',
         ),
         bannerImage: bannerImage ?? '',
         startDate: AnimeFuzzyDate(
-          year: startDate.year,
-          month: startDate.month,
-          day: startDate.day,
+          year: startDate.year ?? -1,
+          month: startDate.month ?? -1,
+          day: startDate.day ?? -1,
         ),
         endDate: AnimeFuzzyDate(
-          year: endDate.year,
-          month: endDate.month,
-          day: endDate.day,
+          year: endDate.year ?? -1,
+          month: endDate.month ?? -1,
+          day: endDate.day ?? -1,
         ),
         studios: AnimeStudios(
           nodes: studios.nodes
@@ -65,12 +65,10 @@ extension ResultExtension on AnilistMedia{
           )
               .toList(growable: false),
         ),
-        trailer: trailer == null
-            ? null
-            : AnimeTrailer(
-          id: trailer!.id,
-          site: trailer!.site,
-          thumbnail: trailer!.thumbnail,
+        trailer: AnimeTrailer(
+          id: trailer?.id ?? '',
+          site: trailer?.site ?? '',
+          thumbnail: trailer?.thumbnail ?? '',
         ),
         siteUrl: siteUrl ?? '',
         similarity: similarity
