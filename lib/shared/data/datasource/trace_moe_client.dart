@@ -12,6 +12,9 @@ final class TraceMoeClient extends BaseApiClient{
     return await upload(
         file,
         '/search',
+        queryParams: {
+          'cutBorders': null
+        },
         factory: AnimeMatchResponse.fromJson
     );
   }
@@ -21,7 +24,8 @@ final class TraceMoeClient extends BaseApiClient{
         RequestMethod.get,
         '/search',
         queryParams: {
-          'url': url.trim()
+          'cutBorders': null,
+          'url': url.trim(),
         },
         factory: AnimeMatchResponse.fromJson
     );
