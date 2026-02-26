@@ -18,7 +18,6 @@ abstract class AnimeMatchResponse with _$AnimeMatchResponse{
 abstract class AnimeMatchResult with _$AnimeMatchResult{
   const factory AnimeMatchResult({
     required int anilist,
-    int? episode,
     required double similarity,
     required String filename,
     required String video,
@@ -33,7 +32,6 @@ extension ResultExtension on AnimeMatchResult{
     return AnimeMatch(
         anilist: anilist,
         filename: filename,
-        episode: episode,
         similarity: similarity,
         video: video,
         image: image
