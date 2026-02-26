@@ -9,18 +9,18 @@ final class AnimeDetailRepositoryImpl implements IAnimeDetailRepository{
   AnimeDetailRepositoryImpl(this._client);
 
   @override
-  Future<AnimeDetail?> searchByAnilistId(int id) async {
+  Future<AnimeDetail?> searchByAnilistId(int id, double similarity) async {
     final result = await _client.searchByAnilistId(id);
 
     if(result.isSuccess == false) return null;
 
-    return result.data?.data.media.toDomain();
+    return result.data?.data.media.toDomain(similarity);
   }
 }
 
 
 extension ResultExtension on AnilistMedia{
-  AnimeDetail? toDomain(){
+  AnimeDetail? toDomain(double similarity){
     return AnimeDetail(
         id: id,
         idMal: idMal ?? -1,
@@ -73,6 +73,7 @@ extension ResultExtension on AnilistMedia{
           thumbnail: trailer!.thumbnail,
         ),
         siteUrl: siteUrl ?? '',
+        similarity: similarity
     );
   }
 }

@@ -29,7 +29,7 @@ final class FindBestByFileUseCase implements IUseCase<File, Future<AnimeDetail?>
             : element
     );
 
-    final detailResult = await _detailRepository.searchByAnilistId(bestMatch.anilist);
+    final detailResult = await _detailRepository.searchByAnilistId(bestMatch.anilist, bestMatch.similarity);
     return detailResult;
   }
 }

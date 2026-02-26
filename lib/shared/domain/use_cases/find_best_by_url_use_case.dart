@@ -26,7 +26,7 @@ final class FindBestByUrlUseCase implements IUseCase<String, Future<AnimeDetail?
             : element
     );
 
-    final detailResult = await _detailRepository.searchByAnilistId(bestMatch.anilist);
+    final detailResult = await _detailRepository.searchByAnilistId(bestMatch.anilist, bestMatch.similarity);
     return detailResult;
   }
 }

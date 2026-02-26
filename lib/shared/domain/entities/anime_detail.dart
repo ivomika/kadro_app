@@ -4,6 +4,7 @@ class AnimeDetail extends Equatable {
   final int id;
   final int idMal;
   final AnimeTitle title;
+  final double similarity;
   final String description;
   final String format;
   final String status;
@@ -43,6 +44,7 @@ class AnimeDetail extends Equatable {
     required this.studios,
     required this.trailer,
     required this.siteUrl,
+    required this.similarity,
   });
 
   @override
@@ -67,6 +69,7 @@ class AnimeDetail extends Equatable {
     studios,
     trailer,
     siteUrl,
+    similarity,
   ];
 
   @override
@@ -91,7 +94,8 @@ class AnimeDetail extends Equatable {
         'endDate: $endDate, '
         'studios: $studios, '
         'trailer: $trailer, '
-        'siteUrl: $siteUrl'
+        'siteUrl: $siteUrl, '
+        'similarity: $similarity'
         ')';
   }
 }

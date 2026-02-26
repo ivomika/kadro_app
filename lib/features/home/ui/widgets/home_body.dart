@@ -52,6 +52,10 @@ class HomeBody extends StatelessWidget {
                         if(state.match.coverImage.large != null && state.match.coverImage.large!.isNotEmpty)
                           Image.network(state.match.coverImage.large!),
                         ListTile(
+                          title: Text('Уверенность'),
+                          subtitle: Text('${state.match.similarity.toString().substring(0, 4)}%'),
+                        ),
+                        ListTile(
                           title: Text('Название'),
                           subtitle: Text(state.match.title.english ?? ''),
                         ),
