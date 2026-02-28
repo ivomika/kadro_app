@@ -5,31 +5,33 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_core/flutter_core.dart';
 import 'package:kadro_app/features/home/ui/bloc/home_screen_bloc.dart';
+import 'package:kadro_app/features/home/ui/widgets/home_anime_detail.dart';
 import 'package:kadro_app/features/home/ui/widgets/home_search_input.dart';
 
-class HomeBody extends StatelessWidget {
+class HomeBody extends StatefulWidget {
   const HomeBody({super.key});
 
   @override
+  State<HomeBody> createState() => _HomeBodyState();
+}
+
+class _HomeBodyState extends State<HomeBody> with TickerProviderStateMixin {
+  @override
   Widget build(BuildContext context) {
-    return CustomScrollView(
-      slivers: [
-        SliverAppBar(
+    return Column(
+      children: [
+        AppBar(
           title: Text('Домашняя'),
         ),
-        SliverPadding(
+        Padding(
           padding: const EdgeInsets.symmetric(horizontal: 16),
-          sliver: SliverToBoxAdapter(
-            child: HomeSearchInput(
-              onAttach: () => _searchButtonTap(context),
-              onSend: (value) => _searchByUrl(value, context),
-            )
+          child: HomeSearchInput(
+            onAttach: () => _searchButtonTap(context),
+            onSend: (value) => _searchByUrl(value, context),
           ),
         ),
-        const SliverToBoxAdapter(
-          child: SizedBox(height: 16),
-        ),
-        SliverToBoxAdapter(
+        const SizedBox(height: 16),
+        Expanded(
           child: BlocConsumer<HomeScreenBloc, HomeScreenState>(
             listener: _homeListener,
             builder: (context, state) {
@@ -39,45 +41,9 @@ class HomeBody extends StatelessWidget {
                 );
               }
 
-              if (state is HomeScreenLoaded) {
-                Talker talker = Talker();
-                talker.log(state.match);
-                return BottomSheet(
-                  enableDrag: false,
-                  showDragHandle: true,
-                  onClosing: () {  },
-                  builder: (BuildContext context) {
-                    return Column(
-                      children: [
-                        if(state.match.coverImage.large.isNotEmpty)
-                          Image.network(state.match.coverImage.large),
-                        ListTile(
-                          title: Text('Уверенность'),
-                          subtitle: Text('${state.match.similarity.toString().substring(0, 4)}%'),
-                        ),
-                        ListTile(
-                          title: Text('Название'),
-                          subtitle: Text(state.match.title.english),
-                        ),
-                        ListTile(
-                          title: Text('Описание'),
-                          subtitle: Text(state.match.description),
-                        ),
-                        ListTile(
-                          title: Text('url'),
-                          subtitle: Text(state.match.siteUrl),
-                        ),
-                        ListTile(
-                          title: Text('Anilist'),
-                          subtitle: Text(state.match.id.toString()),
-                        ),
-                      ],
-                    );
-                  },
-                );
-              }
-
-              return const SizedBox();
+              return const Center(
+                child: Text('Добавь изображение!'),
+              );
             },
           ),
         )
@@ -106,6 +72,43 @@ class HomeBody extends StatelessWidget {
   }
 
   void _homeListener(BuildContext context, HomeScreenState state) {
+    if (state is HomeScreenLoaded) {
+      showBottomSheet(
+          context: context,
+          enableDrag: true,
+          showDragHandle: true,
+          builder: (context){
+            return DraggableScrollableSheet(
+              expand: false,
+              initialChildSize: 0.55,
+              minChildSize: 0.2,
+              maxChildSize: 0.8,
+              builder: (context, scrollController) {
+                final match = state.match;
+
+                return HomeAnimeDetail(
+                    scrollController: scrollController,
+                    image: NetworkImage(match.coverImage.large),
+                    title: match.title.english,
+                    description: match.description,
+                    similarity: match.similarity,
+                    format: match.format,
+                    status: match.status,
+                    season: match.season,
+                    seasonYear: match.seasonYear,
+                    episodes: match.episodes,
+                    genres: match.genres,
+                    studios: match
+                        .studios
+                        .nodes
+                        .map((e) => e.name)
+                        .toList(growable: false)
+                );
+              },
+            );
+          }
+      );
+    }
     if(state is HomeScreenError){
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(state.error)));
     }
