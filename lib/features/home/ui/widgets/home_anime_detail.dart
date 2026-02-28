@@ -1,9 +1,11 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:html/parser.dart';
 import 'package:kadro_app/shared/ui/slivers/sliver_divider.dart';
+import 'package:skeletonizer/skeletonizer.dart';
 
 class HomeAnimeDetail extends StatelessWidget {
-  final ImageProvider image;
+  final String imageUrl;
   final String title;
   final String description;
   final double similarity;
@@ -18,7 +20,7 @@ class HomeAnimeDetail extends StatelessWidget {
 
   const HomeAnimeDetail({
     super.key,
-    required this.image,
+    required this.imageUrl,
     required this.title,
     required this.description,
     required this.similarity,
@@ -44,12 +46,13 @@ class HomeAnimeDetail extends StatelessWidget {
           padding: const EdgeInsets.symmetric(horizontal: 16).copyWith(bottom: 16),
           sliver: SliverToBoxAdapter(
             child: _Preview(
-                image: image,
+                imageUrl: imageUrl,
                 similarity: similarity,
                 format: format,
                 status: status,
+                season: season,
                 seasonYear: seasonYear,
-                episodes: episodes
+                episodes: episodes,
             ),
           ),
         ),
@@ -122,20 +125,22 @@ class HomeAnimeDetail extends StatelessWidget {
 }
 
 class _Preview extends StatelessWidget {
-  final ImageProvider image;
+  final String imageUrl;
   final double similarity;
   final String format;
   final String status;
+  final String season;
   final int seasonYear;
   final int episodes;
 
   const _Preview({
-    required this.image,
+    required this.imageUrl,
     required this.similarity,
     required this.format,
     required this.status,
+    required this.season,
     required this.seasonYear,
-    required this.episodes
+    required this.episodes,
   });
 
   @override
@@ -146,7 +151,11 @@ class _Preview extends StatelessWidget {
         children: [
           ClipRRect(
             borderRadius: BorderRadiusGeometry.circular(16),
-            child: Image(image: image),
+            child: SizedBox(
+                height: 270,
+                width: 200,
+                child: _CachedImage(url: imageUrl)
+            )
           ),
           Expanded(
             child: Column(
@@ -155,7 +164,7 @@ class _Preview extends StatelessWidget {
               spacing: 8,
               children: [
                 Chip(
-                    label: Text(similarity.toString().substring(0, 4))
+                    label: Text(_formatSimilarity(similarity))
                 ),
                 Chip(
                     label: Text(format)
@@ -164,6 +173,7 @@ class _Preview extends StatelessWidget {
                     label: Text(status)
                 ),
                 Chip(
+                    avatar: Icon(_choiceSeasonIcon(season)),
                     label: Text(seasonYear.toString())
                 ),
                 Chip(
@@ -174,6 +184,42 @@ class _Preview extends StatelessWidget {
             ),
           )
         ]
+    );
+  }
+
+  String _formatSimilarity(double similarity) =>
+      '${(similarity * 100).toStringAsFixed(1)}%';
+
+  IconData _choiceSeasonIcon(String season){
+    switch(season){
+      case 'WINTER': return Icons.ac_unit;
+      case 'FALL': return Icons.eco_outlined;
+      case 'SUMMER': return Icons.wb_sunny_outlined;
+      case 'SPRING': return Icons.filter_vintage_outlined;
+      default: return Icons.error;
+    }
+  }
+}
+
+class _CachedImage extends StatelessWidget {
+  final String url;
+
+  const _CachedImage({
+    required this.url
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    if(url.isEmpty) {
+      return const Bone.square();
+    }
+
+    return CachedNetworkImage(
+      imageUrl: url,
+      placeholder: (context, url) =>
+          const Skeletonizer(child: Bone.square()),
+      errorWidget: (context, url, error) =>
+          const Icon(Icons.error),
     );
   }
 }
