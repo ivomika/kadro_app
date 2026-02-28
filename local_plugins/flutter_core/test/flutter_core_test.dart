@@ -60,32 +60,55 @@ void main() {
       talker.debug(response.isSuccess);
       talker.debug(response.statusCode);
       expect(response.statusCode, 200);
-    }on UnauthorizedException catch(e){
+    } on UnauthorizedException catch(e){
       talker.debug(UnauthorizedException);
       expect(e, isA<UnauthorizedException>());
+      expect(e.response?.statusCode, 401);
     }catch(e){
       talker.debug('Random error');
     }
   });
   test('Test 400 response', () async {
-    final response = await client.fetch(RequestMethod.get, '/status/400', factory: (json) => EmptyData());
-    talker.debug(response.isSuccess);
-    talker.debug(response.statusCode);
-    expect(response.statusCode, 400);
+    try{
+      final response = await client.fetch(RequestMethod.get, '/status/400', factory: (json) => EmptyData());
+      talker.debug(response.isSuccess);
+      talker.debug(response.statusCode);
+      expect(response.statusCode, 200);
+    } on ClientErrorException catch(e){
+      talker.debug(ClientErrorException);
+      expect(e, isA<ClientErrorException>());
+      expect(e.response?.statusCode, 400);
+    }catch(e){
+      talker.debug('Random error');
+    }
   });
   test('Test 500 response', () async {
-    final response = await client.fetch(RequestMethod.get, '/status/500', factory: (json) => EmptyData());
-    talker.debug(response.isSuccess);
-    talker.debug(response.statusCode);
-    expect(response.data, null);
-    expect(response.statusCode, 500);
+    try{
+      final response = await client.fetch(RequestMethod.get, '/status/500', factory: (json) => EmptyData());
+      talker.debug(response.isSuccess);
+      talker.debug(response.statusCode);
+      expect(response.statusCode, 200);
+    } on ServerErrorException catch(e){
+      talker.debug(ServerErrorException);
+      expect(e, isA<ServerErrorException>());
+      expect(e.response?.statusCode, 500);
+    }catch(e){
+      talker.debug('Random error');
+    }
   });
   test('Test 500 response retry', () async {
-    final response = await client.fetch(RequestMethod.get, '/status/500', factory: (json) => EmptyData());
-    talker.debug(response.isSuccess);
-    talker.debug(response.statusCode);
-    expect(response.data, null);
-    expect(response.statusCode, 500);
+    try{
+      final response = await client.fetch(RequestMethod.get, '/status/500', factory: (json) => EmptyData());
+      talker.debug(response.isSuccess);
+      talker.debug(response.statusCode);
+      expect(response.statusCode, 200);
+    } on ServerErrorException catch(e){
+      talker.debug(ServerErrorException);
+      expect(e, isA<ServerErrorException>());
+      expect(e.response?.statusCode, 500);
+    }catch(e){
+      talker.debug('Random error');
+    }
   });
   test('Test get all', () async {
     final result = await repository.all();

@@ -23,7 +23,7 @@ class HomeScreenBloc extends Bloc<HomeScreenEvent, HomeScreenState> {
 
   FutureOr<void> _findAnimeByFile(FindAnimeByFileEvent event, Emitter<HomeScreenState> emit) async {
     emit(HomeScreenLoading());
-    // try{
+    try{
       final result = await FindBestByFileUseCase(_matchRepository, _detailRepository).execute(event.file);
 
       if(result == null){
@@ -32,9 +32,21 @@ class HomeScreenBloc extends Bloc<HomeScreenEvent, HomeScreenState> {
       }
 
       emit(HomeScreenLoaded(result));
-    // }catch(e){
-    //   emit(HomeScreenError(e.toString()));
-    // }
+    } on ClientErrorException catch (e){
+      if(_hasError(e)){
+        emit(HomeScreenError((e.response!.data as Map)['error']));
+        return;
+      }
+      emit(HomeScreenError('Клиентская ошибка'));
+    } on ServerErrorException catch (e){
+      if(_hasError(e)){
+        emit(HomeScreenError((e.response!.data as Map)['error']));
+        return;
+      }
+      emit(HomeScreenError('Ошибка сервера '));
+    } catch(e){
+      emit(HomeScreenError(e.toString()));
+    }
   }
 
   FutureOr<void> _findAnimeByUrl(FindAnimeByUrlEvent event, Emitter<HomeScreenState> emit) async {
@@ -48,8 +60,29 @@ class HomeScreenBloc extends Bloc<HomeScreenEvent, HomeScreenState> {
       }
 
       emit(HomeScreenLoaded(result));
-    }catch(e){
+    }on ClientErrorException catch (e){
+      if(_hasError(e)){
+        emit(HomeScreenError((e.response!.data as Map)['error']));
+        return;
+      }
+      emit(HomeScreenError('Клиентская ошибка'));
+    } on ServerErrorException catch (e){
+      if(_hasError(e)){
+        emit(HomeScreenError((e.response!.data as Map)['error']));
+        return;
+      }
+      emit(HomeScreenError('Ошибка сервера '));
+    } catch(e){
       emit(HomeScreenError(e.toString()));
     }
+  }
+
+  bool _hasError(DioException exception){
+    if(exception.response == null) return false;
+    if(exception.response!.data == null) return false;
+    if(exception.response!.data! is! Map) return false;
+    if((exception.response!.data! as Map).containsKey('error') == false) return false;
+
+    return true;
   }
 }

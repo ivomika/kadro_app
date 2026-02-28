@@ -89,8 +89,8 @@ extension BaseApiClientLocalInterface on BaseApiClient{
         );
       } on UnauthorizedException{
         rethrow;
-      } on ClientErrorException catch(e){
-        response = e.response;
+      } on ClientErrorException{
+        rethrow;
       } on ServerErrorException catch(e){
         response = e.response;
 
@@ -109,6 +109,8 @@ extension BaseApiClientLocalInterface on BaseApiClient{
               body: body,
               retry: retry
           );
+        }else{
+          rethrow;
         }
       } on DioException catch(e){
         response = e.response;
@@ -139,7 +141,7 @@ extension BaseApiClientLocalInterface on BaseApiClient{
 
     return FetchResponse(
         statusCode: response.statusCode ?? 0,
-        data: null,
+        data: response.data,
         headers: response.headers.map,
         error: response.data
     );
