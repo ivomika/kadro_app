@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kadro_app/features/home/ui/bloc/home_screen_bloc.dart';
+import 'package:validators/validators.dart';
 
 enum HomeSearchInputType { attachFile, sendText, loading }
 
@@ -21,10 +22,12 @@ class HomeSearchInput extends StatefulWidget {
 class _HomeSearchInputState extends State<HomeSearchInput> {
   late HomeSearchInputType _type;
   late TextEditingController _searchController;
+  late GlobalKey<FormState> _formKey;
 
   @override
   void initState() {
     super.initState();
+    _formKey = GlobalKey<FormState>();
     _type = HomeSearchInputType.attachFile;
     _searchController = TextEditingController();
   }
@@ -39,22 +42,27 @@ class _HomeSearchInputState extends State<HomeSearchInput> {
   Widget build(BuildContext context) {
     return BlocListener<HomeScreenBloc, HomeScreenState>(
       listener: _homeListener,
-      child: Row(
-        spacing: 8,
-        children: [
-          Expanded(
-            child: TextFormField(
-              controller: _searchController,
-              decoration: InputDecoration(labelText: 'Поиск'),
-              onChanged: _onChangeText,
+      child: Form(
+        key: _formKey,
+        child: Row(
+          spacing: 8,
+          children: [
+            Expanded(
+              child: TextFormField(
+                controller: _searchController,
+                decoration: InputDecoration(labelText: 'Поиск'),
+                onChanged: _onChangeText,
+                validator: _urlValidator,
+                onFieldSubmitted: (value) => _onSend(value),
+              ),
             ),
-          ),
-          _SearchInputButton(
-              type: _type,
-              onAttach: widget.onAttach,
-              onSend: () => widget.onSend(_searchController.text)
-          ),
-        ],
+            _SearchInputButton(
+                type: _type,
+                onAttach: widget.onAttach,
+                onSend: () => _onSend(_searchController.text)
+            ),
+          ],
+        ),
       ),
     );
   }
@@ -90,6 +98,20 @@ class _HomeSearchInputState extends State<HomeSearchInput> {
     setState(() {
       _type = HomeSearchInputType.sendText;
     });
+  }
+  
+  void _onSend(String value){
+    if(_formKey.currentState!.validate() == false) return;
+    
+    widget.onSend(value);
+  }
+
+  String? _urlValidator(String? value) {
+    if(isURL(value) == false){
+      return 'Это не похоже на ссылку';
+    }
+    
+    return null;
   }
 }
 
