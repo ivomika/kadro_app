@@ -19,6 +19,7 @@ dependencies:
   drift_flutter: ^0.2.8
   path_provider: ^2.1.5
   uuid: ^4.5.3
+  html: ^0.15.6
   flutter_core:
     path: local_plugins/flutter_core
 

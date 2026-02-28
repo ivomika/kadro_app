@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:html/parser.dart';
 import 'package:kadro_app/shared/ui/slivers/sliver_divider.dart';
 
 class HomeAnimeDetail extends StatelessWidget {
@@ -68,9 +69,9 @@ class HomeAnimeDetail extends StatelessWidget {
             padding: const EdgeInsets.symmetric(horizontal: 16),
             sliver: SliverToBoxAdapter(
               child: Text(
-                  description,
-                  style: textTheme.bodyLarge,
-              ),
+                    _parseHtmlText(description),
+                    style: textTheme.bodyLarge,
+                ),
             ),
         ),
         const SliverDivider(
@@ -112,6 +113,11 @@ class HomeAnimeDetail extends StatelessWidget {
         )
       ],
     );
+  }
+
+  String _parseHtmlText(String htmlString) {
+    final document = parse(htmlString);
+    return document.body?.text ?? '';
   }
 }
 

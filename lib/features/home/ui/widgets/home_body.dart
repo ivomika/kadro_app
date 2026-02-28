@@ -89,7 +89,7 @@ class _HomeBodyState extends State<HomeBody> with TickerProviderStateMixin {
                 return HomeAnimeDetail(
                     scrollController: scrollController,
                     image: NetworkImage(match.coverImage.large),
-                    title: match.title.english,
+                    title: match.title.romaji,
                     description: match.description,
                     similarity: match.similarity,
                     format: match.format,

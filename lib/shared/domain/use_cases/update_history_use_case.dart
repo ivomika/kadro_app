@@ -21,8 +21,8 @@ final class UpdateHistoryUseCase implements IUseCase<AnimeDetail, Future<List<An
     return AnimeHistory(
         id: Uuid().v4(),
         anilist: match.id,
-        name: match.title.english ?? '',
-        image: match.coverImage.large ?? ''
+        name: match.title.romaji,
+        image: match.coverImage.large
     );
   }
 }
