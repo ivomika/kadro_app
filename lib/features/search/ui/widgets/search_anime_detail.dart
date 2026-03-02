@@ -4,7 +4,7 @@ import 'package:html/parser.dart';
 import 'package:kadro_app/shared/ui/slivers/sliver_divider.dart';
 import 'package:skeletonizer/skeletonizer.dart';
 
-class HomeAnimeDetail extends StatelessWidget {
+class SearchAnimeDetail extends StatelessWidget {
   final String imageUrl;
   final String title;
   final String description;
@@ -18,7 +18,7 @@ class HomeAnimeDetail extends StatelessWidget {
   final List<String> studios;
   final ScrollController? scrollController;
 
-  const HomeAnimeDetail({
+  const SearchAnimeDetail({
     super.key,
     required this.imageUrl,
     required this.title,

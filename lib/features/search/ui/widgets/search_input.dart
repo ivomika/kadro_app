@@ -1,26 +1,26 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:kadro_app/features/home/ui/bloc/home_screen_bloc.dart';
+import 'package:kadro_app/features/search/ui/bloc/search_screen_bloc.dart';
 import 'package:validators/validators.dart';
 
-enum HomeSearchInputType { attachFile, sendText, loading }
+enum SearchInputType { attachFile, sendText, loading }
 
-class HomeSearchInput extends StatefulWidget {
+class SearchInput extends StatefulWidget {
   final VoidCallback onAttach;
   final void Function(String value) onSend;
 
-  const HomeSearchInput({
+  const SearchInput({
     super.key,
     required this.onAttach,
     required this.onSend
   });
 
   @override
-  State<HomeSearchInput> createState() => _HomeSearchInputState();
+  State<SearchInput> createState() => _SearchInputState();
 }
 
-class _HomeSearchInputState extends State<HomeSearchInput> {
-  late HomeSearchInputType _type;
+class _SearchInputState extends State<SearchInput> {
+  late SearchInputType _type;
   late TextEditingController _searchController;
   late GlobalKey<FormState> _formKey;
 
@@ -28,7 +28,7 @@ class _HomeSearchInputState extends State<HomeSearchInput> {
   void initState() {
     super.initState();
     _formKey = GlobalKey<FormState>();
-    _type = HomeSearchInputType.attachFile;
+    _type = SearchInputType.attachFile;
     _searchController = TextEditingController();
   }
 
@@ -40,8 +40,8 @@ class _HomeSearchInputState extends State<HomeSearchInput> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocListener<HomeScreenBloc, HomeScreenState>(
-      listener: _homeListener,
+    return BlocListener<SearchScreenBloc, SearchScreenState>(
+      listener: _searchListener,
       child: Form(
         key: _formKey,
         child: Row(
@@ -70,33 +70,33 @@ class _HomeSearchInputState extends State<HomeSearchInput> {
   void _onChangeText(String value) {
     if (value.trim().isEmpty) {
       setState(() {
-        _type = HomeSearchInputType.attachFile;
+        _type = SearchInputType.attachFile;
       });
       return;
     }
 
     setState(() {
-      _type = HomeSearchInputType.sendText;
+      _type = SearchInputType.sendText;
     });
   }
 
-  void _homeListener(BuildContext context, HomeScreenState state) {
-    if(state is HomeScreenLoading){
+  void _searchListener(BuildContext context, SearchScreenState state) {
+    if(state is SearchScreenLoading){
       setState(() {
-        _type = HomeSearchInputType.loading;
+        _type = SearchInputType.loading;
       });
       return;
     }
 
     if(_searchController.text.trim().isEmpty){
       setState(() {
-        _type = HomeSearchInputType.attachFile;
+        _type = SearchInputType.attachFile;
       });
       return;
     }
 
     setState(() {
-      _type = HomeSearchInputType.sendText;
+      _type = SearchInputType.sendText;
     });
   }
   
@@ -116,7 +116,7 @@ class _HomeSearchInputState extends State<HomeSearchInput> {
 }
 
 class _SearchInputButton extends StatelessWidget {
-  final HomeSearchInputType type;
+  final SearchInputType type;
   final VoidCallback onAttach;
   final VoidCallback onSend;
 
@@ -139,17 +139,17 @@ class _SearchInputButton extends StatelessWidget {
         );
       },
       child: switch (type) {
-        HomeSearchInputType.attachFile => IconButton.filled(
+        SearchInputType.attachFile => IconButton.filled(
           key: ValueKey(type.toString()),
           onPressed: onAttach,
           icon: Icon(Icons.attach_file),
         ),
-        HomeSearchInputType.sendText => IconButton.filled(
+        SearchInputType.sendText => IconButton.filled(
           key: ValueKey(type.toString()),
           onPressed: onSend,
           icon: Icon(Icons.search),
         ),
-        HomeSearchInputType.loading => SizedBox(
+        SearchInputType.loading => SizedBox(
           key: ValueKey(type.toString()),
           width: 48,
           height: 48,

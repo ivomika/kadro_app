@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:kadro_app/features/home/ui/bloc/home_screen_bloc.dart';
-import 'package:kadro_app/features/home/ui/widgets/home_anime_detail.dart';
+import 'package:kadro_app/features/search/ui/bloc/search_screen_bloc.dart';
+import 'package:kadro_app/features/search/ui/widgets/search_anime_detail.dart';
 import 'package:skeletonizer/skeletonizer.dart';
 
-class HomeBottomSheet extends StatelessWidget {
-  const HomeBottomSheet({super.key});
+class SearchBottomSheet extends StatelessWidget {
+  const SearchBottomSheet({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<HomeScreenBloc, HomeScreenState>(
+    return BlocBuilder<SearchScreenBloc, SearchScreenState>(
         builder: (context, state){
           return DraggableScrollableSheet(
               expand: false,
@@ -22,10 +22,10 @@ class HomeBottomSheet extends StatelessWidget {
                 0.8
               ],
               builder: (context, scrollController) {
-                if (state is HomeScreenLoaded) {
+                if (state is SearchScreenLoaded) {
                   final match = state.match;
 
-                  return HomeAnimeDetail(
+                  return SearchAnimeDetail(
                       scrollController: scrollController,
                       imageUrl: match.coverImage.large,
                       title: match.title.romaji,
@@ -47,7 +47,7 @@ class HomeBottomSheet extends StatelessWidget {
 
                 return Skeletonizer(
                   enableSwitchAnimation: true,
-                  child: HomeAnimeDetail(
+                  child: SearchAnimeDetail(
                     scrollController: scrollController,
                     imageUrl: '',
                     title: BoneMock.title,

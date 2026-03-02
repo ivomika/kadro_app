@@ -9,71 +9,71 @@ import 'package:kadro_app/shared/domain/repository/i_anime_match_repository.dart
 import 'package:kadro_app/shared/domain/use_cases/find_best_by_file_use_case.dart';
 import 'package:kadro_app/shared/domain/use_cases/find_best_by_url_use_case.dart';
 
-part 'home_screen_event.dart';
-part 'home_screen_state.dart';
+part 'search_screen_event.dart';
+part 'search_screen_state.dart';
 
-class HomeScreenBloc extends Bloc<HomeScreenEvent, HomeScreenState> {
+class SearchScreenBloc extends Bloc<SearchScreenEvent, SearchScreenState> {
   final IAnimeMatchRepository _matchRepository;
   final IAnimeDetailRepository _detailRepository;
 
-  HomeScreenBloc(this._matchRepository, this._detailRepository) : super(HomeScreenInitial()) {
+  SearchScreenBloc(this._matchRepository, this._detailRepository) : super(SearchScreenInitial()) {
     on<FindAnimeByFileEvent>(_findAnimeByFile);
     on<FindAnimeByUrlEvent>(_findAnimeByUrl);
   }
 
-  FutureOr<void> _findAnimeByFile(FindAnimeByFileEvent event, Emitter<HomeScreenState> emit) async {
-    emit(HomeScreenLoading());
+  FutureOr<void> _findAnimeByFile(FindAnimeByFileEvent event, Emitter<SearchScreenState> emit) async {
+    emit(SearchScreenLoading());
     try{
       final result = await FindBestByFileUseCase(_matchRepository, _detailRepository).execute(event.file);
 
       if(result == null){
-        emit(HomeScreenError('Не удалось найти'));
+        emit(SearchScreenError('Не удалось найти'));
         return;
       }
 
-      emit(HomeScreenLoaded(result));
+      emit(SearchScreenLoaded(result));
     } on ClientErrorException catch (e){
       if(_hasError(e)){
-        emit(HomeScreenError((e.response!.data as Map)['error']));
+        emit(SearchScreenError((e.response!.data as Map)['error']));
         return;
       }
-      emit(HomeScreenError('Клиентская ошибка'));
+      emit(SearchScreenError('Клиентская ошибка'));
     } on ServerErrorException catch (e){
       if(_hasError(e)){
-        emit(HomeScreenError((e.response!.data as Map)['error']));
+        emit(SearchScreenError((e.response!.data as Map)['error']));
         return;
       }
-      emit(HomeScreenError('Ошибка сервера '));
+      emit(SearchScreenError('Ошибка сервера '));
     } catch(e){
-      emit(HomeScreenError(e.toString()));
+      emit(SearchScreenError(e.toString()));
     }
   }
 
-  FutureOr<void> _findAnimeByUrl(FindAnimeByUrlEvent event, Emitter<HomeScreenState> emit) async {
-    emit(HomeScreenLoading());
+  FutureOr<void> _findAnimeByUrl(FindAnimeByUrlEvent event, Emitter<SearchScreenState> emit) async {
+    emit(SearchScreenLoading());
     try{
       final result = await FindBestByUrlUseCase(_matchRepository, _detailRepository).execute(event.url);
 
       if(result == null){
-        emit(HomeScreenError('Не удалось найти'));
+        emit(SearchScreenError('Не удалось найти'));
         return;
       }
 
-      emit(HomeScreenLoaded(result));
+      emit(SearchScreenLoaded(result));
     }on ClientErrorException catch (e){
       if(_hasError(e)){
-        emit(HomeScreenError((e.response!.data as Map)['error']));
+        emit(SearchScreenError((e.response!.data as Map)['error']));
         return;
       }
-      emit(HomeScreenError('Клиентская ошибка'));
+      emit(SearchScreenError('Клиентская ошибка'));
     } on ServerErrorException catch (e){
       if(_hasError(e)){
-        emit(HomeScreenError((e.response!.data as Map)['error']));
+        emit(SearchScreenError((e.response!.data as Map)['error']));
         return;
       }
-      emit(HomeScreenError('Ошибка сервера '));
+      emit(SearchScreenError('Ошибка сервера '));
     } catch(e){
-      emit(HomeScreenError(e.toString()));
+      emit(SearchScreenError(e.toString()));
     }
   }
 

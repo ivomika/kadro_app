@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kadro_app/app/router/routing.dart';
 import 'package:kadro_app/app/theme/app_theme.dart';
 import 'package:kadro_app/features/history/ui/bloc/history_screen_bloc.dart';
-import 'package:kadro_app/features/home/ui/bloc/home_screen_bloc.dart';
+import 'package:kadro_app/features/search/ui/bloc/search_screen_bloc.dart';
 import 'package:kadro_app/shared/data/datasource/anilist_client.dart';
 import 'package:kadro_app/shared/data/datasource/history_database.dart';
 import 'package:kadro_app/shared/data/datasource/trace_moe_client.dart';
@@ -59,14 +59,14 @@ class MainApp extends StatelessWidget {
           ),
           BlocProvider(
             create: (context) =>
-                HomeScreenBloc(
+                SearchScreenBloc(
                     context.read<IAnimeMatchRepository>(),
                     context.read<IAnimeDetailRepository>(),
                 ),
           ),
         ],
-        child: BlocListener<HomeScreenBloc, HomeScreenState>(
-          listener: _homeListener,
+        child: BlocListener<SearchScreenBloc, SearchScreenState>(
+          listener: _searchListener,
           child: MaterialApp.router(
             theme: AppTheme.light,
             darkTheme: AppTheme.dark,
@@ -78,8 +78,8 @@ class MainApp extends StatelessWidget {
     );
   }
 
-  void _homeListener(BuildContext context, HomeScreenState state) {
-    if (state is HomeScreenLoaded) {
+  void _searchListener(BuildContext context, SearchScreenState state) {
+    if (state is SearchScreenLoaded) {
       context.read<HistoryScreenBloc>().add(UpdateHistory(state.match));
     }  
   }

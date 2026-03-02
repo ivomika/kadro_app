@@ -3,40 +3,38 @@ import 'dart:io';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:kadro_app/features/home/ui/bloc/home_screen_bloc.dart';
-import 'package:kadro_app/features/home/ui/widgets/home_anime_detail.dart';
-import 'package:kadro_app/features/home/ui/widgets/home_bottom_sheet.dart';
-import 'package:kadro_app/features/home/ui/widgets/home_search_input.dart';
-import 'package:skeletonizer/skeletonizer.dart';
+import 'package:kadro_app/features/search/ui/bloc/search_screen_bloc.dart';
+import 'package:kadro_app/features/search/ui/widgets/search_bottom_sheet.dart';
+import 'package:kadro_app/features/search/ui/widgets/search_input.dart';
 
-class HomeBody extends StatefulWidget {
-  const HomeBody({super.key});
+class SearchBody extends StatefulWidget {
+  const SearchBody({super.key});
 
   @override
-  State<HomeBody> createState() => _HomeBodyState();
+  State<SearchBody> createState() => _SearchBodyState();
 }
 
-class _HomeBodyState extends State<HomeBody> with TickerProviderStateMixin {
+class _SearchBodyState extends State<SearchBody> with TickerProviderStateMixin {
   @override
   Widget build(BuildContext context) {
     return Column(
       children: [
         AppBar(
-          title: Text('Домашняя'),
+          title: Text('Поиск'),
         ),
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 16),
-          child: HomeSearchInput(
+          child: SearchInput(
             onAttach: () => _searchButtonTap(context),
             onSend: (value) => _searchByUrl(value, context),
           ),
         ),
         const SizedBox(height: 16),
         Expanded(
-          child: BlocConsumer<HomeScreenBloc, HomeScreenState>(
-            listener: _homeListener,
+          child: BlocConsumer<SearchScreenBloc, SearchScreenState>(
+            listener: _searchListener,
             builder: (context, state) {
-              if (state is HomeScreenLoading) {
+              if (state is SearchScreenLoading) {
                 return const Center(
                   child: CircularProgressIndicator(),
                 );
@@ -53,7 +51,7 @@ class _HomeBodyState extends State<HomeBody> with TickerProviderStateMixin {
   }
 
   void _searchButtonTap(BuildContext context) async {
-    final bloc = context.read<HomeScreenBloc>();
+    final bloc = context.read<SearchScreenBloc>();
     final messenger = ScaffoldMessenger.of(context);
 
     FilePickerResult? result = await FilePicker.platform.pickFiles();
@@ -67,22 +65,22 @@ class _HomeBodyState extends State<HomeBody> with TickerProviderStateMixin {
   }
 
   void _searchByUrl(String value, BuildContext context) {
-    final bloc = context.read<HomeScreenBloc>();
+    final bloc = context.read<SearchScreenBloc>();
 
     bloc.add(FindAnimeByUrlEvent(value));
   }
 
-  void _homeListener(BuildContext context, HomeScreenState state) {
-    if (state is HomeScreenLoading) {
+  void _searchListener(BuildContext context, SearchScreenState state) {
+    if (state is SearchScreenLoading) {
       showBottomSheet(
           context: context,
           enableDrag: true,
           showDragHandle: true,
-          builder: (context) => const HomeBottomSheet()
+          builder: (context) => const SearchBottomSheet()
       );
     }
 
-    if(state is HomeScreenError){
+    if(state is SearchScreenError){
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(state.error)));
     }
   }

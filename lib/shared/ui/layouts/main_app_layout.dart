@@ -21,8 +21,8 @@ class MainAppLayout extends StatelessWidget {
           onDestinationSelected: onTapNavigation,
           destinations: [
             NavigationDestination(
-                icon: Icon(Icons.home),
-                label: 'Домашняя'
+                icon: Icon(Icons.search),
+                label: 'Поиск'
             ),
             NavigationDestination(
                 icon: Icon(Icons.history),
