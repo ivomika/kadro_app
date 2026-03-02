@@ -1,7 +1,7 @@
-import 'package:kadro_app/shared/data/datasource/anilist_client.dart';
-import 'package:kadro_app/shared/data/models/anilist_response/anilist_response.dart';
-import 'package:kadro_app/shared/domain/entities/anime_detail.dart';
-import 'package:kadro_app/shared/domain/repository/i_anime_detail_repository.dart';
+import 'package:kadro_app/features/search/data/datasource/anilist_client.dart';
+import 'package:kadro_app/features/search/data/models/anilist_response/anilist_response.dart';
+import 'package:kadro_app/features/search/domain/entities/anime_detail.dart';
+import 'package:kadro_app/features/search/domain/repository/i_anime_detail_repository.dart';
 
 final class AnimeDetailRepositoryImpl implements IAnimeDetailRepository{
   final AnilistClient _client;
@@ -18,7 +18,7 @@ final class AnimeDetailRepositoryImpl implements IAnimeDetailRepository{
   }
 }
 
-
+/// TODO: remove from here
 extension ResultExtension on AnilistMedia{
   AnimeDetail? toDomain(double similarity){
     return AnimeDetail(

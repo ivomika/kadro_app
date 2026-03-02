@@ -1,10 +1,10 @@
 import 'dart:io';
 
 import 'package:flutter_core/flutter_core.dart';
-import 'package:kadro_app/shared/domain/entities/anime_detail.dart';
-import 'package:kadro_app/shared/domain/entities/anime_match.dart';
-import 'package:kadro_app/shared/domain/repository/i_anime_detail_repository.dart';
-import 'package:kadro_app/shared/domain/repository/i_anime_match_repository.dart';
+import 'package:kadro_app/features/search/domain/entities/anime_detail.dart';
+import 'package:kadro_app/features/search/domain/entities/anime_match.dart';
+import 'package:kadro_app/features/search/domain/repository/i_anime_detail_repository.dart';
+import 'package:kadro_app/features/search/domain/repository/i_anime_match_repository.dart';
 
 final class FindBestByFileUseCase implements IUseCase<File, Future<AnimeDetail?>>{
   final IAnimeMatchRepository _matchRepository;

@@ -1,7 +1,7 @@
 import 'package:drift/drift.dart';
-import 'package:kadro_app/shared/data/datasource/history_database.dart';
-import 'package:kadro_app/shared/domain/entities/anime_history.dart';
-import 'package:kadro_app/shared/domain/repository/i_history_repository.dart';
+import 'package:kadro_app/features/history/data/datasource/history_database.dart';
+import 'package:kadro_app/features/history/domain/entities/anime_history.dart';
+import 'package:kadro_app/features/history/domain/repository/i_history_repository.dart';
 
 final class HistoryRepositoryImpl implements IHistoryRepository{
   final HistoryDriftDatabase _database;

@@ -2,13 +2,13 @@ import 'dart:io';
 
 import 'package:flutter_core/flutter_core.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:kadro_app/shared/data/datasource/anilist_client.dart';
-import 'package:kadro_app/shared/data/datasource/trace_moe_client.dart';
-import 'package:kadro_app/shared/data/repository/anime_detail_repository_impl.dart';
-import 'package:kadro_app/shared/data/repository/anime_match_repository_impl.dart';
-import 'package:kadro_app/shared/domain/repository/i_anime_detail_repository.dart';
-import 'package:kadro_app/shared/domain/repository/i_anime_match_repository.dart';
-import 'package:kadro_app/shared/domain/use_cases/find_best_by_file_use_case.dart';
+import 'package:kadro_app/features/search/data/datasource/anilist_client.dart';
+import 'package:kadro_app/features/search/data/datasource/trace_moe_client.dart';
+import 'package:kadro_app/features/search/data/repository/anime_detail_repository_impl.dart';
+import 'package:kadro_app/features/search/data/repository/anime_match_repository_impl.dart';
+import 'package:kadro_app/features/search/domain/repository/i_anime_detail_repository.dart';
+import 'package:kadro_app/features/search/domain/repository/i_anime_match_repository.dart';
+import 'package:kadro_app/features/search/domain/use_case/find_best_by_file_use_case.dart';
 
 void main() {
   final talker = Talker();

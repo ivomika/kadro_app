@@ -1,5 +1,5 @@
 import 'package:flutter_core/flutter_core.dart';
-import 'package:kadro_app/shared/data/models/anilist_response/anilist_response.dart';
+import 'package:kadro_app/features/search/data/models/anilist_response/anilist_response.dart';
 
 final class AnilistClient extends BaseApiClient{
   static const String _baseUrl = 'https://graphql.anilist.co';

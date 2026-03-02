@@ -1,6 +1,6 @@
 import 'package:drift/drift.dart';
 import 'package:drift_flutter/drift_flutter.dart';
-import 'package:kadro_app/shared/data/models/anime_history_table/anime_history_table.dart';
+import 'package:kadro_app/features/history/data/models/anime_history_table.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:uuid/uuid.dart';
 

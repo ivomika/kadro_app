@@ -2,17 +2,18 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kadro_app/app/router/routing.dart';
 import 'package:kadro_app/app/theme/app_theme.dart';
+import 'package:kadro_app/features/history/domain/entities/anime_history.dart';
 import 'package:kadro_app/features/history/ui/bloc/history_screen_bloc.dart';
 import 'package:kadro_app/features/search/ui/bloc/search_screen_bloc.dart';
-import 'package:kadro_app/shared/data/datasource/anilist_client.dart';
-import 'package:kadro_app/shared/data/datasource/history_database.dart';
-import 'package:kadro_app/shared/data/datasource/trace_moe_client.dart';
-import 'package:kadro_app/shared/data/repository/anime_detail_repository_impl.dart';
-import 'package:kadro_app/shared/data/repository/anime_match_repository_impl.dart';
-import 'package:kadro_app/shared/data/repository/history_repository_impl.dart';
-import 'package:kadro_app/shared/domain/repository/i_anime_detail_repository.dart';
-import 'package:kadro_app/shared/domain/repository/i_anime_match_repository.dart';
-import 'package:kadro_app/shared/domain/repository/i_history_repository.dart';
+import 'package:kadro_app/features/search/data/datasource/anilist_client.dart';
+import 'package:kadro_app/features/history/data/datasource/history_database.dart';
+import 'package:kadro_app/features/search/data/datasource/trace_moe_client.dart';
+import 'package:kadro_app/features/search/data/repository/anime_detail_repository_impl.dart';
+import 'package:kadro_app/features/search/data/repository/anime_match_repository_impl.dart';
+import 'package:kadro_app/features/history/data/repository/history_repository_impl.dart';
+import 'package:kadro_app/features/search/domain/repository/i_anime_detail_repository.dart';
+import 'package:kadro_app/features/search/domain/repository/i_anime_match_repository.dart';
+import 'package:kadro_app/features/history/domain/repository/i_history_repository.dart';
 
 class MainApp extends StatelessWidget {
   const MainApp({super.key});
@@ -80,7 +81,11 @@ class MainApp extends StatelessWidget {
 
   void _searchListener(BuildContext context, SearchScreenState state) {
     if (state is SearchScreenLoaded) {
-      context.read<HistoryScreenBloc>().add(UpdateHistory(state.match));
+      context.read<HistoryScreenBloc>().add(UpdateHistory(AnimeHistory.from(
+          anilist: state.match.id,
+          name: state.match.title.romaji,
+          image: state.match.coverImage.large
+      )));
     }  
   }
 }

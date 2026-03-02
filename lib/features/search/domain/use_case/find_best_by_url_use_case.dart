@@ -1,7 +1,7 @@
 import 'package:flutter_core/flutter_core.dart';
-import 'package:kadro_app/shared/domain/entities/anime_detail.dart';
-import 'package:kadro_app/shared/domain/repository/i_anime_detail_repository.dart';
-import 'package:kadro_app/shared/domain/repository/i_anime_match_repository.dart';
+import 'package:kadro_app/features/search/domain/entities/anime_detail.dart';
+import 'package:kadro_app/features/search/domain/repository/i_anime_detail_repository.dart';
+import 'package:kadro_app/features/search/domain/repository/i_anime_match_repository.dart';
 
 final class FindBestByUrlUseCase implements IUseCase<String, Future<AnimeDetail?>>{
   final IAnimeMatchRepository _matchRepository;

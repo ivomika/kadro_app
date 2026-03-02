@@ -1,5 +1,5 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
-import 'package:kadro_app/shared/domain/entities/anime_match.dart';
+import 'package:kadro_app/features/search/domain/entities/anime_match.dart';
 
 part 'anime_match_response.freezed.dart';
 part 'anime_match_response.g.dart';
