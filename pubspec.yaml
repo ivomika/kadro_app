@@ -41,7 +41,33 @@ dev_dependencies:
   freezed: ^3.2.5
   json_serializable: ^6.13.0
   drift_dev: ^2.31.0
+  flutter_native_splash: ^2.4.7
+  icons_launcher: ^3.0.3
+  rename: ^3.1.0
 
 
 flutter:
   uses-material-design: true
+
+  assets:
+    - assets/icon/icon.png
+
+icons_launcher:
+  image_path: "assets/icon/icon.png"
+  platforms:
+    android:
+      enable: true
+    ios:
+      enable: true
+
+flutter_native_splash:
+  color: "#42a5f5"
+  image: assets/icon/icon.png
+  android: true
+  ios: true
+  fullscreen: true                # default false
+
+  android_12:
+    color: "#42a5f5"
+    image: assets/icon/icon.png
+    icon_background_color: "#111111"
