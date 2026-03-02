@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kadro_app/app/router/routing.dart';
+import 'package:kadro_app/app/theme/app_theme.dart';
 import 'package:kadro_app/features/history/ui/bloc/history_screen_bloc.dart';
 import 'package:kadro_app/features/home/ui/bloc/home_screen_bloc.dart';
 import 'package:kadro_app/shared/data/datasource/anilist_client.dart';
@@ -67,6 +68,9 @@ class MainApp extends StatelessWidget {
         child: BlocListener<HomeScreenBloc, HomeScreenState>(
           listener: _homeListener,
           child: MaterialApp.router(
+            theme: AppTheme.light,
+            darkTheme: AppTheme.dark,
+            themeMode: ThemeMode.system,
             routerConfig: router,
           ),
         ),
