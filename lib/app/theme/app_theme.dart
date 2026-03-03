@@ -55,7 +55,6 @@ abstract final class AppTheme {
       bottomSheetModalElevation: 4.0,
       bottomNavigationBarShowSelectedLabels: false,
       bottomNavigationBarShowUnselectedLabels: false,
-      navigationBarLabelBehavior: NavigationDestinationLabelBehavior.alwaysHide,
       navigationRailUseIndicator: true,
     ),
     // ColorScheme seed generation configuration for light mode.
@@ -110,7 +109,6 @@ abstract final class AppTheme {
       bottomSheetModalElevation: 4.0,
       bottomNavigationBarShowSelectedLabels: false,
       bottomNavigationBarShowUnselectedLabels: false,
-      navigationBarLabelBehavior: NavigationDestinationLabelBehavior.alwaysHide,
       navigationRailUseIndicator: true,
     ),
     // ColorScheme seed configuration setup for dark mode.
