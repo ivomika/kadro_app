@@ -7,14 +7,9 @@ import 'package:kadro_app/features/search/ui/bloc/search_screen_bloc.dart';
 import 'package:kadro_app/features/search/ui/widgets/search_bottom_sheet.dart';
 import 'package:kadro_app/features/search/ui/widgets/search_input.dart';
 
-class SearchBody extends StatefulWidget {
+class SearchBody extends StatelessWidget {
   const SearchBody({super.key});
 
-  @override
-  State<SearchBody> createState() => _SearchBodyState();
-}
-
-class _SearchBodyState extends State<SearchBody> with TickerProviderStateMixin {
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -77,7 +72,10 @@ class _SearchBodyState extends State<SearchBody> with TickerProviderStateMixin {
     }
 
     if(state is SearchScreenError){
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(state.error)));
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+          behavior: SnackBarBehavior.floating,
+          content: Text(state.error)
+      ));
     }
   }
 }

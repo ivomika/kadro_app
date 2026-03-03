@@ -11,6 +11,7 @@ class AnimeDetailPreview extends StatelessWidget {
   final int seasonYear;
   final int episodes;
   final String title;
+  final bool isLoading;
 
   const AnimeDetailPreview({
     super.key,
@@ -22,6 +23,7 @@ class AnimeDetailPreview extends StatelessWidget {
     required this.seasonYear,
     required this.episodes,
     required this.title,
+    this.isLoading = false,
   });
 
   static const _seasonMap = {
@@ -43,47 +45,74 @@ class AnimeDetailPreview extends StatelessWidget {
       children: [
         Row(
             crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisAlignment: MainAxisAlignment.start,
+            mainAxisSize: MainAxisSize.max,
             spacing: 16,
             children: [
-              ClipRRect(
-                  borderRadius: BorderRadiusGeometry.circular(16),
-                  child: SizedBox(
-                      height: 270,
-                      width: 200,
-                      child: _CachedImage(url: imageUrl)
-                  )
+              Skeletonizer(
+                enabled: isLoading,
+                child: ClipRRect(
+                    borderRadius: BorderRadiusGeometry.circular(16),
+                    child: SizedBox(
+                        height: 270,
+                        width: 200,
+                        child: Skeleton.replace(
+                            replacement: Bone.square(),
+                            child: _CachedImage(url: imageUrl),
+                        )
+                    )
+                ),
               ),
               Expanded(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  spacing: 8,
-                  children: [
-                    Chip(
-                        label: Text(_formatSimilarity(similarity))
-                    ),
-                    Chip(
-                        label: Text(format)
-                    ),
-                    Chip(
-                        label: Text(status)
-                    ),
-                    Chip(
-                        avatar: Icon(_seasonMap[season] ?? Icons.error),
-                        label: Text(seasonYear.toString())
-                    ),
-                    Chip(
-                        avatar: Icon(Icons.playlist_play_outlined),
-                        label: Text(episodes.toString())
-                    ),
-                  ],
+                child: Skeletonizer(
+                  enabled: isLoading,
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    spacing: 8,
+                    children: ListTile.divideTiles(
+                        context: context,
+                        tiles: [
+                          ListTile(
+                              dense: true,
+                              contentPadding: EdgeInsets.zero,
+                              title: Text(_formatSimilarity(similarity))
+                          ),
+                          ListTile(
+                              dense: true,
+                              contentPadding: EdgeInsets.zero,
+                              title: Text(format)
+                          ),
+                          ListTile(
+                            dense: true,
+                            contentPadding: EdgeInsets.zero,
+                            title: Text(status),
+                          ),
+                          ListTile(
+                              dense: true,
+                              contentPadding: EdgeInsets.zero,
+                              leading: Icon(_seasonMap[season] ?? Icons.error),
+                              title: Text(seasonYear.toString())
+                          ),
+                          ListTile(
+                              dense: true,
+                              contentPadding: EdgeInsets.zero,
+                              leading: Icon(Icons.playlist_play_outlined),
+                              title: Text(episodes.toString())
+                          ),
+                        ]
+                    ).toList(growable: false),
+                  ),
                 ),
               )
             ]
         ),
-        Text(
-          title,
-          style: textTheme.titleLarge,
+        Skeletonizer(
+          enabled: isLoading,
+          child: Text(
+            title,
+            style: textTheme.titleLarge,
+          ),
         ),
       ],
     );
@@ -103,13 +132,14 @@ class _CachedImage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     if(url.isEmpty) {
-      return Bone.square();
+      return SizedBox();
     }
 
     return CachedNetworkImage(
       imageUrl: url,
+      fit: BoxFit.cover,
       placeholder: (context, url) =>
-          const Bone.square(),
+          const SizedBox(),
       errorWidget: (context, url, error) =>
           const Icon(Icons.error),
     );

@@ -4,10 +4,13 @@ import 'package:kadro_app/features/search/domain/entities/fake_anime_detail.dart
 import 'package:kadro_app/features/search/ui/bloc/search_screen_bloc.dart';
 import 'package:kadro_app/shared/ui/slivers/sliver_divider.dart';
 import 'package:kadro_app/shared/ui/widgets/anime_detail_preview.dart';
+import 'package:kadro_app/shared/ui/widgets/error_placeholder.dart';
 import 'package:skeletonizer/skeletonizer.dart';
 
 class SearchBottomSheet extends StatelessWidget {
-  const SearchBottomSheet({super.key});
+  const SearchBottomSheet({
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -24,6 +27,10 @@ class SearchBottomSheet extends StatelessWidget {
       builder: (context, scrollController) {
         return BlocBuilder<SearchScreenBloc, SearchScreenState>(
             builder: (context, state){
+              if(state is SearchScreenError){
+                return const ErrorPlaceholder();
+              }
+
               final isLoading = state is SearchScreenLoading;
               final match =  state is SearchScreenLoaded
                 ? state.match
@@ -38,23 +45,21 @@ class SearchBottomSheet extends StatelessWidget {
                 controller: scrollController,
                 physics: BouncingScrollPhysics(),
                 slivers: [
-                  Skeletonizer.sliver(
-                    enabled: isLoading,
-                    child: SliverPadding(
-                        padding: const EdgeInsets.symmetric(horizontal: 16),
-                        sliver: SliverToBoxAdapter(
-                          child: AnimeDetailPreview(
-                              imageUrl: match.coverImage.large,
-                              similarity: match.similarity,
-                              format: match.format,
-                              status: match.status,
-                              season: match.season,
-                              seasonYear: match.seasonYear,
-                              episodes: match.episodes,
-                              title: match.title.romaji
-                          ),
+                  SliverPadding(
+                      padding: const EdgeInsets.symmetric(horizontal: 16),
+                      sliver: SliverToBoxAdapter(
+                        child: AnimeDetailPreview(
+                            imageUrl: match.coverImage.large,
+                            similarity: match.similarity,
+                            format: match.format,
+                            status: match.status,
+                            season: match.season,
+                            seasonYear: match.seasonYear,
+                            episodes: match.episodes,
+                            title: match.title.romaji,
+                            isLoading: isLoading,
                         ),
-                    ),
+                      ),
                   ),
                   const SliverDivider(
                     margin: EdgeInsets.all(16),
@@ -64,7 +69,7 @@ class SearchBottomSheet extends StatelessWidget {
                     child: SliverPadding(
                       padding: const EdgeInsets.symmetric(horizontal: 16),
                       sliver: SliverToBoxAdapter(
-                        child: Text(match.description)
+                        child: Text(match.parsedDescription)
                       ),
                     ),
                   ),
@@ -118,7 +123,6 @@ class SearchBottomSheet extends StatelessWidget {
               );
             }
         );
-
       },
     );
   }

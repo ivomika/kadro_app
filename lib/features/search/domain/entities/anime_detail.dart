@@ -1,4 +1,5 @@
 import 'package:flutter_core/flutter_core.dart';
+import 'package:html/parser.dart';
 
 class AnimeDetail extends Equatable {
   final int id;
@@ -22,6 +23,7 @@ class AnimeDetail extends Equatable {
   final AnimeStudios studios;
   final AnimeTrailer trailer;
   final String siteUrl;
+  String get parsedDescription => _parseHtmlText();
 
   const AnimeDetail({
     required this.id,
@@ -97,6 +99,11 @@ class AnimeDetail extends Equatable {
         'siteUrl: $siteUrl, \n'
         'similarity: $similarity\n'
     ')';
+  }
+
+  String _parseHtmlText() {
+    final document = parse(description);
+    return document.body?.text ?? description;
   }
 }
 
