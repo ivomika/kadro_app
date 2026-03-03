@@ -19,17 +19,13 @@ class _SearchBodyState extends State<SearchBody> with TickerProviderStateMixin {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        AppBar(
-          title: Text('Поиск'),
-        ),
         Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 16),
+          padding: const EdgeInsets.symmetric(horizontal: 16).copyWith(top: 8),
           child: SearchInput(
             onAttach: () => _searchButtonTap(context),
             onSend: (value) => _searchByUrl(value, context),
           ),
         ),
-        const SizedBox(height: 16),
         Expanded(
           child: BlocConsumer<SearchScreenBloc, SearchScreenState>(
             listener: _searchListener,

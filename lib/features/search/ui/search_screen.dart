@@ -6,6 +6,13 @@ class SearchScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SearchBody();
+    return Column(
+      children: [
+        AppBar(
+          title: Text('Поиск'),
+        ),
+        Expanded(child: SearchBody()),
+      ],
+    );
   }
 }

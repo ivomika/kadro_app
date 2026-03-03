@@ -1,16 +1,16 @@
 import 'package:flutter/material.dart';
 
 class SliverDivider extends StatelessWidget {
-  final EdgeInsetsGeometry padding;
+  final EdgeInsetsGeometry margin;
   const SliverDivider({
     super.key,
-    this.padding = EdgeInsets.zero
+    this.margin = EdgeInsets.zero
   });
 
   @override
   Widget build(BuildContext context) {
     return SliverPadding(
-      padding: padding,
+      padding: margin,
       sliver: SliverToBoxAdapter(child: Divider()),
     );
   }
