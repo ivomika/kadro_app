@@ -56,10 +56,7 @@ class AnimeDetailPreview extends StatelessWidget {
                     child: SizedBox(
                         height: 270,
                         width: 200,
-                        child: Skeleton.replace(
-                            replacement: Bone.square(),
-                            child: _CachedImage(url: imageUrl),
-                        )
+                        child: _CachedImage(url: imageUrl)
                     )
                 ),
               ),
@@ -132,14 +129,14 @@ class _CachedImage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     if(url.isEmpty) {
-      return SizedBox();
+      return const Bone.square();
     }
 
     return CachedNetworkImage(
       imageUrl: url,
       fit: BoxFit.cover,
       placeholder: (context, url) =>
-          const SizedBox(),
+          const Skeletonizer(child: Bone.square()),
       errorWidget: (context, url, error) =>
           const Icon(Icons.error),
     );
