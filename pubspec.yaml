@@ -52,9 +52,10 @@ flutter:
 
   assets:
     - assets/icon/icon.png
+    - assets/icon/ic_launcher.png
 
 icons_launcher:
-  image_path: "assets/icon/icon.png"
+  image_path: "assets/icon/ic_launcher.png"
   platforms:
     android:
       enable: true
@@ -62,13 +63,13 @@ icons_launcher:
       enable: true
 
 flutter_native_splash:
-  color: "#42a5f5"
-  image: assets/icon/icon.png
+  color: "#362760"
+  image: assets/icon/ic_launcher.png
   android: true
   ios: true
   fullscreen: true                # default false
 
   android_12:
-    color: "#42a5f5"
-    image: assets/icon/icon.png
-    icon_background_color: "#111111"
+    color: "#362760"
+    image: assets/icon/ic_launcher.png
+    icon_background_color: "#362760"
