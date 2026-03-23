@@ -15,7 +15,14 @@ class HistoryBottomSheet extends StatelessWidget {
   Widget build(BuildContext context) {
     return DraggableScrollableSheet(
       expand: false,
-      initialChildSize: 1.0,
+      initialChildSize: 0.55,
+      minChildSize: 0.2,
+      maxChildSize: 0.8,
+      snap: true,
+      snapSizes: [
+        0.20,
+        0.8
+      ],
       builder: (context, scrollController) {
         return CustomScrollView(
           controller: scrollController,

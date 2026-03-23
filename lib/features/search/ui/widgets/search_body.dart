@@ -63,10 +63,13 @@ class SearchBody extends StatelessWidget {
 
   void _searchListener(BuildContext context, SearchScreenState state) {
     if (state is SearchScreenLoading) {
-      showBottomSheet(
+      showModalBottomSheet(
           context: context,
           enableDrag: true,
+          useSafeArea: true,
           showDragHandle: true,
+          useRootNavigator: true,
+          scrollControlDisabledMaxHeightRatio: 1,
           builder: (context) => const SearchBottomSheet()
       );
     }

@@ -81,8 +81,10 @@ class HistoryBody extends StatelessWidget {
     showModalBottomSheet(
         context: context,
         enableDrag: true,
-        showDragHandle: true,
         useSafeArea: true,
+        showDragHandle: true,
+        useRootNavigator: true,
+        scrollControlDisabledMaxHeightRatio: 1,
         builder: (modalContext) => HistoryBottomSheet(
             anime: anime
         )
