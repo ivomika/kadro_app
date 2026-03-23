@@ -81,11 +81,22 @@ class MainApp extends StatelessWidget {
 
   void _searchListener(BuildContext context, SearchScreenState state) {
     if (state is SearchScreenLoaded) {
-      context.read<HistoryScreenBloc>().add(UpdateHistory(AnimeHistory.from(
-          anilist: state.match.id,
-          name: state.match.title.romaji,
-          image: state.match.coverImage.large
-      )));
+      context.read<HistoryScreenBloc>().add(
+        UpdateHistory(
+          AnimeHistory.from(
+                    anilist: state.match.id,
+                    name: state.match.title.romaji,
+                    imageUrl: state.match.coverImage.large,
+                    similarity: state.match.similarity,
+                    format: state.match.format,
+                    status: state.match.status,
+                    season: state.match.season,
+                    seasonYear: state.match.seasonYear,
+                    episodes: state.match.episodes,
+                    description: state.match.parsedDescription,
+          )
+        )
+      );
     }  
   }
 }

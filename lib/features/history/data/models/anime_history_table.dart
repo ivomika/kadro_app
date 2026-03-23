@@ -6,5 +6,12 @@ class AnimeHistoryTable extends Table {
   TextColumn get uuid => text().clientDefault(() => const Uuid().v4()).unique()();
   IntColumn get anilist => integer()();
   TextColumn get name => text()();
-  TextColumn get image => text()();
+  TextColumn get imageUrl => text()();
+  RealColumn get similarity => real()();
+  TextColumn get format => text()();
+  TextColumn get status => text()();
+  TextColumn get season => text()();
+  IntColumn get seasonYear => integer()();
+  IntColumn get episodes => integer()();
+  TextColumn get description => text()();
 }

@@ -13,7 +13,14 @@ final class HistoryRepositoryImpl implements IHistoryRepository{
       id: row.uuid,
       anilist: row.anilist,
       name: row.name,
-      image: row.image,
+      imageUrl: row.imageUrl,
+      similarity: row.similarity,
+      format: row.format,
+      status: row.status,
+      season: row.season,
+      seasonYear: row.seasonYear,
+      episodes: row.episodes,
+      description: row.description,
     );
   }
 
@@ -22,7 +29,14 @@ final class HistoryRepositoryImpl implements IHistoryRepository{
       uuid: Value(model.id),
       anilist: model.anilist,
       name: model.name,
-      image: model.image,
+      imageUrl: model.imageUrl,
+      similarity: model.similarity,
+      format: model.format,
+      status: model.status,
+      season: model.season,
+      seasonYear: model.seasonYear,
+      episodes: model.episodes,
+      description: model.description,
     );
   }
 
@@ -31,7 +45,14 @@ final class HistoryRepositoryImpl implements IHistoryRepository{
       uuid: Value(model.id),
       anilist: Value(model.anilist),
       name: Value(model.name),
-      image: Value(model.image),
+      imageUrl: Value(model.imageUrl),
+      similarity: Value(model.similarity),
+      format: Value(model.format),
+      status: Value(model.status),
+      season: Value(model.season),
+      seasonYear: Value(model.seasonYear),
+      episodes: Value(model.episodes),
+      description: Value(model.description),
     );
   }
 

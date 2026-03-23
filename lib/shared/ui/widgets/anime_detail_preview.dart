@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:cached_network_image/cached_network_image.dart';
+import 'package:kadro_app/shared/ui/widgets/cashed_image.dart';
 import 'package:skeletonizer/skeletonizer.dart';
 
 class AnimeDetailPreview extends StatelessWidget {
@@ -56,7 +56,7 @@ class AnimeDetailPreview extends StatelessWidget {
                     child: SizedBox(
                         height: 270,
                         width: 200,
-                        child: _CachedImage(url: imageUrl)
+                        child: CashedImage(url: imageUrl)
                     )
                 ),
               ),
@@ -117,28 +117,4 @@ class AnimeDetailPreview extends StatelessWidget {
 
   String _formatSimilarity(double similarity) =>
       '${(similarity * 100).toStringAsFixed(1)}%';
-}
-
-class _CachedImage extends StatelessWidget {
-  final String url;
-
-  const _CachedImage({
-    required this.url
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    if(url.isEmpty) {
-      return const Bone.square();
-    }
-
-    return CachedNetworkImage(
-      imageUrl: url,
-      fit: BoxFit.cover,
-      placeholder: (context, url) =>
-          const Skeletonizer(child: Bone.square()),
-      errorWidget: (context, url, error) =>
-          const Icon(Icons.error),
-    );
-  }
 }

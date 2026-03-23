@@ -6,6 +6,13 @@ class HistoryScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return HistoryBody();
+    return CustomScrollView(
+      slivers: [
+        SliverAppBar(
+          title: Text('История'),
+        ),
+        HistoryBody()
+      ],
+    );
   }
 }

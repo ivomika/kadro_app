@@ -53,17 +53,103 @@ class $AnimeHistoryTableTable extends AnimeHistoryTable
     type: DriftSqlType.string,
     requiredDuringInsert: true,
   );
-  static const VerificationMeta _imageMeta = const VerificationMeta('image');
+  static const VerificationMeta _imageUrlMeta = const VerificationMeta(
+    'imageUrl',
+  );
   @override
-  late final GeneratedColumn<String> image = GeneratedColumn<String>(
-    'image',
+  late final GeneratedColumn<String> imageUrl = GeneratedColumn<String>(
+    'image_url',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _similarityMeta = const VerificationMeta(
+    'similarity',
+  );
+  @override
+  late final GeneratedColumn<double> similarity = GeneratedColumn<double>(
+    'similarity',
+    aliasedName,
+    false,
+    type: DriftSqlType.double,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _formatMeta = const VerificationMeta('format');
+  @override
+  late final GeneratedColumn<String> format = GeneratedColumn<String>(
+    'format',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _statusMeta = const VerificationMeta('status');
+  @override
+  late final GeneratedColumn<String> status = GeneratedColumn<String>(
+    'status',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _seasonMeta = const VerificationMeta('season');
+  @override
+  late final GeneratedColumn<String> season = GeneratedColumn<String>(
+    'season',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _seasonYearMeta = const VerificationMeta(
+    'seasonYear',
+  );
+  @override
+  late final GeneratedColumn<int> seasonYear = GeneratedColumn<int>(
+    'season_year',
+    aliasedName,
+    false,
+    type: DriftSqlType.int,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _episodesMeta = const VerificationMeta(
+    'episodes',
+  );
+  @override
+  late final GeneratedColumn<int> episodes = GeneratedColumn<int>(
+    'episodes',
+    aliasedName,
+    false,
+    type: DriftSqlType.int,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _descriptionMeta = const VerificationMeta(
+    'description',
+  );
+  @override
+  late final GeneratedColumn<String> description = GeneratedColumn<String>(
+    'description',
     aliasedName,
     false,
     type: DriftSqlType.string,
     requiredDuringInsert: true,
   );
   @override
-  List<GeneratedColumn> get $columns => [id, uuid, anilist, name, image];
+  List<GeneratedColumn> get $columns => [
+    id,
+    uuid,
+    anilist,
+    name,
+    imageUrl,
+    similarity,
+    format,
+    status,
+    season,
+    seasonYear,
+    episodes,
+    description,
+  ];
   @override
   String get aliasedName => _alias ?? actualTableName;
   @override
@@ -101,13 +187,72 @@ class $AnimeHistoryTableTable extends AnimeHistoryTable
     } else if (isInserting) {
       context.missing(_nameMeta);
     }
-    if (data.containsKey('image')) {
+    if (data.containsKey('image_url')) {
       context.handle(
-        _imageMeta,
-        image.isAcceptableOrUnknown(data['image']!, _imageMeta),
+        _imageUrlMeta,
+        imageUrl.isAcceptableOrUnknown(data['image_url']!, _imageUrlMeta),
       );
     } else if (isInserting) {
-      context.missing(_imageMeta);
+      context.missing(_imageUrlMeta);
+    }
+    if (data.containsKey('similarity')) {
+      context.handle(
+        _similarityMeta,
+        similarity.isAcceptableOrUnknown(data['similarity']!, _similarityMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_similarityMeta);
+    }
+    if (data.containsKey('format')) {
+      context.handle(
+        _formatMeta,
+        format.isAcceptableOrUnknown(data['format']!, _formatMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_formatMeta);
+    }
+    if (data.containsKey('status')) {
+      context.handle(
+        _statusMeta,
+        status.isAcceptableOrUnknown(data['status']!, _statusMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_statusMeta);
+    }
+    if (data.containsKey('season')) {
+      context.handle(
+        _seasonMeta,
+        season.isAcceptableOrUnknown(data['season']!, _seasonMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_seasonMeta);
+    }
+    if (data.containsKey('season_year')) {
+      context.handle(
+        _seasonYearMeta,
+        seasonYear.isAcceptableOrUnknown(data['season_year']!, _seasonYearMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_seasonYearMeta);
+    }
+    if (data.containsKey('episodes')) {
+      context.handle(
+        _episodesMeta,
+        episodes.isAcceptableOrUnknown(data['episodes']!, _episodesMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_episodesMeta);
+    }
+    if (data.containsKey('description')) {
+      context.handle(
+        _descriptionMeta,
+        description.isAcceptableOrUnknown(
+          data['description']!,
+          _descriptionMeta,
+        ),
+      );
+    } else if (isInserting) {
+      context.missing(_descriptionMeta);
     }
     return context;
   }
@@ -134,9 +279,37 @@ class $AnimeHistoryTableTable extends AnimeHistoryTable
         DriftSqlType.string,
         data['${effectivePrefix}name'],
       )!,
-      image: attachedDatabase.typeMapping.read(
+      imageUrl: attachedDatabase.typeMapping.read(
         DriftSqlType.string,
-        data['${effectivePrefix}image'],
+        data['${effectivePrefix}image_url'],
+      )!,
+      similarity: attachedDatabase.typeMapping.read(
+        DriftSqlType.double,
+        data['${effectivePrefix}similarity'],
+      )!,
+      format: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}format'],
+      )!,
+      status: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}status'],
+      )!,
+      season: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}season'],
+      )!,
+      seasonYear: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}season_year'],
+      )!,
+      episodes: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}episodes'],
+      )!,
+      description: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}description'],
       )!,
     );
   }
@@ -153,13 +326,27 @@ class AnimeHistoryTableData extends DataClass
   final String uuid;
   final int anilist;
   final String name;
-  final String image;
+  final String imageUrl;
+  final double similarity;
+  final String format;
+  final String status;
+  final String season;
+  final int seasonYear;
+  final int episodes;
+  final String description;
   const AnimeHistoryTableData({
     required this.id,
     required this.uuid,
     required this.anilist,
     required this.name,
-    required this.image,
+    required this.imageUrl,
+    required this.similarity,
+    required this.format,
+    required this.status,
+    required this.season,
+    required this.seasonYear,
+    required this.episodes,
+    required this.description,
   });
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
@@ -168,7 +355,14 @@ class AnimeHistoryTableData extends DataClass
     map['uuid'] = Variable<String>(uuid);
     map['anilist'] = Variable<int>(anilist);
     map['name'] = Variable<String>(name);
-    map['image'] = Variable<String>(image);
+    map['image_url'] = Variable<String>(imageUrl);
+    map['similarity'] = Variable<double>(similarity);
+    map['format'] = Variable<String>(format);
+    map['status'] = Variable<String>(status);
+    map['season'] = Variable<String>(season);
+    map['season_year'] = Variable<int>(seasonYear);
+    map['episodes'] = Variable<int>(episodes);
+    map['description'] = Variable<String>(description);
     return map;
   }
 
@@ -178,7 +372,14 @@ class AnimeHistoryTableData extends DataClass
       uuid: Value(uuid),
       anilist: Value(anilist),
       name: Value(name),
-      image: Value(image),
+      imageUrl: Value(imageUrl),
+      similarity: Value(similarity),
+      format: Value(format),
+      status: Value(status),
+      season: Value(season),
+      seasonYear: Value(seasonYear),
+      episodes: Value(episodes),
+      description: Value(description),
     );
   }
 
@@ -192,7 +393,14 @@ class AnimeHistoryTableData extends DataClass
       uuid: serializer.fromJson<String>(json['uuid']),
       anilist: serializer.fromJson<int>(json['anilist']),
       name: serializer.fromJson<String>(json['name']),
-      image: serializer.fromJson<String>(json['image']),
+      imageUrl: serializer.fromJson<String>(json['imageUrl']),
+      similarity: serializer.fromJson<double>(json['similarity']),
+      format: serializer.fromJson<String>(json['format']),
+      status: serializer.fromJson<String>(json['status']),
+      season: serializer.fromJson<String>(json['season']),
+      seasonYear: serializer.fromJson<int>(json['seasonYear']),
+      episodes: serializer.fromJson<int>(json['episodes']),
+      description: serializer.fromJson<String>(json['description']),
     );
   }
   @override
@@ -203,7 +411,14 @@ class AnimeHistoryTableData extends DataClass
       'uuid': serializer.toJson<String>(uuid),
       'anilist': serializer.toJson<int>(anilist),
       'name': serializer.toJson<String>(name),
-      'image': serializer.toJson<String>(image),
+      'imageUrl': serializer.toJson<String>(imageUrl),
+      'similarity': serializer.toJson<double>(similarity),
+      'format': serializer.toJson<String>(format),
+      'status': serializer.toJson<String>(status),
+      'season': serializer.toJson<String>(season),
+      'seasonYear': serializer.toJson<int>(seasonYear),
+      'episodes': serializer.toJson<int>(episodes),
+      'description': serializer.toJson<String>(description),
     };
   }
 
@@ -212,13 +427,27 @@ class AnimeHistoryTableData extends DataClass
     String? uuid,
     int? anilist,
     String? name,
-    String? image,
+    String? imageUrl,
+    double? similarity,
+    String? format,
+    String? status,
+    String? season,
+    int? seasonYear,
+    int? episodes,
+    String? description,
   }) => AnimeHistoryTableData(
     id: id ?? this.id,
     uuid: uuid ?? this.uuid,
     anilist: anilist ?? this.anilist,
     name: name ?? this.name,
-    image: image ?? this.image,
+    imageUrl: imageUrl ?? this.imageUrl,
+    similarity: similarity ?? this.similarity,
+    format: format ?? this.format,
+    status: status ?? this.status,
+    season: season ?? this.season,
+    seasonYear: seasonYear ?? this.seasonYear,
+    episodes: episodes ?? this.episodes,
+    description: description ?? this.description,
   );
   AnimeHistoryTableData copyWithCompanion(AnimeHistoryTableCompanion data) {
     return AnimeHistoryTableData(
@@ -226,7 +455,20 @@ class AnimeHistoryTableData extends DataClass
       uuid: data.uuid.present ? data.uuid.value : this.uuid,
       anilist: data.anilist.present ? data.anilist.value : this.anilist,
       name: data.name.present ? data.name.value : this.name,
-      image: data.image.present ? data.image.value : this.image,
+      imageUrl: data.imageUrl.present ? data.imageUrl.value : this.imageUrl,
+      similarity: data.similarity.present
+          ? data.similarity.value
+          : this.similarity,
+      format: data.format.present ? data.format.value : this.format,
+      status: data.status.present ? data.status.value : this.status,
+      season: data.season.present ? data.season.value : this.season,
+      seasonYear: data.seasonYear.present
+          ? data.seasonYear.value
+          : this.seasonYear,
+      episodes: data.episodes.present ? data.episodes.value : this.episodes,
+      description: data.description.present
+          ? data.description.value
+          : this.description,
     );
   }
 
@@ -237,13 +479,33 @@ class AnimeHistoryTableData extends DataClass
           ..write('uuid: $uuid, ')
           ..write('anilist: $anilist, ')
           ..write('name: $name, ')
-          ..write('image: $image')
+          ..write('imageUrl: $imageUrl, ')
+          ..write('similarity: $similarity, ')
+          ..write('format: $format, ')
+          ..write('status: $status, ')
+          ..write('season: $season, ')
+          ..write('seasonYear: $seasonYear, ')
+          ..write('episodes: $episodes, ')
+          ..write('description: $description')
           ..write(')'))
         .toString();
   }
 
   @override
-  int get hashCode => Object.hash(id, uuid, anilist, name, image);
+  int get hashCode => Object.hash(
+    id,
+    uuid,
+    anilist,
+    name,
+    imageUrl,
+    similarity,
+    format,
+    status,
+    season,
+    seasonYear,
+    episodes,
+    description,
+  );
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
@@ -252,7 +514,14 @@ class AnimeHistoryTableData extends DataClass
           other.uuid == this.uuid &&
           other.anilist == this.anilist &&
           other.name == this.name &&
-          other.image == this.image);
+          other.imageUrl == this.imageUrl &&
+          other.similarity == this.similarity &&
+          other.format == this.format &&
+          other.status == this.status &&
+          other.season == this.season &&
+          other.seasonYear == this.seasonYear &&
+          other.episodes == this.episodes &&
+          other.description == this.description);
 }
 
 class AnimeHistoryTableCompanion
@@ -261,36 +530,78 @@ class AnimeHistoryTableCompanion
   final Value<String> uuid;
   final Value<int> anilist;
   final Value<String> name;
-  final Value<String> image;
+  final Value<String> imageUrl;
+  final Value<double> similarity;
+  final Value<String> format;
+  final Value<String> status;
+  final Value<String> season;
+  final Value<int> seasonYear;
+  final Value<int> episodes;
+  final Value<String> description;
   const AnimeHistoryTableCompanion({
     this.id = const Value.absent(),
     this.uuid = const Value.absent(),
     this.anilist = const Value.absent(),
     this.name = const Value.absent(),
-    this.image = const Value.absent(),
+    this.imageUrl = const Value.absent(),
+    this.similarity = const Value.absent(),
+    this.format = const Value.absent(),
+    this.status = const Value.absent(),
+    this.season = const Value.absent(),
+    this.seasonYear = const Value.absent(),
+    this.episodes = const Value.absent(),
+    this.description = const Value.absent(),
   });
   AnimeHistoryTableCompanion.insert({
     this.id = const Value.absent(),
     this.uuid = const Value.absent(),
     required int anilist,
     required String name,
-    required String image,
+    required String imageUrl,
+    required double similarity,
+    required String format,
+    required String status,
+    required String season,
+    required int seasonYear,
+    required int episodes,
+    required String description,
   }) : anilist = Value(anilist),
        name = Value(name),
-       image = Value(image);
+       imageUrl = Value(imageUrl),
+       similarity = Value(similarity),
+       format = Value(format),
+       status = Value(status),
+       season = Value(season),
+       seasonYear = Value(seasonYear),
+       episodes = Value(episodes),
+       description = Value(description);
   static Insertable<AnimeHistoryTableData> custom({
     Expression<int>? id,
     Expression<String>? uuid,
     Expression<int>? anilist,
     Expression<String>? name,
-    Expression<String>? image,
+    Expression<String>? imageUrl,
+    Expression<double>? similarity,
+    Expression<String>? format,
+    Expression<String>? status,
+    Expression<String>? season,
+    Expression<int>? seasonYear,
+    Expression<int>? episodes,
+    Expression<String>? description,
   }) {
     return RawValuesInsertable({
       if (id != null) 'id': id,
       if (uuid != null) 'uuid': uuid,
       if (anilist != null) 'anilist': anilist,
       if (name != null) 'name': name,
-      if (image != null) 'image': image,
+      if (imageUrl != null) 'image_url': imageUrl,
+      if (similarity != null) 'similarity': similarity,
+      if (format != null) 'format': format,
+      if (status != null) 'status': status,
+      if (season != null) 'season': season,
+      if (seasonYear != null) 'season_year': seasonYear,
+      if (episodes != null) 'episodes': episodes,
+      if (description != null) 'description': description,
     });
   }
 
@@ -299,14 +610,28 @@ class AnimeHistoryTableCompanion
     Value<String>? uuid,
     Value<int>? anilist,
     Value<String>? name,
-    Value<String>? image,
+    Value<String>? imageUrl,
+    Value<double>? similarity,
+    Value<String>? format,
+    Value<String>? status,
+    Value<String>? season,
+    Value<int>? seasonYear,
+    Value<int>? episodes,
+    Value<String>? description,
   }) {
     return AnimeHistoryTableCompanion(
       id: id ?? this.id,
       uuid: uuid ?? this.uuid,
       anilist: anilist ?? this.anilist,
       name: name ?? this.name,
-      image: image ?? this.image,
+      imageUrl: imageUrl ?? this.imageUrl,
+      similarity: similarity ?? this.similarity,
+      format: format ?? this.format,
+      status: status ?? this.status,
+      season: season ?? this.season,
+      seasonYear: seasonYear ?? this.seasonYear,
+      episodes: episodes ?? this.episodes,
+      description: description ?? this.description,
     );
   }
 
@@ -325,8 +650,29 @@ class AnimeHistoryTableCompanion
     if (name.present) {
       map['name'] = Variable<String>(name.value);
     }
-    if (image.present) {
-      map['image'] = Variable<String>(image.value);
+    if (imageUrl.present) {
+      map['image_url'] = Variable<String>(imageUrl.value);
+    }
+    if (similarity.present) {
+      map['similarity'] = Variable<double>(similarity.value);
+    }
+    if (format.present) {
+      map['format'] = Variable<String>(format.value);
+    }
+    if (status.present) {
+      map['status'] = Variable<String>(status.value);
+    }
+    if (season.present) {
+      map['season'] = Variable<String>(season.value);
+    }
+    if (seasonYear.present) {
+      map['season_year'] = Variable<int>(seasonYear.value);
+    }
+    if (episodes.present) {
+      map['episodes'] = Variable<int>(episodes.value);
+    }
+    if (description.present) {
+      map['description'] = Variable<String>(description.value);
     }
     return map;
   }
@@ -338,7 +684,14 @@ class AnimeHistoryTableCompanion
           ..write('uuid: $uuid, ')
           ..write('anilist: $anilist, ')
           ..write('name: $name, ')
-          ..write('image: $image')
+          ..write('imageUrl: $imageUrl, ')
+          ..write('similarity: $similarity, ')
+          ..write('format: $format, ')
+          ..write('status: $status, ')
+          ..write('season: $season, ')
+          ..write('seasonYear: $seasonYear, ')
+          ..write('episodes: $episodes, ')
+          ..write('description: $description')
           ..write(')'))
         .toString();
   }
@@ -363,7 +716,14 @@ typedef $$AnimeHistoryTableTableCreateCompanionBuilder =
       Value<String> uuid,
       required int anilist,
       required String name,
-      required String image,
+      required String imageUrl,
+      required double similarity,
+      required String format,
+      required String status,
+      required String season,
+      required int seasonYear,
+      required int episodes,
+      required String description,
     });
 typedef $$AnimeHistoryTableTableUpdateCompanionBuilder =
     AnimeHistoryTableCompanion Function({
@@ -371,7 +731,14 @@ typedef $$AnimeHistoryTableTableUpdateCompanionBuilder =
       Value<String> uuid,
       Value<int> anilist,
       Value<String> name,
-      Value<String> image,
+      Value<String> imageUrl,
+      Value<double> similarity,
+      Value<String> format,
+      Value<String> status,
+      Value<String> season,
+      Value<int> seasonYear,
+      Value<int> episodes,
+      Value<String> description,
     });
 
 class $$AnimeHistoryTableTableFilterComposer
@@ -403,8 +770,43 @@ class $$AnimeHistoryTableTableFilterComposer
     builder: (column) => ColumnFilters(column),
   );
 
-  ColumnFilters<String> get image => $composableBuilder(
-    column: $table.image,
+  ColumnFilters<String> get imageUrl => $composableBuilder(
+    column: $table.imageUrl,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<double> get similarity => $composableBuilder(
+    column: $table.similarity,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get format => $composableBuilder(
+    column: $table.format,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get status => $composableBuilder(
+    column: $table.status,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get season => $composableBuilder(
+    column: $table.season,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<int> get seasonYear => $composableBuilder(
+    column: $table.seasonYear,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<int> get episodes => $composableBuilder(
+    column: $table.episodes,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get description => $composableBuilder(
+    column: $table.description,
     builder: (column) => ColumnFilters(column),
   );
 }
@@ -438,8 +840,43 @@ class $$AnimeHistoryTableTableOrderingComposer
     builder: (column) => ColumnOrderings(column),
   );
 
-  ColumnOrderings<String> get image => $composableBuilder(
-    column: $table.image,
+  ColumnOrderings<String> get imageUrl => $composableBuilder(
+    column: $table.imageUrl,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<double> get similarity => $composableBuilder(
+    column: $table.similarity,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get format => $composableBuilder(
+    column: $table.format,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get status => $composableBuilder(
+    column: $table.status,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get season => $composableBuilder(
+    column: $table.season,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<int> get seasonYear => $composableBuilder(
+    column: $table.seasonYear,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<int> get episodes => $composableBuilder(
+    column: $table.episodes,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get description => $composableBuilder(
+    column: $table.description,
     builder: (column) => ColumnOrderings(column),
   );
 }
@@ -465,8 +902,35 @@ class $$AnimeHistoryTableTableAnnotationComposer
   GeneratedColumn<String> get name =>
       $composableBuilder(column: $table.name, builder: (column) => column);
 
-  GeneratedColumn<String> get image =>
-      $composableBuilder(column: $table.image, builder: (column) => column);
+  GeneratedColumn<String> get imageUrl =>
+      $composableBuilder(column: $table.imageUrl, builder: (column) => column);
+
+  GeneratedColumn<double> get similarity => $composableBuilder(
+    column: $table.similarity,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get format =>
+      $composableBuilder(column: $table.format, builder: (column) => column);
+
+  GeneratedColumn<String> get status =>
+      $composableBuilder(column: $table.status, builder: (column) => column);
+
+  GeneratedColumn<String> get season =>
+      $composableBuilder(column: $table.season, builder: (column) => column);
+
+  GeneratedColumn<int> get seasonYear => $composableBuilder(
+    column: $table.seasonYear,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<int> get episodes =>
+      $composableBuilder(column: $table.episodes, builder: (column) => column);
+
+  GeneratedColumn<String> get description => $composableBuilder(
+    column: $table.description,
+    builder: (column) => column,
+  );
 }
 
 class $$AnimeHistoryTableTableTableManager
@@ -513,13 +977,27 @@ class $$AnimeHistoryTableTableTableManager
                 Value<String> uuid = const Value.absent(),
                 Value<int> anilist = const Value.absent(),
                 Value<String> name = const Value.absent(),
-                Value<String> image = const Value.absent(),
+                Value<String> imageUrl = const Value.absent(),
+                Value<double> similarity = const Value.absent(),
+                Value<String> format = const Value.absent(),
+                Value<String> status = const Value.absent(),
+                Value<String> season = const Value.absent(),
+                Value<int> seasonYear = const Value.absent(),
+                Value<int> episodes = const Value.absent(),
+                Value<String> description = const Value.absent(),
               }) => AnimeHistoryTableCompanion(
                 id: id,
                 uuid: uuid,
                 anilist: anilist,
                 name: name,
-                image: image,
+                imageUrl: imageUrl,
+                similarity: similarity,
+                format: format,
+                status: status,
+                season: season,
+                seasonYear: seasonYear,
+                episodes: episodes,
+                description: description,
               ),
           createCompanionCallback:
               ({
@@ -527,13 +1005,27 @@ class $$AnimeHistoryTableTableTableManager
                 Value<String> uuid = const Value.absent(),
                 required int anilist,
                 required String name,
-                required String image,
+                required String imageUrl,
+                required double similarity,
+                required String format,
+                required String status,
+                required String season,
+                required int seasonYear,
+                required int episodes,
+                required String description,
               }) => AnimeHistoryTableCompanion.insert(
                 id: id,
                 uuid: uuid,
                 anilist: anilist,
                 name: name,
-                image: image,
+                imageUrl: imageUrl,
+                similarity: similarity,
+                format: format,
+                status: status,
+                season: season,
+                seasonYear: seasonYear,
+                episodes: episodes,
+                description: description,
               ),
           withReferenceMapper: (p0) => p0
               .map((e) => (e.readTable(table), BaseReferences(db, table, e)))
