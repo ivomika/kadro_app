@@ -23,6 +23,7 @@ class _SearchInputState extends State<SearchInput> {
   late SearchInputType _type;
   late TextEditingController _searchController;
   late GlobalKey<FormState> _formKey;
+  late FocusNode _searchFocusNode;
 
   @override
   void initState() {
@@ -30,11 +31,13 @@ class _SearchInputState extends State<SearchInput> {
     _formKey = GlobalKey<FormState>();
     _type = SearchInputType.attachFile;
     _searchController = TextEditingController();
+    _searchFocusNode = FocusNode();
   }
 
   @override
   void dispose() {
     _searchController.dispose();
+    _searchFocusNode.dispose();
     super.dispose();
   }
 
@@ -46,19 +49,23 @@ class _SearchInputState extends State<SearchInput> {
         key: _formKey,
         child: Row(
           spacing: 8,
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Expanded(
               child: TextFormField(
+                selectAllOnFocus: true,
                 controller: _searchController,
+                focusNode: _searchFocusNode,
                 decoration: InputDecoration(labelText: 'Поиск'),
-                onChanged: _onChangeText,
                 validator: _urlValidator,
-                onFieldSubmitted: (value) => _onSend(value),
+                onChanged: _onChangeText,
+                onTapOutside: (_) => _unfocusSearchTextField(),
+                onFieldSubmitted: _onSend,
               ),
             ),
             _SearchInputButton(
                 type: _type,
-                onAttach: widget.onAttach,
+                onAttach: () => _onAttach(),
                 onSend: () => _onSend(_searchController.text)
             ),
           ],
@@ -80,6 +87,10 @@ class _SearchInputState extends State<SearchInput> {
     });
   }
 
+  void _unfocusSearchTextField() {
+    _searchFocusNode.unfocus();
+  }
+
   void _searchListener(BuildContext context, SearchScreenState state) {
     if(state is SearchScreenLoading){
       setState(() {
@@ -99,18 +110,25 @@ class _SearchInputState extends State<SearchInput> {
       _type = SearchInputType.sendText;
     });
   }
-  
+
   void _onSend(String value){
+    _unfocusSearchTextField();
     if(_formKey.currentState!.validate() == false) return;
-    
+
     widget.onSend(value);
+  }
+
+  void _onAttach() {
+    _unfocusSearchTextField();
+
+    widget.onAttach();
   }
 
   String? _urlValidator(String? value) {
     if(isURL(value) == false){
       return 'Это не похоже на ссылку';
     }
-    
+
     return null;
   }
 }
