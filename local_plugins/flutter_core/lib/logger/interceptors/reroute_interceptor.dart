@@ -1,5 +1,4 @@
 import 'package:dio/dio.dart';
-import 'package:flutter_core/api/client/client.dart';
 import 'package:flutter_core/api/exceptions/exceptions.dart';
 import 'package:flutter_core/api/extensions/extensions.dart';
 import 'package:flutter_core/logger/logger.dart';
@@ -7,9 +6,10 @@ import 'package:talker/talker.dart';
 
 class RerouteInterceptor implements InterceptorsWrapper{
   final Talker talker;
+  final String clientName;
   int requestNumber;
 
-  RerouteInterceptor(this.talker) : requestNumber = 0;
+  RerouteInterceptor(this.talker, this.clientName) : requestNumber = 0;
 
   @override
   void onError(DioException exception, ErrorInterceptorHandler handler) {
@@ -34,7 +34,8 @@ class RerouteInterceptor implements InterceptorsWrapper{
   @override
   void onRequest(RequestOptions request, RequestInterceptorHandler handler) {
     talker.logCustom(
-        RequestLog<BaseApiClient>(
+        RequestLog(
+            clientName: clientName,
             url: request.uri.toString(),
             method: request.method,
             number: requestNumber

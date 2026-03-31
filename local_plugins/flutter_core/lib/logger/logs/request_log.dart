@@ -1,6 +1,7 @@
 import 'package:talker/talker.dart';
 
-class RequestLog<T> extends TalkerLog{
+class RequestLog extends TalkerLog{
+  final String clientName;
   final String url;
   final String method;
   final int number;
@@ -8,7 +9,7 @@ class RequestLog<T> extends TalkerLog{
   static AnsiPen get _getPen => AnsiPen()..blue();
   static LogLevel get _getLevel => LogLevel.debug;
   @override
-  String? get title => T.toString();
+  String? get title => clientName;
   @override
   String? get key => _getKey;
   @override
@@ -16,7 +17,12 @@ class RequestLog<T> extends TalkerLog{
   @override
   LogLevel? get logLevel => _getLevel;
 
-  RequestLog({required this.url, required this.method, required this.number})
+  RequestLog({
+    required this.clientName,
+    required this.url,
+    required this.method,
+    required this.number,
+  })
       : super('Send');
 
   @override

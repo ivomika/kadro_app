@@ -17,7 +17,9 @@ class BaseApiClient{
   final String baseUrl;
   BaseApiClient(this.baseUrl){
     _dioClient.options.baseUrl = baseUrl;
-    _dioClient.interceptors.add(RerouteInterceptor(_talker));
+    _dioClient.interceptors.add(
+      RerouteInterceptor(_talker, runtimeType.toString()),
+    );
   }
 
   FutureOr<FetchResponse<T>> fetch<T>(
@@ -58,7 +60,7 @@ class BaseApiClient{
   );
 }
 
-extension BaseApiClientLocalInterface on BaseApiClient{
+extension BaseApiClientLocalInterface on BaseApiClient {
   static const int _retryCount = 5;
   static const int _debugRetryCount = 1;
 
