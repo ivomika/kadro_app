@@ -1,25 +1,28 @@
 import 'dart:io';
 
+import 'package:kadro_app/features/search/data/converters/anime_match_converter.dart';
 import 'package:kadro_app/features/search/data/datasource/trace_moe_client.dart';
-import 'package:kadro_app/features/search/data/models/anime_match_response/anime_match_response.dart';
 import 'package:kadro_app/features/search/domain/entities/anime_match.dart';
 import 'package:kadro_app/features/search/domain/repository/i_anime_match_repository.dart';
 
 final class AnimeMatchRepositoryImpl implements IAnimeMatchRepository {
   final TraceMoeClient _client;
+  final AnimeMatchConverter _converter;
 
-  AnimeMatchRepositoryImpl(this._client);
+  AnimeMatchRepositoryImpl(
+    this._client, {
+    AnimeMatchConverter converter = const AnimeMatchConverter(),
+  }) : _converter = converter;
 
   @override
   Future<List<AnimeMatch>> searchByImage(File file) async {
     final result = await _client.searchByImage(file);
 
-    if(result.isSuccess == false) return [];
+    if (result.isSuccess == false) return [];
     return result
         .data
         !.result
-        .where((e) => e.toDomain() != null)
-        .map((e) => e.toDomain()!)
+        .map(_converter.fromResponse)
         .toList(growable: false);
   }
 
@@ -27,12 +30,11 @@ final class AnimeMatchRepositoryImpl implements IAnimeMatchRepository {
   Future<List<AnimeMatch>> searchByUrl(String url) async {
     final result = await _client.searchBuUrl(url);
 
-    if(result.isSuccess == false) return [];
+    if (result.isSuccess == false) return [];
     return result
         .data
         !.result
-            .where((e) => e.toDomain() != null)
-            .map((e) => e.toDomain()!)
-            .toList(growable: false);
+        .map(_converter.fromResponse)
+        .toList(growable: false);
   }
 }

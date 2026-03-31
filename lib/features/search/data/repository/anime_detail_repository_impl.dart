@@ -1,77 +1,26 @@
+import 'package:kadro_app/features/search/data/converters/anime_detail_converter.dart';
 import 'package:kadro_app/features/search/data/datasource/anilist_client.dart';
-import 'package:kadro_app/features/search/data/models/anilist_response/anilist_response.dart';
 import 'package:kadro_app/features/search/domain/entities/anime_detail.dart';
 import 'package:kadro_app/features/search/domain/repository/i_anime_detail_repository.dart';
 
-final class AnimeDetailRepositoryImpl implements IAnimeDetailRepository{
+final class AnimeDetailRepositoryImpl implements IAnimeDetailRepository {
   final AnilistClient _client;
+  final AnimeDetailConverter _converter;
 
-  AnimeDetailRepositoryImpl(this._client);
+  AnimeDetailRepositoryImpl(
+    this._client, {
+    AnimeDetailConverter converter = const AnimeDetailConverter(),
+  }) : _converter = converter;
 
   @override
   Future<AnimeDetail?> searchByAnilistId(int id, double similarity) async {
     final result = await _client.searchByAnilistId(id);
 
-    if(result.isSuccess == false) return null;
+    if (result.isSuccess == false) return null;
 
-    return result.data?.data.media.toDomain(similarity);
-  }
-}
-
-/// TODO: remove from here
-extension ResultExtension on AnilistMedia{
-  AnimeDetail? toDomain(double similarity){
-    return AnimeDetail(
-        id: id,
-        idMal: idMal ?? -1,
-        title: AnimeTitle(
-          romaji: title.romaji ?? '',
-          english: title.english ?? '',
-          nativeTitle: title.nativeTitle ?? '',
-        ),
-        description: description ?? '',
-        format: format ?? '',
-        status: status ?? '',
-        episodes: episodes ?? -1,
-        duration: duration ?? -1,
-        season: season ?? '',
-        seasonYear: seasonYear ?? -1,
-        averageScore: averageScore ?? -1,
-        popularity: popularity ?? -1,
-        genres: List<String>.unmodifiable(genres),
-        coverImage: AnimeCoverImage(
-          large: coverImage.large ?? '',
-          extraLarge: coverImage.extraLarge ?? '',
-          color: coverImage.color ?? '',
-        ),
-        bannerImage: bannerImage ?? '',
-        startDate: AnimeFuzzyDate(
-          year: startDate.year ?? -1,
-          month: startDate.month ?? -1,
-          day: startDate.day ?? -1,
-        ),
-        endDate: AnimeFuzzyDate(
-          year: endDate.year ?? -1,
-          month: endDate.month ?? -1,
-          day: endDate.day ?? -1,
-        ),
-        studios: AnimeStudios(
-          nodes: studios.nodes
-              .map(
-                (e) => AnimeStudioNode(
-              id: e.id,
-              name: e.name,
-            ),
-          )
-              .toList(growable: false),
-        ),
-        trailer: AnimeTrailer(
-          id: trailer?.id ?? '',
-          site: trailer?.site ?? '',
-          thumbnail: trailer?.thumbnail ?? '',
-        ),
-        siteUrl: siteUrl ?? '',
-        similarity: similarity
+    return _converter.fromResponse(
+        result.data!.data.media,
+        similarity
     );
   }
 }

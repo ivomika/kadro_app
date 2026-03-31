@@ -1,5 +1,4 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
-import 'package:kadro_app/features/search/domain/entities/anime_match.dart';
 
 part 'anime_match_response.freezed.dart';
 part 'anime_match_response.g.dart';
@@ -25,16 +24,4 @@ abstract class AnimeMatchResult with _$AnimeMatchResult{
   }) = _Result;
 
   factory AnimeMatchResult.fromJson(Map<String, Object?> json) => _$ResultFromJson(json);
-}
-
-extension ResultExtension on AnimeMatchResult{
-  AnimeMatch? toDomain(){
-    return AnimeMatch(
-        anilist: anilist,
-        filename: filename,
-        similarity: similarity,
-        video: video,
-        image: image
-    );
-  }
 }
