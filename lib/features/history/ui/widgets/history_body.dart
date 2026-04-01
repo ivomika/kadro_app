@@ -65,6 +65,12 @@ class HistoryBody extends StatelessWidget {
                     title: tile.name,
                     description: tile.description,
                     imageUrl: tile.imageUrl,
+                    similarity: tile.similarity,
+                    format: tile.format,
+                    status: tile.status,
+                    episodes: tile.episodes,
+                    season: tile.season,
+                    seasonYear: tile.seasonYear,
                     onTap: () => _onTapHistoryTile(context, tile),
                   );
                 }

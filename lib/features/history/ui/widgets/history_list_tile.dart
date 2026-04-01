@@ -2,9 +2,20 @@ import 'package:flutter/material.dart';
 import 'package:kadro_app/shared/ui/widgets/cashed_image.dart';
 
 class HistoryListTile extends StatelessWidget {
+  static const double _cardRadius = 12;
+  static const double _posterRadius = 10;
+  static const double _posterWidth = 84;
+  static const double _posterHeight = 104;
+
   final String title;
   final String description;
   final String imageUrl;
+  final double similarity;
+  final String format;
+  final String status;
+  final int episodes;
+  final String season;
+  final int seasonYear;
   final VoidCallback onTap;
 
   const HistoryListTile({
@@ -12,59 +23,170 @@ class HistoryListTile extends StatelessWidget {
     required this.title,
     required this.description,
     required this.imageUrl,
+    required this.similarity,
+    required this.format,
+    required this.status,
+    required this.episodes,
+    required this.season,
+    required this.seasonYear,
     required this.onTap,
   });
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-    final textTheme = theme.textTheme;
-
-    return Card(
-      child: SizedBox(
-        height: 162,
-        child: InkWell(
-          onTap: onTap,
-          child: Padding(
-            padding: const EdgeInsets.all(12),
-            child: Row(
-              spacing: 16,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                ClipRRect(
-                    borderRadius: BorderRadiusGeometry.circular(6),
-                    child: SizedBox(
-                        width: 100,
-                        child: CashedImage(url: imageUrl)
-                    )
-                ),
-                Expanded(
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    crossAxisAlignment: CrossAxisAlignment.stretch,
-                    spacing: 8,
-                    children: [
-                      Text(
-                        title,
-                        overflow: TextOverflow.ellipsis,
-                        maxLines: 1,
-                        style: textTheme.titleMedium,
-                      ),
-                      Expanded(
-                          child: Text(
-                              description,
-                              overflow: TextOverflow.ellipsis,
-                              maxLines: 5,
-                          )
-                      )
-                    ],
-                  )
-                )
-              ],
-            ),
+    return Card.outlined(
+      margin: EdgeInsets.only(
+        bottom: 8
+      ),
+      child: InkWell(
+        onTap: onTap,
+        borderRadius: BorderRadius.circular(_cardRadius),
+        child: Padding(
+          padding: const EdgeInsets.all(14),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              _HistoryHeader(
+                title: title,
+                description: description,
+                imageUrl: imageUrl,
+              ),
+              const SizedBox(height: 12),
+              _HistoryMetaSection(
+                similarity: similarity,
+                format: format,
+                status: status,
+                episodes: episodes,
+                season: season,
+                seasonYear: seasonYear,
+              ),
+            ],
           ),
         ),
-      )
+      ),
+    );
+  }
+}
+
+class _HistoryHeader extends StatelessWidget {
+  final String title;
+  final String description;
+  final String imageUrl;
+
+  const _HistoryHeader({
+    required this.title,
+    required this.description,
+    required this.imageUrl,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    final textTheme = Theme.of(context).textTheme;
+    final colorScheme = Theme.of(context).colorScheme;
+
+    return Row(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        ClipRRect(
+          borderRadius: BorderRadius.circular(HistoryListTile._posterRadius),
+          child: SizedBox(
+            width: HistoryListTile._posterWidth,
+            height: HistoryListTile._posterHeight,
+            child: CashedImage(url: imageUrl),
+          ),
+        ),
+        const SizedBox(width: 12),
+        Expanded(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                title,
+                maxLines: 2,
+                overflow: TextOverflow.ellipsis,
+                style: textTheme.titleSmall,
+              ),
+              const SizedBox(height: 8),
+              Text(
+                description,
+                maxLines: 4,
+                overflow: TextOverflow.ellipsis,
+                style: textTheme.bodySmall?.copyWith(
+                  color: colorScheme.onSurfaceVariant,
+                ),
+              ),
+            ],
+          ),
+        ),
+      ],
+    );
+  }
+}
+
+class _HistoryMetaSection extends StatelessWidget {
+  final double similarity;
+  final String format;
+  final String status;
+  final int episodes;
+  final String season;
+  final int seasonYear;
+
+  const _HistoryMetaSection({
+    required this.similarity,
+    required this.format,
+    required this.status,
+    required this.episodes,
+    required this.season,
+    required this.seasonYear,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Wrap(
+      spacing: 8,
+      runSpacing: 8,
+      children: [
+        _HistoryMetaChip(
+          icon: Icons.auto_awesome_outlined,
+          label: '${(similarity * 100).toStringAsFixed(1)}%',
+        ),
+        _HistoryMetaChip(
+          icon: Icons.movie_creation_outlined,
+          label: format,
+        ),
+        _HistoryMetaChip(
+          icon: Icons.check_circle_outline,
+          label: status,
+        ),
+        _HistoryMetaChip(
+          icon: Icons.video_library_outlined,
+          label: '$episodes ep',
+        ),
+        _HistoryMetaChip(
+          icon: Icons.calendar_today_outlined,
+          label: '$season $seasonYear',
+        ),
+      ],
+    );
+  }
+}
+
+class _HistoryMetaChip extends StatelessWidget {
+  const _HistoryMetaChip({
+    required this.icon,
+    required this.label,
+  });
+
+  final IconData icon;
+  final String label;
+
+  @override
+  Widget build(BuildContext context) {
+    return Chip(
+      avatar: Icon(icon, size: 16),
+      label: Text(label),
+      visualDensity: VisualDensity.compact,
+      materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
     );
   }
 }
