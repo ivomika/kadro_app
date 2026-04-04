@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:kadro_app/shared/ui/widgets/cashed_image.dart';
+import 'package:kadro_app/shared/utils/ui_formatter.dart';
 
 class HistoryListTile extends StatelessWidget {
   static const double _cardRadius = 12;
@@ -35,9 +36,7 @@ class HistoryListTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Card.outlined(
-      margin: EdgeInsets.only(
-        bottom: 8
-      ),
+      margin: EdgeInsets.only(bottom: 8),
       child: InkWell(
         onTap: onTap,
         borderRadius: BorderRadius.circular(_cardRadius),
@@ -148,34 +147,33 @@ class _HistoryMetaSection extends StatelessWidget {
       children: [
         _HistoryMetaChip(
           icon: Icons.auto_awesome_outlined,
-          label: '${(similarity * 100).toStringAsFixed(1)}%',
+          label: UIFormatter.percent(similarity),
         ),
-        _HistoryMetaChip(
-          icon: Icons.movie_creation_outlined,
-          label: format,
-        ),
-        _HistoryMetaChip(
-          icon: Icons.check_circle_outline,
-          label: status,
-        ),
+        _HistoryMetaChip(icon: Icons.movie_creation_outlined, label: format),
+        _HistoryMetaChip(icon: Icons.check_circle_outline, label: status),
         _HistoryMetaChip(
           icon: Icons.video_library_outlined,
-          label: '$episodes ep',
+          label: UIFormatter.positiveNumber(episodes, suffix: ' ep'),
         ),
         _HistoryMetaChip(
           icon: Icons.calendar_today_outlined,
-          label: '$season $seasonYear',
+          label: _seasonLabel(season, seasonYear),
         ),
       ],
     );
   }
 }
 
+String _seasonLabel(String season, int seasonYear) {
+  if (season.trim().isEmpty || seasonYear <= 0) {
+    return UIFormatter.placeholder;
+  }
+
+  return '$season $seasonYear';
+}
+
 class _HistoryMetaChip extends StatelessWidget {
-  const _HistoryMetaChip({
-    required this.icon,
-    required this.label,
-  });
+  const _HistoryMetaChip({required this.icon, required this.label});
 
   final IconData icon;
   final String label;

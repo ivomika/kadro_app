@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:kadro_app/shared/domain/entities/media_presentation_data.dart';
 import 'package:kadro_app/shared/ui/widgets/cashed_image.dart';
+import 'package:kadro_app/shared/utils/ui_formatter.dart';
 import 'package:skeletonizer/skeletonizer.dart';
 
 class MediaInfoBottomSheet extends StatelessWidget {
@@ -64,19 +65,19 @@ class MediaInfoBottomSheet extends StatelessWidget {
                 entries: [
                   _FactEntry(
                     label: 'Romaji',
-                    value: _fallback(media.title.romaji),
+                    value: UIFormatter.display(media.title.romaji),
                   ),
                   _FactEntry(
                     label: 'English',
-                    value: _fallback(media.title.english),
+                    value: UIFormatter.display(media.title.english),
                   ),
                   _FactEntry(
                     label: 'Native',
-                    value: _fallback(media.title.nativeTitle),
+                    value: UIFormatter.display(media.title.nativeTitle),
                   ),
                   _FactEntry(
                     label: 'Синонимы',
-                    value: _joinedOrDash(media.synonyms),
+                    value: UIFormatter.joinNonEmpty(media.synonyms, take: 3),
                   ),
                 ],
                 cardBuilder: (entry) => _CompactTitleCard(entry: entry),
@@ -89,29 +90,43 @@ class MediaInfoBottomSheet extends StatelessWidget {
                   _FactEntry(
                     label: 'Тип / формат',
                     value:
-                        '${_fallback(media.type)} / ${_fallback(media.format)}',
+                        '${UIFormatter.display(media.type)} / ${UIFormatter.display(media.format)}',
                   ),
                   _FactEntry(
                     label: 'Дата старта',
-                    value: _dateLabel(media.startDate),
+                    value: UIFormatter.date(
+                      media.startDate.year,
+                      media.startDate.month,
+                      media.startDate.day,
+                    ),
                   ),
                   _FactEntry(
                     label: 'Дата финала',
-                    value: _dateLabel(media.endDate),
+                    value: UIFormatter.date(
+                      media.endDate.year,
+                      media.endDate.month,
+                      media.endDate.day,
+                    ),
                   ),
                   _FactEntry(
                     label: 'Эпизодов',
-                    value: _numberOrDash(media.episodes),
+                    value: UIFormatter.positiveNumber(media.episodes),
                   ),
                   _FactEntry(
                     label: 'Длительность',
-                    value: _minutesLabel(media.duration),
+                    value: UIFormatter.positiveNumber(
+                      media.duration,
+                      suffix: ' мин',
+                    ),
                   ),
                   _FactEntry(
                     label: 'Страна',
-                    value: _fallback(media.countryOfOrigin),
+                    value: UIFormatter.display(media.countryOfOrigin),
                   ),
-                  _FactEntry(label: 'Источник', value: _fallback(media.source)),
+                  _FactEntry(
+                    label: 'Источник',
+                    value: UIFormatter.display(media.source),
+                  ),
                 ],
                 cardBuilder: (entry) => _FactCard(entry: entry),
               ),
@@ -121,23 +136,23 @@ class MediaInfoBottomSheet extends StatelessWidget {
                 entries: [
                   _FactEntry(
                     label: 'Средний балл',
-                    value: _numberOrDash(media.averageScore),
+                    value: UIFormatter.positiveNumber(media.averageScore),
                   ),
                   _FactEntry(
                     label: 'Средняя оценка',
-                    value: _numberOrDash(media.meanScore),
+                    value: UIFormatter.positiveNumber(media.meanScore),
                   ),
                   _FactEntry(
                     label: 'Популярность',
-                    value: _numberOrDash(media.popularity),
+                    value: UIFormatter.positiveNumber(media.popularity),
                   ),
                   _FactEntry(
                     label: 'Тренд',
-                    value: _numberWithSign(media.trending),
+                    value: UIFormatter.signedNumber(media.trending),
                   ),
                   _FactEntry(
                     label: 'В избранном',
-                    value: _numberOrDash(media.favourites),
+                    value: UIFormatter.positiveNumber(media.favourites),
                   ),
                   _FactEntry(
                     label: 'Лучший ранг',
@@ -184,7 +199,9 @@ class MediaInfoBottomSheet extends StatelessWidget {
               SliverPadding(
                 padding: const EdgeInsets.fromLTRB(16, 0, 16, 12),
                 sliver: SliverToBoxAdapter(
-                  child: _DescriptionCard(text: _fallback(media.description)),
+                  child: _DescriptionCard(
+                    text: UIFormatter.display(media.description),
+                  ),
                 ),
               ),
               SliverSafeArea(
@@ -230,7 +247,7 @@ class _SheetHeader extends StatelessWidget {
         ),
         const SizedBox(width: 12),
         Chip(
-          label: Text(_fallback(media.format)),
+          label: Text(UIFormatter.display(media.format)),
           visualDensity: VisualDensity.compact,
         ),
       ],
@@ -273,7 +290,7 @@ class _PreviewCard extends StatelessWidget {
                 children: [
                   Expanded(
                     child: Text(
-                      _fallback(media.title.nativeTitle),
+                      UIFormatter.display(media.title.nativeTitle),
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
                       style: Theme.of(context).textTheme.titleMedium?.copyWith(
@@ -293,7 +310,7 @@ class _PreviewCard extends StatelessWidget {
                       borderRadius: BorderRadius.circular(999),
                     ),
                     child: Text(
-                      '${(media.similarity * 100).toStringAsFixed(1)}%',
+                      UIFormatter.percent(media.similarity),
                       style: Theme.of(context).textTheme.labelMedium?.copyWith(
                         color: Colors.white,
                         fontWeight: FontWeight.w700,
@@ -336,6 +353,39 @@ String _licenseLabel(bool isLicensed) {
   }
 
   return 'Без лицензии';
+}
+
+String _displayTitle(MediaPresentationTitle title) {
+  if (title.english.trim().isNotEmpty) {
+    return title.english;
+  }
+
+  if (title.romaji.trim().isNotEmpty) {
+    return title.romaji;
+  }
+
+  return UIFormatter.display(title.nativeTitle);
+}
+
+String _seasonLabel(MediaPresentationData media) {
+  if (media.season.trim().isEmpty || media.seasonYear <= 0) {
+    return UIFormatter.placeholder;
+  }
+
+  return '${media.season} ${media.seasonYear}';
+}
+
+String _bestRanking(List<MediaPresentationRanking> rankings) {
+  if (rankings.isEmpty) {
+    return UIFormatter.placeholder;
+  }
+
+  final best = rankings.reduce((a, b) => a.rank < b.rank ? a : b);
+  if (best.rank <= 0) {
+    return UIFormatter.placeholder;
+  }
+
+  return '#${best.rank}${best.allTime ? ' за всё время' : ''}';
 }
 
 Color _resolveChipBackgroundColor({
@@ -386,7 +436,7 @@ class _StatusChips extends StatelessWidget {
           visualDensity: VisualDensity.compact,
         ),
         Chip(
-          label: Text(_fallback(media.status)),
+          label: Text(UIFormatter.display(media.status)),
           visualDensity: VisualDensity.compact,
         ),
         Chip(
@@ -617,10 +667,7 @@ class _ActionBar extends StatelessWidget {
   final VoidCallback? onDetailsTap;
   final VoidCallback? onOpenSourceTap;
 
-  const _ActionBar({
-    this.onDetailsTap,
-    this.onOpenSourceTap,
-  });
+  const _ActionBar({this.onDetailsTap, this.onOpenSourceTap});
 
   @override
   Widget build(BuildContext context) {
@@ -642,74 +689,4 @@ class _ActionBar extends StatelessWidget {
       ],
     );
   }
-}
-
-String _fallback(String value) => value.trim().isEmpty ? '—' : value;
-
-String _joinedOrDash(List<String> values) {
-  final filtered = values
-      .where((value) => value.trim().isNotEmpty)
-      .toList(growable: false);
-  if (filtered.isEmpty) {
-    return '—';
-  }
-
-  return filtered.take(3).join(', ');
-}
-
-String _numberOrDash(int value) => value <= 0 ? '—' : '$value';
-
-String _numberWithSign(int value) {
-  if (value == 0 || value == -1) {
-    return '—';
-  }
-
-  if (value > 0) {
-    return '+$value';
-  }
-
-  return '$value';
-}
-
-String _minutesLabel(int duration) => duration <= 0 ? '—' : '$duration мин';
-
-String _seasonLabel(MediaPresentationData media) {
-  if (media.season.trim().isEmpty || media.seasonYear <= 0) {
-    return '—';
-  }
-
-  return '${media.season} ${media.seasonYear}';
-}
-
-String _dateLabel(MediaPresentationDate date) {
-  if (date.year <= 0 || date.month <= 0 || date.day <= 0) {
-    return '—';
-  }
-
-  return '${date.year}-${date.month.toString().padLeft(2, '0')}-${date.day.toString().padLeft(2, '0')}';
-}
-
-String _bestRanking(List<MediaPresentationRanking> rankings) {
-  if (rankings.isEmpty) {
-    return '—';
-  }
-
-  final best = rankings.reduce((a, b) => a.rank < b.rank ? a : b);
-  if (best.rank <= 0) {
-    return '—';
-  }
-
-  return '#${best.rank}${best.allTime ? ' за всё время' : ''}';
-}
-
-String _displayTitle(MediaPresentationTitle title) {
-  if (title.english.trim().isNotEmpty) {
-    return title.english;
-  }
-
-  if (title.romaji.trim().isNotEmpty) {
-    return title.romaji;
-  }
-
-  return _fallback(title.nativeTitle);
 }

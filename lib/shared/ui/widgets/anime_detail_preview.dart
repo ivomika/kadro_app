@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:kadro_app/shared/ui/widgets/cashed_image.dart';
+import 'package:kadro_app/shared/utils/ui_formatter.dart';
 import 'package:skeletonizer/skeletonizer.dart';
 
 class AnimeDetailPreview extends StatelessWidget {
@@ -44,77 +45,71 @@ class AnimeDetailPreview extends StatelessWidget {
       spacing: 16,
       children: [
         Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisAlignment: MainAxisAlignment.start,
-            mainAxisSize: MainAxisSize.max,
-            spacing: 16,
-            children: [
-              Skeletonizer(
-                enabled: isLoading,
-                child: ClipRRect(
-                    borderRadius: BorderRadiusGeometry.circular(16),
-                    child: SizedBox(
-                        height: 270,
-                        width: 200,
-                        child: CashedImage(url: imageUrl)
-                    )
+          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisAlignment: MainAxisAlignment.start,
+          mainAxisSize: MainAxisSize.max,
+          spacing: 16,
+          children: [
+            Skeletonizer(
+              enabled: isLoading,
+              child: ClipRRect(
+                borderRadius: BorderRadiusGeometry.circular(16),
+                child: SizedBox(
+                  height: 270,
+                  width: 200,
+                  child: CashedImage(url: imageUrl),
                 ),
               ),
-              Expanded(
-                child: Skeletonizer(
-                  enabled: isLoading,
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    crossAxisAlignment: CrossAxisAlignment.stretch,
-                    spacing: 8,
-                    children: ListTile.divideTiles(
-                        context: context,
-                        tiles: [
-                          ListTile(
-                              dense: true,
-                              contentPadding: EdgeInsets.zero,
-                              title: Text(_formatSimilarity(similarity))
-                          ),
-                          ListTile(
-                              dense: true,
-                              contentPadding: EdgeInsets.zero,
-                              title: Text(format)
-                          ),
-                          ListTile(
-                            dense: true,
-                            contentPadding: EdgeInsets.zero,
-                            title: Text(status),
-                          ),
-                          ListTile(
-                              dense: true,
-                              contentPadding: EdgeInsets.zero,
-                              leading: Icon(_seasonMap[season] ?? Icons.error),
-                              title: Text(seasonYear.toString())
-                          ),
-                          ListTile(
-                              dense: true,
-                              contentPadding: EdgeInsets.zero,
-                              leading: Icon(Icons.playlist_play_outlined),
-                              title: Text(episodes.toString())
-                          ),
-                        ]
-                    ).toList(growable: false),
-                  ),
+            ),
+            Expanded(
+              child: Skeletonizer(
+                enabled: isLoading,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  spacing: 8,
+                  children: ListTile.divideTiles(
+                    context: context,
+                    tiles: [
+                      ListTile(
+                        dense: true,
+                        contentPadding: EdgeInsets.zero,
+                        title: Text(UIFormatter.percent(similarity)),
+                      ),
+                      ListTile(
+                        dense: true,
+                        contentPadding: EdgeInsets.zero,
+                        title: Text(format),
+                      ),
+                      ListTile(
+                        dense: true,
+                        contentPadding: EdgeInsets.zero,
+                        title: Text(status),
+                      ),
+                      ListTile(
+                        dense: true,
+                        contentPadding: EdgeInsets.zero,
+                        leading: Icon(_seasonMap[season] ?? Icons.error),
+                        title: Text(seasonYear.toString()),
+                      ),
+                      ListTile(
+                        dense: true,
+                        contentPadding: EdgeInsets.zero,
+                        leading: Icon(Icons.playlist_play_outlined),
+                        title: Text(episodes.toString()),
+                      ),
+                    ],
+                  ).toList(growable: false),
                 ),
-              )
-            ]
+              ),
+            ),
+          ],
         ),
         Skeletonizer(
           enabled: isLoading,
-          child: Text(
-            title,
-            style: textTheme.titleLarge,
-          ),
+          child: Text(title, style: textTheme.titleLarge),
         ),
       ],
     );
   }
-
-  String _formatSimilarity(double similarity) =>
-      '${(similarity * 100).toStringAsFixed(1)}%';
 }
