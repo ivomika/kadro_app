@@ -1,0 +1,715 @@
+import 'package:flutter/material.dart';
+import 'package:kadro_app/shared/domain/entities/media_presentation_data.dart';
+import 'package:kadro_app/shared/ui/widgets/cashed_image.dart';
+import 'package:skeletonizer/skeletonizer.dart';
+
+class MediaInfoBottomSheet extends StatelessWidget {
+  final MediaPresentationData media;
+  final bool isLoading;
+  final VoidCallback? onDetailsTap;
+  final VoidCallback? onOpenSourceTap;
+
+  const MediaInfoBottomSheet({
+    super.key,
+    required this.media,
+    this.isLoading = false,
+    this.onDetailsTap,
+    this.onOpenSourceTap,
+  });
+
+  static const _titleGridDelegate = SliverGridDelegateWithFixedCrossAxisCount(
+    crossAxisCount: 2,
+    mainAxisSpacing: 8,
+    crossAxisSpacing: 8,
+    mainAxisExtent: 68,
+  );
+  static const _metaGridDelegate = SliverGridDelegateWithFixedCrossAxisCount(
+    crossAxisCount: 2,
+    mainAxisSpacing: 8,
+    crossAxisSpacing: 8,
+    mainAxisExtent: 52,
+  );
+
+  @override
+  Widget build(BuildContext context) {
+    return DraggableScrollableSheet(
+      expand: false,
+      initialChildSize: 0.55,
+      minChildSize: 0.2,
+      maxChildSize: 0.92,
+      snap: true,
+      snapSizes: const [0.21, 0.92],
+      builder: (context, scrollController) {
+        return Skeletonizer(
+          enabled: isLoading,
+          child: CustomScrollView(
+            controller: scrollController,
+            physics: const BouncingScrollPhysics(),
+            slivers: [
+              SliverPadding(
+                padding: const EdgeInsets.fromLTRB(16, 8, 16, 0),
+                sliver: SliverToBoxAdapter(child: _SheetHeader(media: media)),
+              ),
+              SliverPadding(
+                padding: const EdgeInsets.fromLTRB(16, 12, 16, 0),
+                sliver: SliverToBoxAdapter(child: _PreviewCard(media: media)),
+              ),
+              SliverPadding(
+                padding: const EdgeInsets.fromLTRB(16, 12, 16, 0),
+                sliver: SliverToBoxAdapter(child: _StatusChips(media: media)),
+              ),
+              _FactGridSection(
+                title: 'Названия',
+                delegate: _titleGridDelegate,
+                entries: [
+                  _FactEntry(
+                    label: 'Romaji',
+                    value: _fallback(media.title.romaji),
+                  ),
+                  _FactEntry(
+                    label: 'English',
+                    value: _fallback(media.title.english),
+                  ),
+                  _FactEntry(
+                    label: 'Native',
+                    value: _fallback(media.title.nativeTitle),
+                  ),
+                  _FactEntry(
+                    label: 'Синонимы',
+                    value: _joinedOrDash(media.synonyms),
+                  ),
+                ],
+                cardBuilder: (entry) => _CompactTitleCard(entry: entry),
+              ),
+              _FactGridSection(
+                title: 'Релиз и формат',
+                delegate: _metaGridDelegate,
+                entries: [
+                  _FactEntry(label: 'Сезон', value: _seasonLabel(media)),
+                  _FactEntry(
+                    label: 'Тип / формат',
+                    value:
+                        '${_fallback(media.type)} / ${_fallback(media.format)}',
+                  ),
+                  _FactEntry(
+                    label: 'Дата старта',
+                    value: _dateLabel(media.startDate),
+                  ),
+                  _FactEntry(
+                    label: 'Дата финала',
+                    value: _dateLabel(media.endDate),
+                  ),
+                  _FactEntry(
+                    label: 'Эпизодов',
+                    value: _numberOrDash(media.episodes),
+                  ),
+                  _FactEntry(
+                    label: 'Длительность',
+                    value: _minutesLabel(media.duration),
+                  ),
+                  _FactEntry(
+                    label: 'Страна',
+                    value: _fallback(media.countryOfOrigin),
+                  ),
+                  _FactEntry(label: 'Источник', value: _fallback(media.source)),
+                ],
+                cardBuilder: (entry) => _FactCard(entry: entry),
+              ),
+              _FactGridSection(
+                title: 'Оценки сообщества',
+                delegate: _metaGridDelegate,
+                entries: [
+                  _FactEntry(
+                    label: 'Средний балл',
+                    value: _numberOrDash(media.averageScore),
+                  ),
+                  _FactEntry(
+                    label: 'Средняя оценка',
+                    value: _numberOrDash(media.meanScore),
+                  ),
+                  _FactEntry(
+                    label: 'Популярность',
+                    value: _numberOrDash(media.popularity),
+                  ),
+                  _FactEntry(
+                    label: 'Тренд',
+                    value: _numberWithSign(media.trending),
+                  ),
+                  _FactEntry(
+                    label: 'В избранном',
+                    value: _numberOrDash(media.favourites),
+                  ),
+                  _FactEntry(
+                    label: 'Лучший ранг',
+                    value: _bestRanking(media.rankings),
+                  ),
+                ],
+                cardBuilder: (entry) => _FactCard(entry: entry),
+              ),
+              _SectionTitleSliver(title: 'Студии'),
+              SliverPadding(
+                padding: const EdgeInsets.fromLTRB(16, 0, 16, 12),
+                sliver: SliverToBoxAdapter(
+                  child: _ChipGroup(
+                    labels: media.studios
+                        .map(_studioLabel)
+                        .toList(growable: false),
+                    highlighted: media.studios
+                        .where((studio) => studio.isMain)
+                        .map((studio) => studio.name)
+                        .toSet(),
+                  ),
+                ),
+              ),
+              _SectionTitleSliver(title: 'Жанры и теги'),
+              SliverPadding(
+                padding: const EdgeInsets.fromLTRB(16, 0, 16, 12),
+                sliver: SliverToBoxAdapter(
+                  child: _ChipGroup(
+                    labels: [
+                      ...media.genres,
+                      ...media.tags
+                          .where((tag) => tag.isMediaSpoiler == false)
+                          .take(8)
+                          .map((tag) => tag.name),
+                    ],
+                    warning: media.tags
+                        .where((tag) => tag.rank >= 85)
+                        .map((tag) => tag.name)
+                        .toSet(),
+                  ),
+                ),
+              ),
+              _SectionTitleSliver(title: 'Описание'),
+              SliverPadding(
+                padding: const EdgeInsets.fromLTRB(16, 0, 16, 12),
+                sliver: SliverToBoxAdapter(
+                  child: _DescriptionCard(text: _fallback(media.description)),
+                ),
+              ),
+              SliverSafeArea(
+                top: false,
+                sliver: SliverPadding(
+                  padding: const EdgeInsets.fromLTRB(16, 4, 16, 12),
+                  sliver: SliverToBoxAdapter(
+                    child: _ActionBar(
+                      onDetailsTap: onDetailsTap,
+                      onOpenSourceTap: onOpenSourceTap,
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          ),
+        );
+      },
+    );
+  }
+}
+
+class _SheetHeader extends StatelessWidget {
+  final MediaPresentationData media;
+
+  const _SheetHeader({required this.media});
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+
+    return Row(
+      children: [
+        Expanded(
+          child: Text(
+            _displayTitle(media.title),
+            maxLines: 1,
+            overflow: TextOverflow.ellipsis,
+            style: theme.textTheme.titleLarge?.copyWith(
+              fontWeight: FontWeight.w700,
+            ),
+          ),
+        ),
+        const SizedBox(width: 12),
+        Chip(
+          label: Text(_fallback(media.format)),
+          visualDensity: VisualDensity.compact,
+        ),
+      ],
+    );
+  }
+}
+
+class _PreviewCard extends StatelessWidget {
+  final MediaPresentationData media;
+
+  const _PreviewCard({required this.media});
+
+  @override
+  Widget build(BuildContext context) {
+    final previewUrl = _resolvePreviewUrl(media);
+
+    return Card.outlined(
+      margin: EdgeInsets.zero,
+      clipBehavior: Clip.antiAlias,
+      child: SizedBox(
+        height: 132,
+        child: Stack(
+          fit: StackFit.expand,
+          children: [
+            CashedImage(url: previewUrl),
+            const DecoratedBox(
+              decoration: BoxDecoration(
+                gradient: LinearGradient(
+                  begin: Alignment.topCenter,
+                  end: Alignment.bottomCenter,
+                  colors: [Color(0x05000000), Color(0xB3000000)],
+                ),
+              ),
+            ),
+            Positioned(
+              left: 12,
+              right: 12,
+              bottom: 12,
+              child: Row(
+                children: [
+                  Expanded(
+                    child: Text(
+                      _fallback(media.title.nativeTitle),
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                      style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                        color: Colors.white,
+                        fontWeight: FontWeight.w700,
+                      ),
+                    ),
+                  ),
+                  const SizedBox(width: 8),
+                  Container(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 8,
+                      vertical: 4,
+                    ),
+                    decoration: BoxDecoration(
+                      color: Colors.black.withValues(alpha: 0.34),
+                      borderRadius: BorderRadius.circular(999),
+                    ),
+                    child: Text(
+                      '${(media.similarity * 100).toStringAsFixed(1)}%',
+                      style: Theme.of(context).textTheme.labelMedium?.copyWith(
+                        color: Colors.white,
+                        fontWeight: FontWeight.w700,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+String _resolvePreviewUrl(MediaPresentationData media) {
+  if (media.bannerImage.isNotEmpty) {
+    return media.bannerImage;
+  }
+
+  if (media.coverImageExtraLarge.isNotEmpty) {
+    return media.coverImageExtraLarge;
+  }
+
+  return media.coverImageLarge;
+}
+
+String _studioLabel(MediaPresentationStudio studio) {
+  if (studio.isMain) {
+    return '${studio.name} · основная';
+  }
+
+  return studio.name;
+}
+
+String _licenseLabel(bool isLicensed) {
+  if (isLicensed) {
+    return 'Лицензировано';
+  }
+
+  return 'Без лицензии';
+}
+
+Color _resolveChipBackgroundColor({
+  required ColorScheme colorScheme,
+  required bool isHighlight,
+  required bool isWarning,
+}) {
+  if (isHighlight) {
+    return colorScheme.primaryContainer;
+  }
+
+  if (isWarning) {
+    return colorScheme.errorContainer;
+  }
+
+  return colorScheme.surfaceContainerHigh;
+}
+
+Color _resolveChipForegroundColor({
+  required ColorScheme colorScheme,
+  required bool isHighlight,
+  required bool isWarning,
+}) {
+  if (isHighlight) {
+    return colorScheme.onPrimaryContainer;
+  }
+
+  if (isWarning) {
+    return colorScheme.onErrorContainer;
+  }
+
+  return colorScheme.onSurface;
+}
+
+class _StatusChips extends StatelessWidget {
+  final MediaPresentationData media;
+
+  const _StatusChips({required this.media});
+
+  @override
+  Widget build(BuildContext context) {
+    return Wrap(
+      spacing: 8,
+      runSpacing: 8,
+      children: [
+        Chip(
+          label: Text('AniList #${media.id}'),
+          visualDensity: VisualDensity.compact,
+        ),
+        Chip(
+          label: Text(_fallback(media.status)),
+          visualDensity: VisualDensity.compact,
+        ),
+        Chip(
+          label: Text(_licenseLabel(media.isLicensed)),
+          visualDensity: VisualDensity.compact,
+        ),
+      ],
+    );
+  }
+}
+
+class _SectionTitleSliver extends StatelessWidget {
+  final String title;
+
+  const _SectionTitleSliver({required this.title});
+
+  @override
+  Widget build(BuildContext context) {
+    return SliverPadding(
+      padding: const EdgeInsets.fromLTRB(16, 4, 16, 8),
+      sliver: SliverToBoxAdapter(
+        child: Text(
+          title.toUpperCase(),
+          style: Theme.of(context).textTheme.labelMedium?.copyWith(
+            color: Theme.of(context).colorScheme.onSurfaceVariant,
+            fontWeight: FontWeight.w700,
+            letterSpacing: 0.8,
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class _FactGridSection extends StatelessWidget {
+  final String title;
+  final SliverGridDelegate delegate;
+  final List<_FactEntry> entries;
+  final Widget Function(_FactEntry entry) cardBuilder;
+
+  const _FactGridSection({
+    required this.title,
+    required this.delegate,
+    required this.entries,
+    required this.cardBuilder,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return SliverMainAxisGroup(
+      slivers: [
+        _SectionTitleSliver(title: title),
+        SliverPadding(
+          padding: const EdgeInsets.fromLTRB(16, 0, 16, 12),
+          sliver: SliverGrid(
+            gridDelegate: delegate,
+            delegate: SliverChildBuilderDelegate(
+              (context, index) => cardBuilder(entries[index]),
+              childCount: entries.length,
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+}
+
+class _FactEntry {
+  final String label;
+  final String value;
+
+  const _FactEntry({required this.label, required this.value});
+}
+
+class _CompactTitleCard extends StatelessWidget {
+  final _FactEntry entry;
+
+  const _CompactTitleCard({required this.entry});
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+
+    return Card.filled(
+      margin: EdgeInsets.zero,
+      color: theme.colorScheme.surfaceContainerHighest,
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Text(
+              entry.label,
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
+              style: theme.textTheme.labelSmall?.copyWith(
+                color: theme.colorScheme.onSurfaceVariant,
+              ),
+            ),
+            const SizedBox(height: 4),
+            Text(
+              entry.value,
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
+              style: theme.textTheme.bodyMedium?.copyWith(
+                fontWeight: FontWeight.w700,
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class _FactCard extends StatelessWidget {
+  final _FactEntry entry;
+
+  const _FactCard({required this.entry});
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+
+    return Card.filled(
+      margin: EdgeInsets.zero,
+      color: theme.colorScheme.surfaceContainerHighest,
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
+        child: Row(
+          children: [
+            Expanded(
+              child: Text(
+                entry.label,
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+                style: theme.textTheme.labelSmall?.copyWith(
+                  color: theme.colorScheme.onSurfaceVariant,
+                ),
+              ),
+            ),
+            const SizedBox(width: 8),
+            Expanded(
+              child: Text(
+                entry.value,
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+                textAlign: TextAlign.right,
+                style: theme.textTheme.bodySmall?.copyWith(
+                  fontWeight: FontWeight.w700,
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class _ChipGroup extends StatelessWidget {
+  final List<String> labels;
+  final Set<String> highlighted;
+  final Set<String> warning;
+
+  const _ChipGroup({
+    required this.labels,
+    this.highlighted = const {},
+    this.warning = const {},
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
+
+    return Wrap(
+      spacing: 8,
+      runSpacing: 8,
+      children: labels
+          .where((label) => label.trim().isNotEmpty)
+          .map((label) {
+            final normalizedLabel = label.replaceAll(' · основная', '');
+            final isHighlight = highlighted.contains(normalizedLabel);
+            final isWarning = warning.contains(normalizedLabel);
+
+            return Chip(
+              label: Text(label),
+              visualDensity: VisualDensity.compact,
+              backgroundColor: _resolveChipBackgroundColor(
+                colorScheme: colorScheme,
+                isHighlight: isHighlight,
+                isWarning: isWarning,
+              ),
+              labelStyle: Theme.of(context).textTheme.labelMedium?.copyWith(
+                color: _resolveChipForegroundColor(
+                  colorScheme: colorScheme,
+                  isHighlight: isHighlight,
+                  isWarning: isWarning,
+                ),
+              ),
+            );
+          })
+          .toList(growable: false),
+    );
+  }
+}
+
+class _DescriptionCard extends StatelessWidget {
+  final String text;
+
+  const _DescriptionCard({required this.text});
+
+  @override
+  Widget build(BuildContext context) {
+    return Card.filled(
+      margin: EdgeInsets.zero,
+      color: Theme.of(context).colorScheme.surfaceContainerHigh,
+      child: Padding(
+        padding: const EdgeInsets.all(12),
+        child: Text(text, style: Theme.of(context).textTheme.bodyMedium),
+      ),
+    );
+  }
+}
+
+class _ActionBar extends StatelessWidget {
+  final VoidCallback? onDetailsTap;
+  final VoidCallback? onOpenSourceTap;
+
+  const _ActionBar({
+    this.onDetailsTap,
+    this.onOpenSourceTap,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      children: [
+        Expanded(
+          child: FilledButton(
+            onPressed: onDetailsTap,
+            child: const Text('Подробнее'),
+          ),
+        ),
+        const SizedBox(width: 8),
+        Expanded(
+          child: FilledButton.tonal(
+            onPressed: onOpenSourceTap,
+            child: const Text('Открыть AniList'),
+          ),
+        ),
+      ],
+    );
+  }
+}
+
+String _fallback(String value) => value.trim().isEmpty ? '—' : value;
+
+String _joinedOrDash(List<String> values) {
+  final filtered = values
+      .where((value) => value.trim().isNotEmpty)
+      .toList(growable: false);
+  if (filtered.isEmpty) {
+    return '—';
+  }
+
+  return filtered.take(3).join(', ');
+}
+
+String _numberOrDash(int value) => value <= 0 ? '—' : '$value';
+
+String _numberWithSign(int value) {
+  if (value == 0 || value == -1) {
+    return '—';
+  }
+
+  if (value > 0) {
+    return '+$value';
+  }
+
+  return '$value';
+}
+
+String _minutesLabel(int duration) => duration <= 0 ? '—' : '$duration мин';
+
+String _seasonLabel(MediaPresentationData media) {
+  if (media.season.trim().isEmpty || media.seasonYear <= 0) {
+    return '—';
+  }
+
+  return '${media.season} ${media.seasonYear}';
+}
+
+String _dateLabel(MediaPresentationDate date) {
+  if (date.year <= 0 || date.month <= 0 || date.day <= 0) {
+    return '—';
+  }
+
+  return '${date.year}-${date.month.toString().padLeft(2, '0')}-${date.day.toString().padLeft(2, '0')}';
+}
+
+String _bestRanking(List<MediaPresentationRanking> rankings) {
+  if (rankings.isEmpty) {
+    return '—';
+  }
+
+  final best = rankings.reduce((a, b) => a.rank < b.rank ? a : b);
+  if (best.rank <= 0) {
+    return '—';
+  }
+
+  return '#${best.rank}${best.allTime ? ' за всё время' : ''}';
+}
+
+String _displayTitle(MediaPresentationTitle title) {
+  if (title.english.trim().isNotEmpty) {
+    return title.english;
+  }
+
+  if (title.romaji.trim().isNotEmpty) {
+    return title.romaji;
+  }
+
+  return _fallback(title.nativeTitle);
+}

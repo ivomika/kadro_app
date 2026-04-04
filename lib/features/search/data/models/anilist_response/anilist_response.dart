@@ -5,9 +5,7 @@ part 'anilist_response.g.dart';
 
 @freezed
 abstract class AnilistResponse with _$AnilistResponse {
-  const factory AnilistResponse({
-    required AnilistData data,
-  }) = _AnilistResponse;
+  const factory AnilistResponse({required AnilistData data}) = _AnilistResponse;
 
   factory AnilistResponse.fromJson(Map<String, Object?> json) =>
       _$AnilistResponseFromJson(json);
@@ -28,33 +26,32 @@ abstract class AnilistMedia with _$AnilistMedia {
   const factory AnilistMedia({
     required int id,
     required int? idMal,
-
+    required String? type,
     required AnilistTitle title,
     required String? description,
-
     required String? format,
     required String? status,
-
     required int? episodes,
     required int? duration,
-
     required String? season,
     required int? seasonYear,
-
     required int? averageScore,
+    required int? meanScore,
     required int? popularity,
-
+    required int? trending,
+    required int? favourites,
+    required String? countryOfOrigin,
+    required String? source,
+    required bool? isLicensed,
     required List<String> genres,
-
+    required List<String> synonyms,
+    required List<AnilistTag> tags,
+    required List<AnilistRanking> rankings,
     required AnilistCoverImage coverImage,
     required String? bannerImage,
-
     required AnilistFuzzyDate startDate,
     required AnilistFuzzyDate endDate,
-
     required AnilistStudios studios,
-    required AnilistTrailer? trailer,
-
     required String? siteUrl,
   }) = _AnilistMedia;
 
@@ -72,6 +69,34 @@ abstract class AnilistTitle with _$AnilistTitle {
 
   factory AnilistTitle.fromJson(Map<String, dynamic> json) =>
       _$AnilistTitleFromJson(json);
+}
+
+@freezed
+abstract class AnilistTag with _$AnilistTag {
+  const factory AnilistTag({
+    required String name,
+    required int? rank,
+    required bool? isMediaSpoiler,
+    required String? category,
+  }) = _AnilistTag;
+
+  factory AnilistTag.fromJson(Map<String, dynamic> json) =>
+      _$AnilistTagFromJson(json);
+}
+
+@freezed
+abstract class AnilistRanking with _$AnilistRanking {
+  const factory AnilistRanking({
+    required int rank,
+    required String? type,
+    required int? year,
+    required String? season,
+    required bool? allTime,
+    required String? context,
+  }) = _AnilistRanking;
+
+  factory AnilistRanking.fromJson(Map<String, dynamic> json) =>
+      _$AnilistRankingFromJson(json);
 }
 
 @freezed
@@ -100,33 +125,29 @@ abstract class AnilistFuzzyDate with _$AnilistFuzzyDate {
 
 @freezed
 abstract class AnilistStudios with _$AnilistStudios {
-  const factory AnilistStudios({
-    required List<AnilistStudioNode> nodes,
-  }) = _AnilistStudios;
+  const factory AnilistStudios({required List<AnilistStudioEdge> edges}) =
+      _AnilistStudios;
 
   factory AnilistStudios.fromJson(Map<String, dynamic> json) =>
       _$AnilistStudiosFromJson(json);
 }
 
 @freezed
-abstract class AnilistStudioNode with _$AnilistStudioNode {
-  const factory AnilistStudioNode({
-    required int id,
-    required String name,
-  }) = _AnilistStudioNode;
+abstract class AnilistStudioEdge with _$AnilistStudioEdge {
+  const factory AnilistStudioEdge({
+    required bool? isMain,
+    required AnilistStudioNode node,
+  }) = _AnilistStudioEdge;
 
-  factory AnilistStudioNode.fromJson(Map<String, dynamic> json) =>
-      _$AnilistStudioNodeFromJson(json);
+  factory AnilistStudioEdge.fromJson(Map<String, dynamic> json) =>
+      _$AnilistStudioEdgeFromJson(json);
 }
 
 @freezed
-abstract class AnilistTrailer with _$AnilistTrailer {
-  const factory AnilistTrailer({
-    required String? id,
-    required String? site,
-    required String? thumbnail,
-  }) = _AnilistTrailer;
+abstract class AnilistStudioNode with _$AnilistStudioNode {
+  const factory AnilistStudioNode({required int id, required String name}) =
+      _AnilistStudioNode;
 
-  factory AnilistTrailer.fromJson(Map<String, dynamic> json) =>
-      _$AnilistTrailerFromJson(json);
+  factory AnilistStudioNode.fromJson(Map<String, dynamic> json) =>
+      _$AnilistStudioNodeFromJson(json);
 }

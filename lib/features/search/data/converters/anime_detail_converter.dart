@@ -8,6 +8,7 @@ final class AnimeDetailConverter {
     return AnimeDetail(
       id: media.id,
       idMal: media.idMal ?? -1,
+      type: media.type ?? '',
       title: AnimeTitle(
         romaji: media.title.romaji ?? '',
         english: media.title.english ?? '',
@@ -21,8 +22,15 @@ final class AnimeDetailConverter {
       season: media.season ?? '',
       seasonYear: media.seasonYear ?? -1,
       averageScore: media.averageScore ?? -1,
+      meanScore: media.meanScore ?? -1,
       popularity: media.popularity ?? -1,
+      trending: media.trending ?? -1,
+      favourites: media.favourites ?? -1,
       genres: List<String>.unmodifiable(media.genres),
+      synonyms: List<String>.unmodifiable(media.synonyms),
+      countryOfOrigin: media.countryOfOrigin ?? '',
+      source: media.source ?? '',
+      isLicensed: media.isLicensed ?? false,
       coverImage: AnimeCoverImage(
         large: media.coverImage.large ?? '',
         extraLarge: media.coverImage.extraLarge ?? '',
@@ -40,20 +48,38 @@ final class AnimeDetailConverter {
         day: media.endDate.day ?? -1,
       ),
       studios: AnimeStudios(
-        nodes: media.studios.nodes
+        nodes: media.studios.edges
             .map(
-              (studio) => AnimeStudioNode(
-                id: studio.id,
-                name: studio.name,
+              (studioEdge) => AnimeStudioNode(
+                id: studioEdge.node.id,
+                name: studioEdge.node.name,
+                isMain: studioEdge.isMain ?? false,
               ),
             )
             .toList(growable: false),
       ),
-      trailer: AnimeTrailer(
-        id: media.trailer?.id ?? '',
-        site: media.trailer?.site ?? '',
-        thumbnail: media.trailer?.thumbnail ?? '',
-      ),
+      tags: media.tags
+          .map(
+            (tag) => AnimeTag(
+              name: tag.name,
+              rank: tag.rank ?? -1,
+              isMediaSpoiler: tag.isMediaSpoiler ?? false,
+              category: tag.category ?? '',
+            ),
+          )
+          .toList(growable: false),
+      rankings: media.rankings
+          .map(
+            (ranking) => AnimeRanking(
+              rank: ranking.rank,
+              type: ranking.type ?? '',
+              year: ranking.year ?? -1,
+              season: ranking.season ?? '',
+              allTime: ranking.allTime ?? false,
+              context: ranking.context ?? '',
+            ),
+          )
+          .toList(growable: false),
       siteUrl: media.siteUrl ?? '',
       similarity: similarity,
     );

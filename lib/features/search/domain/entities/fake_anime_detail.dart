@@ -1,10 +1,11 @@
 import 'package:kadro_app/features/search/domain/entities/anime_detail.dart';
 import 'package:skeletonizer/skeletonizer.dart';
 
-class FakeAnimeDetail extends AnimeDetail{
+class FakeAnimeDetail extends AnimeDetail {
   const FakeAnimeDetail._({
     required super.id,
     required super.idMal,
+    required super.type,
     required super.title,
     required super.description,
     required super.format,
@@ -14,65 +15,84 @@ class FakeAnimeDetail extends AnimeDetail{
     required super.season,
     required super.seasonYear,
     required super.averageScore,
+    required super.meanScore,
     required super.popularity,
+    required super.trending,
+    required super.favourites,
     required super.genres,
+    required super.synonyms,
+    required super.countryOfOrigin,
+    required super.source,
+    required super.isLicensed,
     required super.coverImage,
     required super.bannerImage,
     required super.startDate,
     required super.endDate,
     required super.studios,
-    required super.trailer,
+    required super.tags,
+    required super.rankings,
     required super.siteUrl,
-    required super.similarity
+    required super.similarity,
   });
 
   factory FakeAnimeDetail() => FakeAnimeDetail._(
-      id: 0,
-      idMal: 0,
-      title: AnimeTitle(
-          romaji: BoneMock.title,
-          english: BoneMock.title,
-          nativeTitle: BoneMock.title
+    id: 0,
+    idMal: 0,
+    type: BoneMock.name,
+    title: AnimeTitle(
+      romaji: BoneMock.title,
+      english: BoneMock.title,
+      nativeTitle: BoneMock.title,
+    ),
+    description: BoneMock.longParagraph,
+    format: BoneMock.name,
+    status: BoneMock.name,
+    episodes: 24,
+    duration: 24,
+    season: BoneMock.name,
+    seasonYear: 2000,
+    averageScore: 0,
+    meanScore: 0,
+    popularity: 0,
+    trending: 0,
+    favourites: 0,
+    genres: List.generate(5, (index) => BoneMock.name),
+    synonyms: List.generate(3, (index) => BoneMock.name),
+    countryOfOrigin: BoneMock.name,
+    source: BoneMock.name,
+    isLicensed: false,
+    coverImage: const AnimeCoverImage(large: '', extraLarge: '', color: ''),
+    bannerImage: BoneMock.name,
+    startDate: const AnimeFuzzyDate(year: 2000, month: 12, day: 13),
+    endDate: const AnimeFuzzyDate(year: 2000, month: 12, day: 13),
+    studios: AnimeStudios(
+      nodes: List.generate(
+        5,
+        (index) =>
+            AnimeStudioNode(id: index, name: BoneMock.name, isMain: index == 0),
       ),
-      description: BoneMock.longParagraph,
-      format: BoneMock.name,
-      status: BoneMock.name,
-      episodes: 24,
-      duration: 0,
-      season: BoneMock.name,
-      seasonYear: 2000,
-      averageScore: 0,
-      popularity: 0,
-      genres: List.generate(5, (index) => BoneMock.name),
-      coverImage: AnimeCoverImage(
-          large: '',
-          extraLarge: '',
-          color: '',
+    ),
+    tags: List.generate(
+      6,
+      (index) => AnimeTag(
+        name: BoneMock.name,
+        rank: 80,
+        isMediaSpoiler: false,
+        category: BoneMock.name,
       ),
-      bannerImage: BoneMock.name,
-      startDate: AnimeFuzzyDate(
-          year: 2000,
-          month: 12,
-          day: 13
+    ),
+    rankings: List.generate(
+      3,
+      (index) => AnimeRanking(
+        rank: index + 1,
+        type: BoneMock.name,
+        year: 2000,
+        season: BoneMock.name,
+        allTime: false,
+        context: BoneMock.name,
       ),
-      endDate: AnimeFuzzyDate(
-          year: 2000,
-          month: 12,
-          day: 13
-      ),
-      studios: AnimeStudios(
-          nodes: List.generate(5, (index) => AnimeStudioNode(
-              id: 0,
-              name: BoneMock.name
-          )
-        )
-      ),
-      trailer: AnimeTrailer(
-          id: BoneMock.name,
-          site: BoneMock.name,
-          thumbnail: BoneMock.name
-      ),
-      siteUrl: BoneMock.name,
-      similarity: 0.0
+    ),
+    siteUrl: BoneMock.name,
+    similarity: 0.0,
   );
 }

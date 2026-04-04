@@ -26,6 +26,7 @@ _AnilistMedia _$AnilistMediaFromJson(
 ) => _AnilistMedia(
   id: (json['id'] as num).toInt(),
   idMal: (json['idMal'] as num?)?.toInt(),
+  type: json['type'] as String?,
   title: AnilistTitle.fromJson(json['title'] as Map<String, dynamic>),
   description: json['description'] as String?,
   format: json['format'] as String?,
@@ -35,8 +36,23 @@ _AnilistMedia _$AnilistMediaFromJson(
   season: json['season'] as String?,
   seasonYear: (json['seasonYear'] as num?)?.toInt(),
   averageScore: (json['averageScore'] as num?)?.toInt(),
+  meanScore: (json['meanScore'] as num?)?.toInt(),
   popularity: (json['popularity'] as num?)?.toInt(),
+  trending: (json['trending'] as num?)?.toInt(),
+  favourites: (json['favourites'] as num?)?.toInt(),
+  countryOfOrigin: json['countryOfOrigin'] as String?,
+  source: json['source'] as String?,
+  isLicensed: json['isLicensed'] as bool?,
   genres: (json['genres'] as List<dynamic>).map((e) => e as String).toList(),
+  synonyms: (json['synonyms'] as List<dynamic>)
+      .map((e) => e as String)
+      .toList(),
+  tags: (json['tags'] as List<dynamic>)
+      .map((e) => AnilistTag.fromJson(e as Map<String, dynamic>))
+      .toList(),
+  rankings: (json['rankings'] as List<dynamic>)
+      .map((e) => AnilistRanking.fromJson(e as Map<String, dynamic>))
+      .toList(),
   coverImage: AnilistCoverImage.fromJson(
     json['coverImage'] as Map<String, dynamic>,
   ),
@@ -46,9 +62,6 @@ _AnilistMedia _$AnilistMediaFromJson(
   ),
   endDate: AnilistFuzzyDate.fromJson(json['endDate'] as Map<String, dynamic>),
   studios: AnilistStudios.fromJson(json['studios'] as Map<String, dynamic>),
-  trailer: json['trailer'] == null
-      ? null
-      : AnilistTrailer.fromJson(json['trailer'] as Map<String, dynamic>),
   siteUrl: json['siteUrl'] as String?,
 );
 
@@ -56,6 +69,7 @@ Map<String, dynamic> _$AnilistMediaToJson(_AnilistMedia instance) =>
     <String, dynamic>{
       'id': instance.id,
       'idMal': instance.idMal,
+      'type': instance.type,
       'title': instance.title,
       'description': instance.description,
       'format': instance.format,
@@ -65,14 +79,22 @@ Map<String, dynamic> _$AnilistMediaToJson(_AnilistMedia instance) =>
       'season': instance.season,
       'seasonYear': instance.seasonYear,
       'averageScore': instance.averageScore,
+      'meanScore': instance.meanScore,
       'popularity': instance.popularity,
+      'trending': instance.trending,
+      'favourites': instance.favourites,
+      'countryOfOrigin': instance.countryOfOrigin,
+      'source': instance.source,
+      'isLicensed': instance.isLicensed,
       'genres': instance.genres,
+      'synonyms': instance.synonyms,
+      'tags': instance.tags,
+      'rankings': instance.rankings,
       'coverImage': instance.coverImage,
       'bannerImage': instance.bannerImage,
       'startDate': instance.startDate,
       'endDate': instance.endDate,
       'studios': instance.studios,
-      'trailer': instance.trailer,
       'siteUrl': instance.siteUrl,
     };
 
@@ -88,6 +110,41 @@ Map<String, dynamic> _$AnilistTitleToJson(_AnilistTitle instance) =>
       'romaji': instance.romaji,
       'english': instance.english,
       'native': instance.nativeTitle,
+    };
+
+_AnilistTag _$AnilistTagFromJson(Map<String, dynamic> json) => _AnilistTag(
+  name: json['name'] as String,
+  rank: (json['rank'] as num?)?.toInt(),
+  isMediaSpoiler: json['isMediaSpoiler'] as bool?,
+  category: json['category'] as String?,
+);
+
+Map<String, dynamic> _$AnilistTagToJson(_AnilistTag instance) =>
+    <String, dynamic>{
+      'name': instance.name,
+      'rank': instance.rank,
+      'isMediaSpoiler': instance.isMediaSpoiler,
+      'category': instance.category,
+    };
+
+_AnilistRanking _$AnilistRankingFromJson(Map<String, dynamic> json) =>
+    _AnilistRanking(
+      rank: (json['rank'] as num).toInt(),
+      type: json['type'] as String?,
+      year: (json['year'] as num?)?.toInt(),
+      season: json['season'] as String?,
+      allTime: json['allTime'] as bool?,
+      context: json['context'] as String?,
+    );
+
+Map<String, dynamic> _$AnilistRankingToJson(_AnilistRanking instance) =>
+    <String, dynamic>{
+      'rank': instance.rank,
+      'type': instance.type,
+      'year': instance.year,
+      'season': instance.season,
+      'allTime': instance.allTime,
+      'context': instance.context,
     };
 
 _AnilistCoverImage _$AnilistCoverImageFromJson(Map<String, dynamic> json) =>
@@ -120,13 +177,22 @@ Map<String, dynamic> _$AnilistFuzzyDateToJson(_AnilistFuzzyDate instance) =>
 
 _AnilistStudios _$AnilistStudiosFromJson(Map<String, dynamic> json) =>
     _AnilistStudios(
-      nodes: (json['nodes'] as List<dynamic>)
-          .map((e) => AnilistStudioNode.fromJson(e as Map<String, dynamic>))
+      edges: (json['edges'] as List<dynamic>)
+          .map((e) => AnilistStudioEdge.fromJson(e as Map<String, dynamic>))
           .toList(),
     );
 
 Map<String, dynamic> _$AnilistStudiosToJson(_AnilistStudios instance) =>
-    <String, dynamic>{'nodes': instance.nodes};
+    <String, dynamic>{'edges': instance.edges};
+
+_AnilistStudioEdge _$AnilistStudioEdgeFromJson(Map<String, dynamic> json) =>
+    _AnilistStudioEdge(
+      isMain: json['isMain'] as bool?,
+      node: AnilistStudioNode.fromJson(json['node'] as Map<String, dynamic>),
+    );
+
+Map<String, dynamic> _$AnilistStudioEdgeToJson(_AnilistStudioEdge instance) =>
+    <String, dynamic>{'isMain': instance.isMain, 'node': instance.node};
 
 _AnilistStudioNode _$AnilistStudioNodeFromJson(Map<String, dynamic> json) =>
     _AnilistStudioNode(
@@ -136,17 +202,3 @@ _AnilistStudioNode _$AnilistStudioNodeFromJson(Map<String, dynamic> json) =>
 
 Map<String, dynamic> _$AnilistStudioNodeToJson(_AnilistStudioNode instance) =>
     <String, dynamic>{'id': instance.id, 'name': instance.name};
-
-_AnilistTrailer _$AnilistTrailerFromJson(Map<String, dynamic> json) =>
-    _AnilistTrailer(
-      id: json['id'] as String?,
-      site: json['site'] as String?,
-      thumbnail: json['thumbnail'] as String?,
-    );
-
-Map<String, dynamic> _$AnilistTrailerToJson(_AnilistTrailer instance) =>
-    <String, dynamic>{
-      'id': instance.id,
-      'site': instance.site,
-      'thumbnail': instance.thumbnail,
-    };

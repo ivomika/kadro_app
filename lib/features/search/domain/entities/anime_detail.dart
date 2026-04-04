@@ -4,6 +4,7 @@ import 'package:html/parser.dart';
 class AnimeDetail extends Equatable {
   final int id;
   final int idMal;
+  final String type;
   final AnimeTitle title;
   final double similarity;
   final String description;
@@ -14,20 +15,30 @@ class AnimeDetail extends Equatable {
   final String season;
   final int seasonYear;
   final int averageScore;
+  final int meanScore;
   final int popularity;
+  final int trending;
+  final int favourites;
   final List<String> genres;
+  final List<String> synonyms;
+  final String countryOfOrigin;
+  final String source;
+  final bool isLicensed;
   final AnimeCoverImage coverImage;
   final String bannerImage;
   final AnimeFuzzyDate startDate;
   final AnimeFuzzyDate endDate;
   final AnimeStudios studios;
-  final AnimeTrailer trailer;
+  final List<AnimeTag> tags;
+  final List<AnimeRanking> rankings;
   final String siteUrl;
+
   String get parsedDescription => _parseHtmlText();
 
   const AnimeDetail({
     required this.id,
     required this.idMal,
+    required this.type,
     required this.title,
     required this.description,
     required this.format,
@@ -37,14 +48,22 @@ class AnimeDetail extends Equatable {
     required this.season,
     required this.seasonYear,
     required this.averageScore,
+    required this.meanScore,
     required this.popularity,
+    required this.trending,
+    required this.favourites,
     required this.genres,
+    required this.synonyms,
+    required this.countryOfOrigin,
+    required this.source,
+    required this.isLicensed,
     required this.coverImage,
     required this.bannerImage,
     required this.startDate,
     required this.endDate,
     required this.studios,
-    required this.trailer,
+    required this.tags,
+    required this.rankings,
     required this.siteUrl,
     required this.similarity,
   });
@@ -53,6 +72,7 @@ class AnimeDetail extends Equatable {
   List<Object?> get props => [
     id,
     idMal,
+    type,
     title,
     description,
     format,
@@ -62,44 +82,25 @@ class AnimeDetail extends Equatable {
     season,
     seasonYear,
     averageScore,
+    meanScore,
     popularity,
+    trending,
+    favourites,
     genres,
+    synonyms,
+    countryOfOrigin,
+    source,
+    isLicensed,
     coverImage,
     bannerImage,
     startDate,
     endDate,
     studios,
-    trailer,
+    tags,
+    rankings,
     siteUrl,
     similarity,
   ];
-
-  @override
-  String toString() {
-    return 'AnimeDetail('
-        'id: $id, \n'
-        'idMal: $idMal, \n'
-        'title: $title, \n'
-        'description: $description, \n'
-        'format: $format, \n'
-        'status: $status, \n'
-        'episodes: $episodes, \n'
-        'duration: $duration, \n'
-        'season: $season, \n'
-        'seasonYear: $seasonYear, \n'
-        'averageScore: $averageScore, \n'
-        'popularity: $popularity, \n'
-        'genres: $genres, \n'
-        'coverImage: $coverImage, \n'
-        'bannerImage: $bannerImage, \n'
-        'startDate: $startDate, \n'
-        'endDate: $endDate, \n'
-        'studios: $studios, \n'
-        'trailer: $trailer, \n'
-        'siteUrl: $siteUrl, \n'
-        'similarity: $similarity\n'
-    ')';
-  }
 
   String _parseHtmlText() {
     final document = parse(description);
@@ -120,11 +121,6 @@ class AnimeTitle extends Equatable {
 
   @override
   List<Object?> get props => [romaji, english, nativeTitle];
-
-  @override
-  String toString() {
-    return 'AnimeTitle(romaji: $romaji, english: $english, nativeTitle: $nativeTitle)';
-  }
 }
 
 class AnimeCoverImage extends Equatable {
@@ -140,11 +136,6 @@ class AnimeCoverImage extends Equatable {
 
   @override
   List<Object?> get props => [large, extraLarge, color];
-
-  @override
-  String toString() {
-    return 'AnimeCoverImage(large: $large, extraLarge: $extraLarge, color: $color)';
-  }
 }
 
 class AnimeFuzzyDate extends Equatable {
@@ -160,63 +151,66 @@ class AnimeFuzzyDate extends Equatable {
 
   @override
   List<Object?> get props => [year, month, day];
-
-  @override
-  String toString() {
-    return 'AnimeFuzzyDate(year: $year, month: $month, day: $day)';
-  }
 }
 
 class AnimeStudios extends Equatable {
   final List<AnimeStudioNode> nodes;
 
-  const AnimeStudios({
-    required this.nodes,
-  });
+  const AnimeStudios({required this.nodes});
 
   @override
   List<Object?> get props => [nodes];
-
-  @override
-  String toString() {
-    return 'AnimeStudios(nodes: $nodes)';
-  }
 }
 
 class AnimeStudioNode extends Equatable {
   final int id;
   final String name;
+  final bool isMain;
 
   const AnimeStudioNode({
     required this.id,
     required this.name,
+    required this.isMain,
   });
 
   @override
-  List<Object?> get props => [id, name];
-
-  @override
-  String toString() {
-    return 'AnimeStudioNode(id: $id, name: $name)';
-  }
+  List<Object?> get props => [id, name, isMain];
 }
 
-class AnimeTrailer extends Equatable {
-  final String id;
-  final String site;
-  final String thumbnail;
+class AnimeTag extends Equatable {
+  final String name;
+  final int rank;
+  final bool isMediaSpoiler;
+  final String category;
 
-  const AnimeTrailer({
-    required this.id,
-    required this.site,
-    required this.thumbnail,
+  const AnimeTag({
+    required this.name,
+    required this.rank,
+    required this.isMediaSpoiler,
+    required this.category,
   });
 
   @override
-  List<Object?> get props => [id, site, thumbnail];
+  List<Object?> get props => [name, rank, isMediaSpoiler, category];
+}
+
+class AnimeRanking extends Equatable {
+  final int rank;
+  final String type;
+  final int year;
+  final String season;
+  final bool allTime;
+  final String context;
+
+  const AnimeRanking({
+    required this.rank,
+    required this.type,
+    required this.year,
+    required this.season,
+    required this.allTime,
+    required this.context,
+  });
 
   @override
-  String toString() {
-    return 'AnimeTrailer(id: $id, site: $site, thumbnail: $thumbnail)';
-  }
+  List<Object?> get props => [rank, type, year, season, allTime, context];
 }

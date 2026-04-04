@@ -1,18 +1,19 @@
 import 'package:flutter_core/flutter_core.dart';
 import 'package:kadro_app/features/search/data/models/anilist_response/anilist_response.dart';
 
-final class AnilistClient extends BaseApiClient{
+final class AnilistClient extends BaseApiClient {
   static const String _baseUrl = 'https://graphql.anilist.co';
 
   AnilistClient() : super(_baseUrl);
 
   Future<FetchResponse<AnilistResponse>> searchByAnilistId(int id) async {
     final request = GraphQlRequest(
-        query: '''
+      query: '''
             query AnimeDetails(\$id: Int!) {
                 Media(id: \$id, type: ANIME) {
                   id
                   idMal
+                  type
                   title {
                     romaji
                     english
@@ -26,8 +27,29 @@ final class AnilistClient extends BaseApiClient{
                   season
                   seasonYear
                   averageScore
+                  meanScore
                   popularity
+                  trending
+                  favourites
+                  countryOfOrigin
+                  source
+                  isLicensed
                   genres
+                  synonyms
+                  tags {
+                    name
+                    rank
+                    isMediaSpoiler
+                    category
+                  }
+                  rankings {
+                    rank
+                    type
+                    year
+                    season
+                    allTime
+                    context
+                  }
                   coverImage {
                     large
                     extraLarge
@@ -44,29 +66,27 @@ final class AnilistClient extends BaseApiClient{
                     month
                     day
                   }
-                  studios(isMain: true) {
-                    nodes {
-                      id
-                      name
+                  studios {
+                    edges {
+                      isMain
+                      node {
+                        id
+                        name
+                      }
                     }
-                  }
-                  trailer {
-                    id
-                    site
-                    thumbnail
                   }
                   siteUrl
                 }
               }
         ''',
-        variables: {'id': id}
+      variables: {'id': id},
     );
 
     return await fetch(
-        RequestMethod.post,
-        '',
-        body: request.toJson(),
-        factory: AnilistResponse.fromJson
+      RequestMethod.post,
+      '',
+      body: request.toJson(),
+      factory: AnilistResponse.fromJson,
     );
   }
 }

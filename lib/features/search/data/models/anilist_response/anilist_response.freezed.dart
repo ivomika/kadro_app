@@ -577,7 +577,7 @@ $AnilistMediaCopyWith<$Res> get media {
 /// @nodoc
 mixin _$AnilistMedia {
 
- int get id; int? get idMal; AnilistTitle get title; String? get description; String? get format; String? get status; int? get episodes; int? get duration; String? get season; int? get seasonYear; int? get averageScore; int? get popularity; List<String> get genres; AnilistCoverImage get coverImage; String? get bannerImage; AnilistFuzzyDate get startDate; AnilistFuzzyDate get endDate; AnilistStudios get studios; AnilistTrailer? get trailer; String? get siteUrl;
+ int get id; int? get idMal; String? get type; AnilistTitle get title; String? get description; String? get format; String? get status; int? get episodes; int? get duration; String? get season; int? get seasonYear; int? get averageScore; int? get meanScore; int? get popularity; int? get trending; int? get favourites; String? get countryOfOrigin; String? get source; bool? get isLicensed; List<String> get genres; List<String> get synonyms; List<AnilistTag> get tags; List<AnilistRanking> get rankings; AnilistCoverImage get coverImage; String? get bannerImage; AnilistFuzzyDate get startDate; AnilistFuzzyDate get endDate; AnilistStudios get studios; String? get siteUrl;
 /// Create a copy of AnilistMedia
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -590,16 +590,16 @@ $AnilistMediaCopyWith<AnilistMedia> get copyWith => _$AnilistMediaCopyWithImpl<A
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is AnilistMedia&&(identical(other.id, id) || other.id == id)&&(identical(other.idMal, idMal) || other.idMal == idMal)&&(identical(other.title, title) || other.title == title)&&(identical(other.description, description) || other.description == description)&&(identical(other.format, format) || other.format == format)&&(identical(other.status, status) || other.status == status)&&(identical(other.episodes, episodes) || other.episodes == episodes)&&(identical(other.duration, duration) || other.duration == duration)&&(identical(other.season, season) || other.season == season)&&(identical(other.seasonYear, seasonYear) || other.seasonYear == seasonYear)&&(identical(other.averageScore, averageScore) || other.averageScore == averageScore)&&(identical(other.popularity, popularity) || other.popularity == popularity)&&const DeepCollectionEquality().equals(other.genres, genres)&&(identical(other.coverImage, coverImage) || other.coverImage == coverImage)&&(identical(other.bannerImage, bannerImage) || other.bannerImage == bannerImage)&&(identical(other.startDate, startDate) || other.startDate == startDate)&&(identical(other.endDate, endDate) || other.endDate == endDate)&&(identical(other.studios, studios) || other.studios == studios)&&(identical(other.trailer, trailer) || other.trailer == trailer)&&(identical(other.siteUrl, siteUrl) || other.siteUrl == siteUrl));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is AnilistMedia&&(identical(other.id, id) || other.id == id)&&(identical(other.idMal, idMal) || other.idMal == idMal)&&(identical(other.type, type) || other.type == type)&&(identical(other.title, title) || other.title == title)&&(identical(other.description, description) || other.description == description)&&(identical(other.format, format) || other.format == format)&&(identical(other.status, status) || other.status == status)&&(identical(other.episodes, episodes) || other.episodes == episodes)&&(identical(other.duration, duration) || other.duration == duration)&&(identical(other.season, season) || other.season == season)&&(identical(other.seasonYear, seasonYear) || other.seasonYear == seasonYear)&&(identical(other.averageScore, averageScore) || other.averageScore == averageScore)&&(identical(other.meanScore, meanScore) || other.meanScore == meanScore)&&(identical(other.popularity, popularity) || other.popularity == popularity)&&(identical(other.trending, trending) || other.trending == trending)&&(identical(other.favourites, favourites) || other.favourites == favourites)&&(identical(other.countryOfOrigin, countryOfOrigin) || other.countryOfOrigin == countryOfOrigin)&&(identical(other.source, source) || other.source == source)&&(identical(other.isLicensed, isLicensed) || other.isLicensed == isLicensed)&&const DeepCollectionEquality().equals(other.genres, genres)&&const DeepCollectionEquality().equals(other.synonyms, synonyms)&&const DeepCollectionEquality().equals(other.tags, tags)&&const DeepCollectionEquality().equals(other.rankings, rankings)&&(identical(other.coverImage, coverImage) || other.coverImage == coverImage)&&(identical(other.bannerImage, bannerImage) || other.bannerImage == bannerImage)&&(identical(other.startDate, startDate) || other.startDate == startDate)&&(identical(other.endDate, endDate) || other.endDate == endDate)&&(identical(other.studios, studios) || other.studios == studios)&&(identical(other.siteUrl, siteUrl) || other.siteUrl == siteUrl));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hashAll([runtimeType,id,idMal,title,description,format,status,episodes,duration,season,seasonYear,averageScore,popularity,const DeepCollectionEquality().hash(genres),coverImage,bannerImage,startDate,endDate,studios,trailer,siteUrl]);
+int get hashCode => Object.hashAll([runtimeType,id,idMal,type,title,description,format,status,episodes,duration,season,seasonYear,averageScore,meanScore,popularity,trending,favourites,countryOfOrigin,source,isLicensed,const DeepCollectionEquality().hash(genres),const DeepCollectionEquality().hash(synonyms),const DeepCollectionEquality().hash(tags),const DeepCollectionEquality().hash(rankings),coverImage,bannerImage,startDate,endDate,studios,siteUrl]);
 
 @override
 String toString() {
-  return 'AnilistMedia(id: $id, idMal: $idMal, title: $title, description: $description, format: $format, status: $status, episodes: $episodes, duration: $duration, season: $season, seasonYear: $seasonYear, averageScore: $averageScore, popularity: $popularity, genres: $genres, coverImage: $coverImage, bannerImage: $bannerImage, startDate: $startDate, endDate: $endDate, studios: $studios, trailer: $trailer, siteUrl: $siteUrl)';
+  return 'AnilistMedia(id: $id, idMal: $idMal, type: $type, title: $title, description: $description, format: $format, status: $status, episodes: $episodes, duration: $duration, season: $season, seasonYear: $seasonYear, averageScore: $averageScore, meanScore: $meanScore, popularity: $popularity, trending: $trending, favourites: $favourites, countryOfOrigin: $countryOfOrigin, source: $source, isLicensed: $isLicensed, genres: $genres, synonyms: $synonyms, tags: $tags, rankings: $rankings, coverImage: $coverImage, bannerImage: $bannerImage, startDate: $startDate, endDate: $endDate, studios: $studios, siteUrl: $siteUrl)';
 }
 
 
@@ -610,11 +610,11 @@ abstract mixin class $AnilistMediaCopyWith<$Res>  {
   factory $AnilistMediaCopyWith(AnilistMedia value, $Res Function(AnilistMedia) _then) = _$AnilistMediaCopyWithImpl;
 @useResult
 $Res call({
- int id, int? idMal, AnilistTitle title, String? description, String? format, String? status, int? episodes, int? duration, String? season, int? seasonYear, int? averageScore, int? popularity, List<String> genres, AnilistCoverImage coverImage, String? bannerImage, AnilistFuzzyDate startDate, AnilistFuzzyDate endDate, AnilistStudios studios, AnilistTrailer? trailer, String? siteUrl
+ int id, int? idMal, String? type, AnilistTitle title, String? description, String? format, String? status, int? episodes, int? duration, String? season, int? seasonYear, int? averageScore, int? meanScore, int? popularity, int? trending, int? favourites, String? countryOfOrigin, String? source, bool? isLicensed, List<String> genres, List<String> synonyms, List<AnilistTag> tags, List<AnilistRanking> rankings, AnilistCoverImage coverImage, String? bannerImage, AnilistFuzzyDate startDate, AnilistFuzzyDate endDate, AnilistStudios studios, String? siteUrl
 });
 
 
-$AnilistTitleCopyWith<$Res> get title;$AnilistCoverImageCopyWith<$Res> get coverImage;$AnilistFuzzyDateCopyWith<$Res> get startDate;$AnilistFuzzyDateCopyWith<$Res> get endDate;$AnilistStudiosCopyWith<$Res> get studios;$AnilistTrailerCopyWith<$Res>? get trailer;
+$AnilistTitleCopyWith<$Res> get title;$AnilistCoverImageCopyWith<$Res> get coverImage;$AnilistFuzzyDateCopyWith<$Res> get startDate;$AnilistFuzzyDateCopyWith<$Res> get endDate;$AnilistStudiosCopyWith<$Res> get studios;
 
 }
 /// @nodoc
@@ -627,11 +627,12 @@ class _$AnilistMediaCopyWithImpl<$Res>
 
 /// Create a copy of AnilistMedia
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? idMal = freezed,Object? title = null,Object? description = freezed,Object? format = freezed,Object? status = freezed,Object? episodes = freezed,Object? duration = freezed,Object? season = freezed,Object? seasonYear = freezed,Object? averageScore = freezed,Object? popularity = freezed,Object? genres = null,Object? coverImage = null,Object? bannerImage = freezed,Object? startDate = null,Object? endDate = null,Object? studios = null,Object? trailer = freezed,Object? siteUrl = freezed,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? idMal = freezed,Object? type = freezed,Object? title = null,Object? description = freezed,Object? format = freezed,Object? status = freezed,Object? episodes = freezed,Object? duration = freezed,Object? season = freezed,Object? seasonYear = freezed,Object? averageScore = freezed,Object? meanScore = freezed,Object? popularity = freezed,Object? trending = freezed,Object? favourites = freezed,Object? countryOfOrigin = freezed,Object? source = freezed,Object? isLicensed = freezed,Object? genres = null,Object? synonyms = null,Object? tags = null,Object? rankings = null,Object? coverImage = null,Object? bannerImage = freezed,Object? startDate = null,Object? endDate = null,Object? studios = null,Object? siteUrl = freezed,}) {
   return _then(_self.copyWith(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as int,idMal: freezed == idMal ? _self.idMal : idMal // ignore: cast_nullable_to_non_nullable
-as int?,title: null == title ? _self.title : title // ignore: cast_nullable_to_non_nullable
+as int?,type: freezed == type ? _self.type : type // ignore: cast_nullable_to_non_nullable
+as String?,title: null == title ? _self.title : title // ignore: cast_nullable_to_non_nullable
 as AnilistTitle,description: freezed == description ? _self.description : description // ignore: cast_nullable_to_non_nullable
 as String?,format: freezed == format ? _self.format : format // ignore: cast_nullable_to_non_nullable
 as String?,status: freezed == status ? _self.status : status // ignore: cast_nullable_to_non_nullable
@@ -640,15 +641,23 @@ as int?,duration: freezed == duration ? _self.duration : duration // ignore: cas
 as int?,season: freezed == season ? _self.season : season // ignore: cast_nullable_to_non_nullable
 as String?,seasonYear: freezed == seasonYear ? _self.seasonYear : seasonYear // ignore: cast_nullable_to_non_nullable
 as int?,averageScore: freezed == averageScore ? _self.averageScore : averageScore // ignore: cast_nullable_to_non_nullable
+as int?,meanScore: freezed == meanScore ? _self.meanScore : meanScore // ignore: cast_nullable_to_non_nullable
 as int?,popularity: freezed == popularity ? _self.popularity : popularity // ignore: cast_nullable_to_non_nullable
-as int?,genres: null == genres ? _self.genres : genres // ignore: cast_nullable_to_non_nullable
-as List<String>,coverImage: null == coverImage ? _self.coverImage : coverImage // ignore: cast_nullable_to_non_nullable
+as int?,trending: freezed == trending ? _self.trending : trending // ignore: cast_nullable_to_non_nullable
+as int?,favourites: freezed == favourites ? _self.favourites : favourites // ignore: cast_nullable_to_non_nullable
+as int?,countryOfOrigin: freezed == countryOfOrigin ? _self.countryOfOrigin : countryOfOrigin // ignore: cast_nullable_to_non_nullable
+as String?,source: freezed == source ? _self.source : source // ignore: cast_nullable_to_non_nullable
+as String?,isLicensed: freezed == isLicensed ? _self.isLicensed : isLicensed // ignore: cast_nullable_to_non_nullable
+as bool?,genres: null == genres ? _self.genres : genres // ignore: cast_nullable_to_non_nullable
+as List<String>,synonyms: null == synonyms ? _self.synonyms : synonyms // ignore: cast_nullable_to_non_nullable
+as List<String>,tags: null == tags ? _self.tags : tags // ignore: cast_nullable_to_non_nullable
+as List<AnilistTag>,rankings: null == rankings ? _self.rankings : rankings // ignore: cast_nullable_to_non_nullable
+as List<AnilistRanking>,coverImage: null == coverImage ? _self.coverImage : coverImage // ignore: cast_nullable_to_non_nullable
 as AnilistCoverImage,bannerImage: freezed == bannerImage ? _self.bannerImage : bannerImage // ignore: cast_nullable_to_non_nullable
 as String?,startDate: null == startDate ? _self.startDate : startDate // ignore: cast_nullable_to_non_nullable
 as AnilistFuzzyDate,endDate: null == endDate ? _self.endDate : endDate // ignore: cast_nullable_to_non_nullable
 as AnilistFuzzyDate,studios: null == studios ? _self.studios : studios // ignore: cast_nullable_to_non_nullable
-as AnilistStudios,trailer: freezed == trailer ? _self.trailer : trailer // ignore: cast_nullable_to_non_nullable
-as AnilistTrailer?,siteUrl: freezed == siteUrl ? _self.siteUrl : siteUrl // ignore: cast_nullable_to_non_nullable
+as AnilistStudios,siteUrl: freezed == siteUrl ? _self.siteUrl : siteUrl // ignore: cast_nullable_to_non_nullable
 as String?,
   ));
 }
@@ -696,18 +705,6 @@ $AnilistStudiosCopyWith<$Res> get studios {
   
   return $AnilistStudiosCopyWith<$Res>(_self.studios, (value) {
     return _then(_self.copyWith(studios: value));
-  });
-}/// Create a copy of AnilistMedia
-/// with the given fields replaced by the non-null parameter values.
-@override
-@pragma('vm:prefer-inline')
-$AnilistTrailerCopyWith<$Res>? get trailer {
-    if (_self.trailer == null) {
-    return null;
-  }
-
-  return $AnilistTrailerCopyWith<$Res>(_self.trailer!, (value) {
-    return _then(_self.copyWith(trailer: value));
   });
 }
 }
@@ -791,10 +788,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( int id,  int? idMal,  AnilistTitle title,  String? description,  String? format,  String? status,  int? episodes,  int? duration,  String? season,  int? seasonYear,  int? averageScore,  int? popularity,  List<String> genres,  AnilistCoverImage coverImage,  String? bannerImage,  AnilistFuzzyDate startDate,  AnilistFuzzyDate endDate,  AnilistStudios studios,  AnilistTrailer? trailer,  String? siteUrl)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( int id,  int? idMal,  String? type,  AnilistTitle title,  String? description,  String? format,  String? status,  int? episodes,  int? duration,  String? season,  int? seasonYear,  int? averageScore,  int? meanScore,  int? popularity,  int? trending,  int? favourites,  String? countryOfOrigin,  String? source,  bool? isLicensed,  List<String> genres,  List<String> synonyms,  List<AnilistTag> tags,  List<AnilistRanking> rankings,  AnilistCoverImage coverImage,  String? bannerImage,  AnilistFuzzyDate startDate,  AnilistFuzzyDate endDate,  AnilistStudios studios,  String? siteUrl)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _AnilistMedia() when $default != null:
-return $default(_that.id,_that.idMal,_that.title,_that.description,_that.format,_that.status,_that.episodes,_that.duration,_that.season,_that.seasonYear,_that.averageScore,_that.popularity,_that.genres,_that.coverImage,_that.bannerImage,_that.startDate,_that.endDate,_that.studios,_that.trailer,_that.siteUrl);case _:
+return $default(_that.id,_that.idMal,_that.type,_that.title,_that.description,_that.format,_that.status,_that.episodes,_that.duration,_that.season,_that.seasonYear,_that.averageScore,_that.meanScore,_that.popularity,_that.trending,_that.favourites,_that.countryOfOrigin,_that.source,_that.isLicensed,_that.genres,_that.synonyms,_that.tags,_that.rankings,_that.coverImage,_that.bannerImage,_that.startDate,_that.endDate,_that.studios,_that.siteUrl);case _:
   return orElse();
 
 }
@@ -812,10 +809,10 @@ return $default(_that.id,_that.idMal,_that.title,_that.description,_that.format,
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( int id,  int? idMal,  AnilistTitle title,  String? description,  String? format,  String? status,  int? episodes,  int? duration,  String? season,  int? seasonYear,  int? averageScore,  int? popularity,  List<String> genres,  AnilistCoverImage coverImage,  String? bannerImage,  AnilistFuzzyDate startDate,  AnilistFuzzyDate endDate,  AnilistStudios studios,  AnilistTrailer? trailer,  String? siteUrl)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( int id,  int? idMal,  String? type,  AnilistTitle title,  String? description,  String? format,  String? status,  int? episodes,  int? duration,  String? season,  int? seasonYear,  int? averageScore,  int? meanScore,  int? popularity,  int? trending,  int? favourites,  String? countryOfOrigin,  String? source,  bool? isLicensed,  List<String> genres,  List<String> synonyms,  List<AnilistTag> tags,  List<AnilistRanking> rankings,  AnilistCoverImage coverImage,  String? bannerImage,  AnilistFuzzyDate startDate,  AnilistFuzzyDate endDate,  AnilistStudios studios,  String? siteUrl)  $default,) {final _that = this;
 switch (_that) {
 case _AnilistMedia():
-return $default(_that.id,_that.idMal,_that.title,_that.description,_that.format,_that.status,_that.episodes,_that.duration,_that.season,_that.seasonYear,_that.averageScore,_that.popularity,_that.genres,_that.coverImage,_that.bannerImage,_that.startDate,_that.endDate,_that.studios,_that.trailer,_that.siteUrl);case _:
+return $default(_that.id,_that.idMal,_that.type,_that.title,_that.description,_that.format,_that.status,_that.episodes,_that.duration,_that.season,_that.seasonYear,_that.averageScore,_that.meanScore,_that.popularity,_that.trending,_that.favourites,_that.countryOfOrigin,_that.source,_that.isLicensed,_that.genres,_that.synonyms,_that.tags,_that.rankings,_that.coverImage,_that.bannerImage,_that.startDate,_that.endDate,_that.studios,_that.siteUrl);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -832,10 +829,10 @@ return $default(_that.id,_that.idMal,_that.title,_that.description,_that.format,
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( int id,  int? idMal,  AnilistTitle title,  String? description,  String? format,  String? status,  int? episodes,  int? duration,  String? season,  int? seasonYear,  int? averageScore,  int? popularity,  List<String> genres,  AnilistCoverImage coverImage,  String? bannerImage,  AnilistFuzzyDate startDate,  AnilistFuzzyDate endDate,  AnilistStudios studios,  AnilistTrailer? trailer,  String? siteUrl)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( int id,  int? idMal,  String? type,  AnilistTitle title,  String? description,  String? format,  String? status,  int? episodes,  int? duration,  String? season,  int? seasonYear,  int? averageScore,  int? meanScore,  int? popularity,  int? trending,  int? favourites,  String? countryOfOrigin,  String? source,  bool? isLicensed,  List<String> genres,  List<String> synonyms,  List<AnilistTag> tags,  List<AnilistRanking> rankings,  AnilistCoverImage coverImage,  String? bannerImage,  AnilistFuzzyDate startDate,  AnilistFuzzyDate endDate,  AnilistStudios studios,  String? siteUrl)?  $default,) {final _that = this;
 switch (_that) {
 case _AnilistMedia() when $default != null:
-return $default(_that.id,_that.idMal,_that.title,_that.description,_that.format,_that.status,_that.episodes,_that.duration,_that.season,_that.seasonYear,_that.averageScore,_that.popularity,_that.genres,_that.coverImage,_that.bannerImage,_that.startDate,_that.endDate,_that.studios,_that.trailer,_that.siteUrl);case _:
+return $default(_that.id,_that.idMal,_that.type,_that.title,_that.description,_that.format,_that.status,_that.episodes,_that.duration,_that.season,_that.seasonYear,_that.averageScore,_that.meanScore,_that.popularity,_that.trending,_that.favourites,_that.countryOfOrigin,_that.source,_that.isLicensed,_that.genres,_that.synonyms,_that.tags,_that.rankings,_that.coverImage,_that.bannerImage,_that.startDate,_that.endDate,_that.studios,_that.siteUrl);case _:
   return null;
 
 }
@@ -847,11 +844,12 @@ return $default(_that.id,_that.idMal,_that.title,_that.description,_that.format,
 @JsonSerializable()
 
 class _AnilistMedia implements AnilistMedia {
-  const _AnilistMedia({required this.id, required this.idMal, required this.title, required this.description, required this.format, required this.status, required this.episodes, required this.duration, required this.season, required this.seasonYear, required this.averageScore, required this.popularity, required final  List<String> genres, required this.coverImage, required this.bannerImage, required this.startDate, required this.endDate, required this.studios, required this.trailer, required this.siteUrl}): _genres = genres;
+  const _AnilistMedia({required this.id, required this.idMal, required this.type, required this.title, required this.description, required this.format, required this.status, required this.episodes, required this.duration, required this.season, required this.seasonYear, required this.averageScore, required this.meanScore, required this.popularity, required this.trending, required this.favourites, required this.countryOfOrigin, required this.source, required this.isLicensed, required final  List<String> genres, required final  List<String> synonyms, required final  List<AnilistTag> tags, required final  List<AnilistRanking> rankings, required this.coverImage, required this.bannerImage, required this.startDate, required this.endDate, required this.studios, required this.siteUrl}): _genres = genres,_synonyms = synonyms,_tags = tags,_rankings = rankings;
   factory _AnilistMedia.fromJson(Map<String, dynamic> json) => _$AnilistMediaFromJson(json);
 
 @override final  int id;
 @override final  int? idMal;
+@override final  String? type;
 @override final  AnilistTitle title;
 @override final  String? description;
 @override final  String? format;
@@ -861,7 +859,13 @@ class _AnilistMedia implements AnilistMedia {
 @override final  String? season;
 @override final  int? seasonYear;
 @override final  int? averageScore;
+@override final  int? meanScore;
 @override final  int? popularity;
+@override final  int? trending;
+@override final  int? favourites;
+@override final  String? countryOfOrigin;
+@override final  String? source;
+@override final  bool? isLicensed;
  final  List<String> _genres;
 @override List<String> get genres {
   if (_genres is EqualUnmodifiableListView) return _genres;
@@ -869,12 +873,32 @@ class _AnilistMedia implements AnilistMedia {
   return EqualUnmodifiableListView(_genres);
 }
 
+ final  List<String> _synonyms;
+@override List<String> get synonyms {
+  if (_synonyms is EqualUnmodifiableListView) return _synonyms;
+  // ignore: implicit_dynamic_type
+  return EqualUnmodifiableListView(_synonyms);
+}
+
+ final  List<AnilistTag> _tags;
+@override List<AnilistTag> get tags {
+  if (_tags is EqualUnmodifiableListView) return _tags;
+  // ignore: implicit_dynamic_type
+  return EqualUnmodifiableListView(_tags);
+}
+
+ final  List<AnilistRanking> _rankings;
+@override List<AnilistRanking> get rankings {
+  if (_rankings is EqualUnmodifiableListView) return _rankings;
+  // ignore: implicit_dynamic_type
+  return EqualUnmodifiableListView(_rankings);
+}
+
 @override final  AnilistCoverImage coverImage;
 @override final  String? bannerImage;
 @override final  AnilistFuzzyDate startDate;
 @override final  AnilistFuzzyDate endDate;
 @override final  AnilistStudios studios;
-@override final  AnilistTrailer? trailer;
 @override final  String? siteUrl;
 
 /// Create a copy of AnilistMedia
@@ -890,16 +914,16 @@ Map<String, dynamic> toJson() {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _AnilistMedia&&(identical(other.id, id) || other.id == id)&&(identical(other.idMal, idMal) || other.idMal == idMal)&&(identical(other.title, title) || other.title == title)&&(identical(other.description, description) || other.description == description)&&(identical(other.format, format) || other.format == format)&&(identical(other.status, status) || other.status == status)&&(identical(other.episodes, episodes) || other.episodes == episodes)&&(identical(other.duration, duration) || other.duration == duration)&&(identical(other.season, season) || other.season == season)&&(identical(other.seasonYear, seasonYear) || other.seasonYear == seasonYear)&&(identical(other.averageScore, averageScore) || other.averageScore == averageScore)&&(identical(other.popularity, popularity) || other.popularity == popularity)&&const DeepCollectionEquality().equals(other._genres, _genres)&&(identical(other.coverImage, coverImage) || other.coverImage == coverImage)&&(identical(other.bannerImage, bannerImage) || other.bannerImage == bannerImage)&&(identical(other.startDate, startDate) || other.startDate == startDate)&&(identical(other.endDate, endDate) || other.endDate == endDate)&&(identical(other.studios, studios) || other.studios == studios)&&(identical(other.trailer, trailer) || other.trailer == trailer)&&(identical(other.siteUrl, siteUrl) || other.siteUrl == siteUrl));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _AnilistMedia&&(identical(other.id, id) || other.id == id)&&(identical(other.idMal, idMal) || other.idMal == idMal)&&(identical(other.type, type) || other.type == type)&&(identical(other.title, title) || other.title == title)&&(identical(other.description, description) || other.description == description)&&(identical(other.format, format) || other.format == format)&&(identical(other.status, status) || other.status == status)&&(identical(other.episodes, episodes) || other.episodes == episodes)&&(identical(other.duration, duration) || other.duration == duration)&&(identical(other.season, season) || other.season == season)&&(identical(other.seasonYear, seasonYear) || other.seasonYear == seasonYear)&&(identical(other.averageScore, averageScore) || other.averageScore == averageScore)&&(identical(other.meanScore, meanScore) || other.meanScore == meanScore)&&(identical(other.popularity, popularity) || other.popularity == popularity)&&(identical(other.trending, trending) || other.trending == trending)&&(identical(other.favourites, favourites) || other.favourites == favourites)&&(identical(other.countryOfOrigin, countryOfOrigin) || other.countryOfOrigin == countryOfOrigin)&&(identical(other.source, source) || other.source == source)&&(identical(other.isLicensed, isLicensed) || other.isLicensed == isLicensed)&&const DeepCollectionEquality().equals(other._genres, _genres)&&const DeepCollectionEquality().equals(other._synonyms, _synonyms)&&const DeepCollectionEquality().equals(other._tags, _tags)&&const DeepCollectionEquality().equals(other._rankings, _rankings)&&(identical(other.coverImage, coverImage) || other.coverImage == coverImage)&&(identical(other.bannerImage, bannerImage) || other.bannerImage == bannerImage)&&(identical(other.startDate, startDate) || other.startDate == startDate)&&(identical(other.endDate, endDate) || other.endDate == endDate)&&(identical(other.studios, studios) || other.studios == studios)&&(identical(other.siteUrl, siteUrl) || other.siteUrl == siteUrl));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hashAll([runtimeType,id,idMal,title,description,format,status,episodes,duration,season,seasonYear,averageScore,popularity,const DeepCollectionEquality().hash(_genres),coverImage,bannerImage,startDate,endDate,studios,trailer,siteUrl]);
+int get hashCode => Object.hashAll([runtimeType,id,idMal,type,title,description,format,status,episodes,duration,season,seasonYear,averageScore,meanScore,popularity,trending,favourites,countryOfOrigin,source,isLicensed,const DeepCollectionEquality().hash(_genres),const DeepCollectionEquality().hash(_synonyms),const DeepCollectionEquality().hash(_tags),const DeepCollectionEquality().hash(_rankings),coverImage,bannerImage,startDate,endDate,studios,siteUrl]);
 
 @override
 String toString() {
-  return 'AnilistMedia(id: $id, idMal: $idMal, title: $title, description: $description, format: $format, status: $status, episodes: $episodes, duration: $duration, season: $season, seasonYear: $seasonYear, averageScore: $averageScore, popularity: $popularity, genres: $genres, coverImage: $coverImage, bannerImage: $bannerImage, startDate: $startDate, endDate: $endDate, studios: $studios, trailer: $trailer, siteUrl: $siteUrl)';
+  return 'AnilistMedia(id: $id, idMal: $idMal, type: $type, title: $title, description: $description, format: $format, status: $status, episodes: $episodes, duration: $duration, season: $season, seasonYear: $seasonYear, averageScore: $averageScore, meanScore: $meanScore, popularity: $popularity, trending: $trending, favourites: $favourites, countryOfOrigin: $countryOfOrigin, source: $source, isLicensed: $isLicensed, genres: $genres, synonyms: $synonyms, tags: $tags, rankings: $rankings, coverImage: $coverImage, bannerImage: $bannerImage, startDate: $startDate, endDate: $endDate, studios: $studios, siteUrl: $siteUrl)';
 }
 
 
@@ -910,11 +934,11 @@ abstract mixin class _$AnilistMediaCopyWith<$Res> implements $AnilistMediaCopyWi
   factory _$AnilistMediaCopyWith(_AnilistMedia value, $Res Function(_AnilistMedia) _then) = __$AnilistMediaCopyWithImpl;
 @override @useResult
 $Res call({
- int id, int? idMal, AnilistTitle title, String? description, String? format, String? status, int? episodes, int? duration, String? season, int? seasonYear, int? averageScore, int? popularity, List<String> genres, AnilistCoverImage coverImage, String? bannerImage, AnilistFuzzyDate startDate, AnilistFuzzyDate endDate, AnilistStudios studios, AnilistTrailer? trailer, String? siteUrl
+ int id, int? idMal, String? type, AnilistTitle title, String? description, String? format, String? status, int? episodes, int? duration, String? season, int? seasonYear, int? averageScore, int? meanScore, int? popularity, int? trending, int? favourites, String? countryOfOrigin, String? source, bool? isLicensed, List<String> genres, List<String> synonyms, List<AnilistTag> tags, List<AnilistRanking> rankings, AnilistCoverImage coverImage, String? bannerImage, AnilistFuzzyDate startDate, AnilistFuzzyDate endDate, AnilistStudios studios, String? siteUrl
 });
 
 
-@override $AnilistTitleCopyWith<$Res> get title;@override $AnilistCoverImageCopyWith<$Res> get coverImage;@override $AnilistFuzzyDateCopyWith<$Res> get startDate;@override $AnilistFuzzyDateCopyWith<$Res> get endDate;@override $AnilistStudiosCopyWith<$Res> get studios;@override $AnilistTrailerCopyWith<$Res>? get trailer;
+@override $AnilistTitleCopyWith<$Res> get title;@override $AnilistCoverImageCopyWith<$Res> get coverImage;@override $AnilistFuzzyDateCopyWith<$Res> get startDate;@override $AnilistFuzzyDateCopyWith<$Res> get endDate;@override $AnilistStudiosCopyWith<$Res> get studios;
 
 }
 /// @nodoc
@@ -927,11 +951,12 @@ class __$AnilistMediaCopyWithImpl<$Res>
 
 /// Create a copy of AnilistMedia
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? idMal = freezed,Object? title = null,Object? description = freezed,Object? format = freezed,Object? status = freezed,Object? episodes = freezed,Object? duration = freezed,Object? season = freezed,Object? seasonYear = freezed,Object? averageScore = freezed,Object? popularity = freezed,Object? genres = null,Object? coverImage = null,Object? bannerImage = freezed,Object? startDate = null,Object? endDate = null,Object? studios = null,Object? trailer = freezed,Object? siteUrl = freezed,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? idMal = freezed,Object? type = freezed,Object? title = null,Object? description = freezed,Object? format = freezed,Object? status = freezed,Object? episodes = freezed,Object? duration = freezed,Object? season = freezed,Object? seasonYear = freezed,Object? averageScore = freezed,Object? meanScore = freezed,Object? popularity = freezed,Object? trending = freezed,Object? favourites = freezed,Object? countryOfOrigin = freezed,Object? source = freezed,Object? isLicensed = freezed,Object? genres = null,Object? synonyms = null,Object? tags = null,Object? rankings = null,Object? coverImage = null,Object? bannerImage = freezed,Object? startDate = null,Object? endDate = null,Object? studios = null,Object? siteUrl = freezed,}) {
   return _then(_AnilistMedia(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as int,idMal: freezed == idMal ? _self.idMal : idMal // ignore: cast_nullable_to_non_nullable
-as int?,title: null == title ? _self.title : title // ignore: cast_nullable_to_non_nullable
+as int?,type: freezed == type ? _self.type : type // ignore: cast_nullable_to_non_nullable
+as String?,title: null == title ? _self.title : title // ignore: cast_nullable_to_non_nullable
 as AnilistTitle,description: freezed == description ? _self.description : description // ignore: cast_nullable_to_non_nullable
 as String?,format: freezed == format ? _self.format : format // ignore: cast_nullable_to_non_nullable
 as String?,status: freezed == status ? _self.status : status // ignore: cast_nullable_to_non_nullable
@@ -940,15 +965,23 @@ as int?,duration: freezed == duration ? _self.duration : duration // ignore: cas
 as int?,season: freezed == season ? _self.season : season // ignore: cast_nullable_to_non_nullable
 as String?,seasonYear: freezed == seasonYear ? _self.seasonYear : seasonYear // ignore: cast_nullable_to_non_nullable
 as int?,averageScore: freezed == averageScore ? _self.averageScore : averageScore // ignore: cast_nullable_to_non_nullable
+as int?,meanScore: freezed == meanScore ? _self.meanScore : meanScore // ignore: cast_nullable_to_non_nullable
 as int?,popularity: freezed == popularity ? _self.popularity : popularity // ignore: cast_nullable_to_non_nullable
-as int?,genres: null == genres ? _self._genres : genres // ignore: cast_nullable_to_non_nullable
-as List<String>,coverImage: null == coverImage ? _self.coverImage : coverImage // ignore: cast_nullable_to_non_nullable
+as int?,trending: freezed == trending ? _self.trending : trending // ignore: cast_nullable_to_non_nullable
+as int?,favourites: freezed == favourites ? _self.favourites : favourites // ignore: cast_nullable_to_non_nullable
+as int?,countryOfOrigin: freezed == countryOfOrigin ? _self.countryOfOrigin : countryOfOrigin // ignore: cast_nullable_to_non_nullable
+as String?,source: freezed == source ? _self.source : source // ignore: cast_nullable_to_non_nullable
+as String?,isLicensed: freezed == isLicensed ? _self.isLicensed : isLicensed // ignore: cast_nullable_to_non_nullable
+as bool?,genres: null == genres ? _self._genres : genres // ignore: cast_nullable_to_non_nullable
+as List<String>,synonyms: null == synonyms ? _self._synonyms : synonyms // ignore: cast_nullable_to_non_nullable
+as List<String>,tags: null == tags ? _self._tags : tags // ignore: cast_nullable_to_non_nullable
+as List<AnilistTag>,rankings: null == rankings ? _self._rankings : rankings // ignore: cast_nullable_to_non_nullable
+as List<AnilistRanking>,coverImage: null == coverImage ? _self.coverImage : coverImage // ignore: cast_nullable_to_non_nullable
 as AnilistCoverImage,bannerImage: freezed == bannerImage ? _self.bannerImage : bannerImage // ignore: cast_nullable_to_non_nullable
 as String?,startDate: null == startDate ? _self.startDate : startDate // ignore: cast_nullable_to_non_nullable
 as AnilistFuzzyDate,endDate: null == endDate ? _self.endDate : endDate // ignore: cast_nullable_to_non_nullable
 as AnilistFuzzyDate,studios: null == studios ? _self.studios : studios // ignore: cast_nullable_to_non_nullable
-as AnilistStudios,trailer: freezed == trailer ? _self.trailer : trailer // ignore: cast_nullable_to_non_nullable
-as AnilistTrailer?,siteUrl: freezed == siteUrl ? _self.siteUrl : siteUrl // ignore: cast_nullable_to_non_nullable
+as AnilistStudios,siteUrl: freezed == siteUrl ? _self.siteUrl : siteUrl // ignore: cast_nullable_to_non_nullable
 as String?,
   ));
 }
@@ -997,18 +1030,6 @@ $AnilistStudiosCopyWith<$Res> get studios {
   
   return $AnilistStudiosCopyWith<$Res>(_self.studios, (value) {
     return _then(_self.copyWith(studios: value));
-  });
-}/// Create a copy of AnilistMedia
-/// with the given fields replaced by the non-null parameter values.
-@override
-@pragma('vm:prefer-inline')
-$AnilistTrailerCopyWith<$Res>? get trailer {
-    if (_self.trailer == null) {
-    return null;
-  }
-
-  return $AnilistTrailerCopyWith<$Res>(_self.trailer!, (value) {
-    return _then(_self.copyWith(trailer: value));
   });
 }
 }
@@ -1275,6 +1296,556 @@ class __$AnilistTitleCopyWithImpl<$Res>
 romaji: freezed == romaji ? _self.romaji : romaji // ignore: cast_nullable_to_non_nullable
 as String?,english: freezed == english ? _self.english : english // ignore: cast_nullable_to_non_nullable
 as String?,nativeTitle: freezed == nativeTitle ? _self.nativeTitle : nativeTitle // ignore: cast_nullable_to_non_nullable
+as String?,
+  ));
+}
+
+
+}
+
+
+/// @nodoc
+mixin _$AnilistTag {
+
+ String get name; int? get rank; bool? get isMediaSpoiler; String? get category;
+/// Create a copy of AnilistTag
+/// with the given fields replaced by the non-null parameter values.
+@JsonKey(includeFromJson: false, includeToJson: false)
+@pragma('vm:prefer-inline')
+$AnilistTagCopyWith<AnilistTag> get copyWith => _$AnilistTagCopyWithImpl<AnilistTag>(this as AnilistTag, _$identity);
+
+  /// Serializes this AnilistTag to a JSON map.
+  Map<String, dynamic> toJson();
+
+
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is AnilistTag&&(identical(other.name, name) || other.name == name)&&(identical(other.rank, rank) || other.rank == rank)&&(identical(other.isMediaSpoiler, isMediaSpoiler) || other.isMediaSpoiler == isMediaSpoiler)&&(identical(other.category, category) || other.category == category));
+}
+
+@JsonKey(includeFromJson: false, includeToJson: false)
+@override
+int get hashCode => Object.hash(runtimeType,name,rank,isMediaSpoiler,category);
+
+@override
+String toString() {
+  return 'AnilistTag(name: $name, rank: $rank, isMediaSpoiler: $isMediaSpoiler, category: $category)';
+}
+
+
+}
+
+/// @nodoc
+abstract mixin class $AnilistTagCopyWith<$Res>  {
+  factory $AnilistTagCopyWith(AnilistTag value, $Res Function(AnilistTag) _then) = _$AnilistTagCopyWithImpl;
+@useResult
+$Res call({
+ String name, int? rank, bool? isMediaSpoiler, String? category
+});
+
+
+
+
+}
+/// @nodoc
+class _$AnilistTagCopyWithImpl<$Res>
+    implements $AnilistTagCopyWith<$Res> {
+  _$AnilistTagCopyWithImpl(this._self, this._then);
+
+  final AnilistTag _self;
+  final $Res Function(AnilistTag) _then;
+
+/// Create a copy of AnilistTag
+/// with the given fields replaced by the non-null parameter values.
+@pragma('vm:prefer-inline') @override $Res call({Object? name = null,Object? rank = freezed,Object? isMediaSpoiler = freezed,Object? category = freezed,}) {
+  return _then(_self.copyWith(
+name: null == name ? _self.name : name // ignore: cast_nullable_to_non_nullable
+as String,rank: freezed == rank ? _self.rank : rank // ignore: cast_nullable_to_non_nullable
+as int?,isMediaSpoiler: freezed == isMediaSpoiler ? _self.isMediaSpoiler : isMediaSpoiler // ignore: cast_nullable_to_non_nullable
+as bool?,category: freezed == category ? _self.category : category // ignore: cast_nullable_to_non_nullable
+as String?,
+  ));
+}
+
+}
+
+
+/// Adds pattern-matching-related methods to [AnilistTag].
+extension AnilistTagPatterns on AnilistTag {
+/// A variant of `map` that fallback to returning `orElse`.
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case final Subclass value:
+///     return ...;
+///   case _:
+///     return orElse();
+/// }
+/// ```
+
+@optionalTypeArgs TResult maybeMap<TResult extends Object?>(TResult Function( _AnilistTag value)?  $default,{required TResult orElse(),}){
+final _that = this;
+switch (_that) {
+case _AnilistTag() when $default != null:
+return $default(_that);case _:
+  return orElse();
+
+}
+}
+/// A `switch`-like method, using callbacks.
+///
+/// Callbacks receives the raw object, upcasted.
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case final Subclass value:
+///     return ...;
+///   case final Subclass2 value:
+///     return ...;
+/// }
+/// ```
+
+@optionalTypeArgs TResult map<TResult extends Object?>(TResult Function( _AnilistTag value)  $default,){
+final _that = this;
+switch (_that) {
+case _AnilistTag():
+return $default(_that);case _:
+  throw StateError('Unexpected subclass');
+
+}
+}
+/// A variant of `map` that fallback to returning `null`.
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case final Subclass value:
+///     return ...;
+///   case _:
+///     return null;
+/// }
+/// ```
+
+@optionalTypeArgs TResult? mapOrNull<TResult extends Object?>(TResult? Function( _AnilistTag value)?  $default,){
+final _that = this;
+switch (_that) {
+case _AnilistTag() when $default != null:
+return $default(_that);case _:
+  return null;
+
+}
+}
+/// A variant of `when` that fallback to an `orElse` callback.
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case Subclass(:final field):
+///     return ...;
+///   case _:
+///     return orElse();
+/// }
+/// ```
+
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String name,  int? rank,  bool? isMediaSpoiler,  String? category)?  $default,{required TResult orElse(),}) {final _that = this;
+switch (_that) {
+case _AnilistTag() when $default != null:
+return $default(_that.name,_that.rank,_that.isMediaSpoiler,_that.category);case _:
+  return orElse();
+
+}
+}
+/// A `switch`-like method, using callbacks.
+///
+/// As opposed to `map`, this offers destructuring.
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case Subclass(:final field):
+///     return ...;
+///   case Subclass2(:final field2):
+///     return ...;
+/// }
+/// ```
+
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String name,  int? rank,  bool? isMediaSpoiler,  String? category)  $default,) {final _that = this;
+switch (_that) {
+case _AnilistTag():
+return $default(_that.name,_that.rank,_that.isMediaSpoiler,_that.category);case _:
+  throw StateError('Unexpected subclass');
+
+}
+}
+/// A variant of `when` that fallback to returning `null`
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case Subclass(:final field):
+///     return ...;
+///   case _:
+///     return null;
+/// }
+/// ```
+
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String name,  int? rank,  bool? isMediaSpoiler,  String? category)?  $default,) {final _that = this;
+switch (_that) {
+case _AnilistTag() when $default != null:
+return $default(_that.name,_that.rank,_that.isMediaSpoiler,_that.category);case _:
+  return null;
+
+}
+}
+
+}
+
+/// @nodoc
+@JsonSerializable()
+
+class _AnilistTag implements AnilistTag {
+  const _AnilistTag({required this.name, required this.rank, required this.isMediaSpoiler, required this.category});
+  factory _AnilistTag.fromJson(Map<String, dynamic> json) => _$AnilistTagFromJson(json);
+
+@override final  String name;
+@override final  int? rank;
+@override final  bool? isMediaSpoiler;
+@override final  String? category;
+
+/// Create a copy of AnilistTag
+/// with the given fields replaced by the non-null parameter values.
+@override @JsonKey(includeFromJson: false, includeToJson: false)
+@pragma('vm:prefer-inline')
+_$AnilistTagCopyWith<_AnilistTag> get copyWith => __$AnilistTagCopyWithImpl<_AnilistTag>(this, _$identity);
+
+@override
+Map<String, dynamic> toJson() {
+  return _$AnilistTagToJson(this, );
+}
+
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _AnilistTag&&(identical(other.name, name) || other.name == name)&&(identical(other.rank, rank) || other.rank == rank)&&(identical(other.isMediaSpoiler, isMediaSpoiler) || other.isMediaSpoiler == isMediaSpoiler)&&(identical(other.category, category) || other.category == category));
+}
+
+@JsonKey(includeFromJson: false, includeToJson: false)
+@override
+int get hashCode => Object.hash(runtimeType,name,rank,isMediaSpoiler,category);
+
+@override
+String toString() {
+  return 'AnilistTag(name: $name, rank: $rank, isMediaSpoiler: $isMediaSpoiler, category: $category)';
+}
+
+
+}
+
+/// @nodoc
+abstract mixin class _$AnilistTagCopyWith<$Res> implements $AnilistTagCopyWith<$Res> {
+  factory _$AnilistTagCopyWith(_AnilistTag value, $Res Function(_AnilistTag) _then) = __$AnilistTagCopyWithImpl;
+@override @useResult
+$Res call({
+ String name, int? rank, bool? isMediaSpoiler, String? category
+});
+
+
+
+
+}
+/// @nodoc
+class __$AnilistTagCopyWithImpl<$Res>
+    implements _$AnilistTagCopyWith<$Res> {
+  __$AnilistTagCopyWithImpl(this._self, this._then);
+
+  final _AnilistTag _self;
+  final $Res Function(_AnilistTag) _then;
+
+/// Create a copy of AnilistTag
+/// with the given fields replaced by the non-null parameter values.
+@override @pragma('vm:prefer-inline') $Res call({Object? name = null,Object? rank = freezed,Object? isMediaSpoiler = freezed,Object? category = freezed,}) {
+  return _then(_AnilistTag(
+name: null == name ? _self.name : name // ignore: cast_nullable_to_non_nullable
+as String,rank: freezed == rank ? _self.rank : rank // ignore: cast_nullable_to_non_nullable
+as int?,isMediaSpoiler: freezed == isMediaSpoiler ? _self.isMediaSpoiler : isMediaSpoiler // ignore: cast_nullable_to_non_nullable
+as bool?,category: freezed == category ? _self.category : category // ignore: cast_nullable_to_non_nullable
+as String?,
+  ));
+}
+
+
+}
+
+
+/// @nodoc
+mixin _$AnilistRanking {
+
+ int get rank; String? get type; int? get year; String? get season; bool? get allTime; String? get context;
+/// Create a copy of AnilistRanking
+/// with the given fields replaced by the non-null parameter values.
+@JsonKey(includeFromJson: false, includeToJson: false)
+@pragma('vm:prefer-inline')
+$AnilistRankingCopyWith<AnilistRanking> get copyWith => _$AnilistRankingCopyWithImpl<AnilistRanking>(this as AnilistRanking, _$identity);
+
+  /// Serializes this AnilistRanking to a JSON map.
+  Map<String, dynamic> toJson();
+
+
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is AnilistRanking&&(identical(other.rank, rank) || other.rank == rank)&&(identical(other.type, type) || other.type == type)&&(identical(other.year, year) || other.year == year)&&(identical(other.season, season) || other.season == season)&&(identical(other.allTime, allTime) || other.allTime == allTime)&&(identical(other.context, context) || other.context == context));
+}
+
+@JsonKey(includeFromJson: false, includeToJson: false)
+@override
+int get hashCode => Object.hash(runtimeType,rank,type,year,season,allTime,context);
+
+@override
+String toString() {
+  return 'AnilistRanking(rank: $rank, type: $type, year: $year, season: $season, allTime: $allTime, context: $context)';
+}
+
+
+}
+
+/// @nodoc
+abstract mixin class $AnilistRankingCopyWith<$Res>  {
+  factory $AnilistRankingCopyWith(AnilistRanking value, $Res Function(AnilistRanking) _then) = _$AnilistRankingCopyWithImpl;
+@useResult
+$Res call({
+ int rank, String? type, int? year, String? season, bool? allTime, String? context
+});
+
+
+
+
+}
+/// @nodoc
+class _$AnilistRankingCopyWithImpl<$Res>
+    implements $AnilistRankingCopyWith<$Res> {
+  _$AnilistRankingCopyWithImpl(this._self, this._then);
+
+  final AnilistRanking _self;
+  final $Res Function(AnilistRanking) _then;
+
+/// Create a copy of AnilistRanking
+/// with the given fields replaced by the non-null parameter values.
+@pragma('vm:prefer-inline') @override $Res call({Object? rank = null,Object? type = freezed,Object? year = freezed,Object? season = freezed,Object? allTime = freezed,Object? context = freezed,}) {
+  return _then(_self.copyWith(
+rank: null == rank ? _self.rank : rank // ignore: cast_nullable_to_non_nullable
+as int,type: freezed == type ? _self.type : type // ignore: cast_nullable_to_non_nullable
+as String?,year: freezed == year ? _self.year : year // ignore: cast_nullable_to_non_nullable
+as int?,season: freezed == season ? _self.season : season // ignore: cast_nullable_to_non_nullable
+as String?,allTime: freezed == allTime ? _self.allTime : allTime // ignore: cast_nullable_to_non_nullable
+as bool?,context: freezed == context ? _self.context : context // ignore: cast_nullable_to_non_nullable
+as String?,
+  ));
+}
+
+}
+
+
+/// Adds pattern-matching-related methods to [AnilistRanking].
+extension AnilistRankingPatterns on AnilistRanking {
+/// A variant of `map` that fallback to returning `orElse`.
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case final Subclass value:
+///     return ...;
+///   case _:
+///     return orElse();
+/// }
+/// ```
+
+@optionalTypeArgs TResult maybeMap<TResult extends Object?>(TResult Function( _AnilistRanking value)?  $default,{required TResult orElse(),}){
+final _that = this;
+switch (_that) {
+case _AnilistRanking() when $default != null:
+return $default(_that);case _:
+  return orElse();
+
+}
+}
+/// A `switch`-like method, using callbacks.
+///
+/// Callbacks receives the raw object, upcasted.
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case final Subclass value:
+///     return ...;
+///   case final Subclass2 value:
+///     return ...;
+/// }
+/// ```
+
+@optionalTypeArgs TResult map<TResult extends Object?>(TResult Function( _AnilistRanking value)  $default,){
+final _that = this;
+switch (_that) {
+case _AnilistRanking():
+return $default(_that);case _:
+  throw StateError('Unexpected subclass');
+
+}
+}
+/// A variant of `map` that fallback to returning `null`.
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case final Subclass value:
+///     return ...;
+///   case _:
+///     return null;
+/// }
+/// ```
+
+@optionalTypeArgs TResult? mapOrNull<TResult extends Object?>(TResult? Function( _AnilistRanking value)?  $default,){
+final _that = this;
+switch (_that) {
+case _AnilistRanking() when $default != null:
+return $default(_that);case _:
+  return null;
+
+}
+}
+/// A variant of `when` that fallback to an `orElse` callback.
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case Subclass(:final field):
+///     return ...;
+///   case _:
+///     return orElse();
+/// }
+/// ```
+
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( int rank,  String? type,  int? year,  String? season,  bool? allTime,  String? context)?  $default,{required TResult orElse(),}) {final _that = this;
+switch (_that) {
+case _AnilistRanking() when $default != null:
+return $default(_that.rank,_that.type,_that.year,_that.season,_that.allTime,_that.context);case _:
+  return orElse();
+
+}
+}
+/// A `switch`-like method, using callbacks.
+///
+/// As opposed to `map`, this offers destructuring.
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case Subclass(:final field):
+///     return ...;
+///   case Subclass2(:final field2):
+///     return ...;
+/// }
+/// ```
+
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( int rank,  String? type,  int? year,  String? season,  bool? allTime,  String? context)  $default,) {final _that = this;
+switch (_that) {
+case _AnilistRanking():
+return $default(_that.rank,_that.type,_that.year,_that.season,_that.allTime,_that.context);case _:
+  throw StateError('Unexpected subclass');
+
+}
+}
+/// A variant of `when` that fallback to returning `null`
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case Subclass(:final field):
+///     return ...;
+///   case _:
+///     return null;
+/// }
+/// ```
+
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( int rank,  String? type,  int? year,  String? season,  bool? allTime,  String? context)?  $default,) {final _that = this;
+switch (_that) {
+case _AnilistRanking() when $default != null:
+return $default(_that.rank,_that.type,_that.year,_that.season,_that.allTime,_that.context);case _:
+  return null;
+
+}
+}
+
+}
+
+/// @nodoc
+@JsonSerializable()
+
+class _AnilistRanking implements AnilistRanking {
+  const _AnilistRanking({required this.rank, required this.type, required this.year, required this.season, required this.allTime, required this.context});
+  factory _AnilistRanking.fromJson(Map<String, dynamic> json) => _$AnilistRankingFromJson(json);
+
+@override final  int rank;
+@override final  String? type;
+@override final  int? year;
+@override final  String? season;
+@override final  bool? allTime;
+@override final  String? context;
+
+/// Create a copy of AnilistRanking
+/// with the given fields replaced by the non-null parameter values.
+@override @JsonKey(includeFromJson: false, includeToJson: false)
+@pragma('vm:prefer-inline')
+_$AnilistRankingCopyWith<_AnilistRanking> get copyWith => __$AnilistRankingCopyWithImpl<_AnilistRanking>(this, _$identity);
+
+@override
+Map<String, dynamic> toJson() {
+  return _$AnilistRankingToJson(this, );
+}
+
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _AnilistRanking&&(identical(other.rank, rank) || other.rank == rank)&&(identical(other.type, type) || other.type == type)&&(identical(other.year, year) || other.year == year)&&(identical(other.season, season) || other.season == season)&&(identical(other.allTime, allTime) || other.allTime == allTime)&&(identical(other.context, context) || other.context == context));
+}
+
+@JsonKey(includeFromJson: false, includeToJson: false)
+@override
+int get hashCode => Object.hash(runtimeType,rank,type,year,season,allTime,context);
+
+@override
+String toString() {
+  return 'AnilistRanking(rank: $rank, type: $type, year: $year, season: $season, allTime: $allTime, context: $context)';
+}
+
+
+}
+
+/// @nodoc
+abstract mixin class _$AnilistRankingCopyWith<$Res> implements $AnilistRankingCopyWith<$Res> {
+  factory _$AnilistRankingCopyWith(_AnilistRanking value, $Res Function(_AnilistRanking) _then) = __$AnilistRankingCopyWithImpl;
+@override @useResult
+$Res call({
+ int rank, String? type, int? year, String? season, bool? allTime, String? context
+});
+
+
+
+
+}
+/// @nodoc
+class __$AnilistRankingCopyWithImpl<$Res>
+    implements _$AnilistRankingCopyWith<$Res> {
+  __$AnilistRankingCopyWithImpl(this._self, this._then);
+
+  final _AnilistRanking _self;
+  final $Res Function(_AnilistRanking) _then;
+
+/// Create a copy of AnilistRanking
+/// with the given fields replaced by the non-null parameter values.
+@override @pragma('vm:prefer-inline') $Res call({Object? rank = null,Object? type = freezed,Object? year = freezed,Object? season = freezed,Object? allTime = freezed,Object? context = freezed,}) {
+  return _then(_AnilistRanking(
+rank: null == rank ? _self.rank : rank // ignore: cast_nullable_to_non_nullable
+as int,type: freezed == type ? _self.type : type // ignore: cast_nullable_to_non_nullable
+as String?,year: freezed == year ? _self.year : year // ignore: cast_nullable_to_non_nullable
+as int?,season: freezed == season ? _self.season : season // ignore: cast_nullable_to_non_nullable
+as String?,allTime: freezed == allTime ? _self.allTime : allTime // ignore: cast_nullable_to_non_nullable
+as bool?,context: freezed == context ? _self.context : context // ignore: cast_nullable_to_non_nullable
 as String?,
   ));
 }
@@ -1824,7 +2395,7 @@ as int?,
 /// @nodoc
 mixin _$AnilistStudios {
 
- List<AnilistStudioNode> get nodes;
+ List<AnilistStudioEdge> get edges;
 /// Create a copy of AnilistStudios
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -1837,16 +2408,16 @@ $AnilistStudiosCopyWith<AnilistStudios> get copyWith => _$AnilistStudiosCopyWith
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is AnilistStudios&&const DeepCollectionEquality().equals(other.nodes, nodes));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is AnilistStudios&&const DeepCollectionEquality().equals(other.edges, edges));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,const DeepCollectionEquality().hash(nodes));
+int get hashCode => Object.hash(runtimeType,const DeepCollectionEquality().hash(edges));
 
 @override
 String toString() {
-  return 'AnilistStudios(nodes: $nodes)';
+  return 'AnilistStudios(edges: $edges)';
 }
 
 
@@ -1857,7 +2428,7 @@ abstract mixin class $AnilistStudiosCopyWith<$Res>  {
   factory $AnilistStudiosCopyWith(AnilistStudios value, $Res Function(AnilistStudios) _then) = _$AnilistStudiosCopyWithImpl;
 @useResult
 $Res call({
- List<AnilistStudioNode> nodes
+ List<AnilistStudioEdge> edges
 });
 
 
@@ -1874,10 +2445,10 @@ class _$AnilistStudiosCopyWithImpl<$Res>
 
 /// Create a copy of AnilistStudios
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? nodes = null,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? edges = null,}) {
   return _then(_self.copyWith(
-nodes: null == nodes ? _self.nodes : nodes // ignore: cast_nullable_to_non_nullable
-as List<AnilistStudioNode>,
+edges: null == edges ? _self.edges : edges // ignore: cast_nullable_to_non_nullable
+as List<AnilistStudioEdge>,
   ));
 }
 
@@ -1962,10 +2533,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( List<AnilistStudioNode> nodes)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( List<AnilistStudioEdge> edges)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _AnilistStudios() when $default != null:
-return $default(_that.nodes);case _:
+return $default(_that.edges);case _:
   return orElse();
 
 }
@@ -1983,10 +2554,10 @@ return $default(_that.nodes);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( List<AnilistStudioNode> nodes)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( List<AnilistStudioEdge> edges)  $default,) {final _that = this;
 switch (_that) {
 case _AnilistStudios():
-return $default(_that.nodes);case _:
+return $default(_that.edges);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -2003,10 +2574,10 @@ return $default(_that.nodes);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( List<AnilistStudioNode> nodes)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( List<AnilistStudioEdge> edges)?  $default,) {final _that = this;
 switch (_that) {
 case _AnilistStudios() when $default != null:
-return $default(_that.nodes);case _:
+return $default(_that.edges);case _:
   return null;
 
 }
@@ -2018,14 +2589,14 @@ return $default(_that.nodes);case _:
 @JsonSerializable()
 
 class _AnilistStudios implements AnilistStudios {
-  const _AnilistStudios({required final  List<AnilistStudioNode> nodes}): _nodes = nodes;
+  const _AnilistStudios({required final  List<AnilistStudioEdge> edges}): _edges = edges;
   factory _AnilistStudios.fromJson(Map<String, dynamic> json) => _$AnilistStudiosFromJson(json);
 
- final  List<AnilistStudioNode> _nodes;
-@override List<AnilistStudioNode> get nodes {
-  if (_nodes is EqualUnmodifiableListView) return _nodes;
+ final  List<AnilistStudioEdge> _edges;
+@override List<AnilistStudioEdge> get edges {
+  if (_edges is EqualUnmodifiableListView) return _edges;
   // ignore: implicit_dynamic_type
-  return EqualUnmodifiableListView(_nodes);
+  return EqualUnmodifiableListView(_edges);
 }
 
 
@@ -2042,16 +2613,16 @@ Map<String, dynamic> toJson() {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _AnilistStudios&&const DeepCollectionEquality().equals(other._nodes, _nodes));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _AnilistStudios&&const DeepCollectionEquality().equals(other._edges, _edges));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,const DeepCollectionEquality().hash(_nodes));
+int get hashCode => Object.hash(runtimeType,const DeepCollectionEquality().hash(_edges));
 
 @override
 String toString() {
-  return 'AnilistStudios(nodes: $nodes)';
+  return 'AnilistStudios(edges: $edges)';
 }
 
 
@@ -2062,7 +2633,7 @@ abstract mixin class _$AnilistStudiosCopyWith<$Res> implements $AnilistStudiosCo
   factory _$AnilistStudiosCopyWith(_AnilistStudios value, $Res Function(_AnilistStudios) _then) = __$AnilistStudiosCopyWithImpl;
 @override @useResult
 $Res call({
- List<AnilistStudioNode> nodes
+ List<AnilistStudioEdge> edges
 });
 
 
@@ -2079,14 +2650,298 @@ class __$AnilistStudiosCopyWithImpl<$Res>
 
 /// Create a copy of AnilistStudios
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? nodes = null,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? edges = null,}) {
   return _then(_AnilistStudios(
-nodes: null == nodes ? _self._nodes : nodes // ignore: cast_nullable_to_non_nullable
-as List<AnilistStudioNode>,
+edges: null == edges ? _self._edges : edges // ignore: cast_nullable_to_non_nullable
+as List<AnilistStudioEdge>,
   ));
 }
 
 
+}
+
+
+/// @nodoc
+mixin _$AnilistStudioEdge {
+
+ bool? get isMain; AnilistStudioNode get node;
+/// Create a copy of AnilistStudioEdge
+/// with the given fields replaced by the non-null parameter values.
+@JsonKey(includeFromJson: false, includeToJson: false)
+@pragma('vm:prefer-inline')
+$AnilistStudioEdgeCopyWith<AnilistStudioEdge> get copyWith => _$AnilistStudioEdgeCopyWithImpl<AnilistStudioEdge>(this as AnilistStudioEdge, _$identity);
+
+  /// Serializes this AnilistStudioEdge to a JSON map.
+  Map<String, dynamic> toJson();
+
+
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is AnilistStudioEdge&&(identical(other.isMain, isMain) || other.isMain == isMain)&&(identical(other.node, node) || other.node == node));
+}
+
+@JsonKey(includeFromJson: false, includeToJson: false)
+@override
+int get hashCode => Object.hash(runtimeType,isMain,node);
+
+@override
+String toString() {
+  return 'AnilistStudioEdge(isMain: $isMain, node: $node)';
+}
+
+
+}
+
+/// @nodoc
+abstract mixin class $AnilistStudioEdgeCopyWith<$Res>  {
+  factory $AnilistStudioEdgeCopyWith(AnilistStudioEdge value, $Res Function(AnilistStudioEdge) _then) = _$AnilistStudioEdgeCopyWithImpl;
+@useResult
+$Res call({
+ bool? isMain, AnilistStudioNode node
+});
+
+
+$AnilistStudioNodeCopyWith<$Res> get node;
+
+}
+/// @nodoc
+class _$AnilistStudioEdgeCopyWithImpl<$Res>
+    implements $AnilistStudioEdgeCopyWith<$Res> {
+  _$AnilistStudioEdgeCopyWithImpl(this._self, this._then);
+
+  final AnilistStudioEdge _self;
+  final $Res Function(AnilistStudioEdge) _then;
+
+/// Create a copy of AnilistStudioEdge
+/// with the given fields replaced by the non-null parameter values.
+@pragma('vm:prefer-inline') @override $Res call({Object? isMain = freezed,Object? node = null,}) {
+  return _then(_self.copyWith(
+isMain: freezed == isMain ? _self.isMain : isMain // ignore: cast_nullable_to_non_nullable
+as bool?,node: null == node ? _self.node : node // ignore: cast_nullable_to_non_nullable
+as AnilistStudioNode,
+  ));
+}
+/// Create a copy of AnilistStudioEdge
+/// with the given fields replaced by the non-null parameter values.
+@override
+@pragma('vm:prefer-inline')
+$AnilistStudioNodeCopyWith<$Res> get node {
+  
+  return $AnilistStudioNodeCopyWith<$Res>(_self.node, (value) {
+    return _then(_self.copyWith(node: value));
+  });
+}
+}
+
+
+/// Adds pattern-matching-related methods to [AnilistStudioEdge].
+extension AnilistStudioEdgePatterns on AnilistStudioEdge {
+/// A variant of `map` that fallback to returning `orElse`.
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case final Subclass value:
+///     return ...;
+///   case _:
+///     return orElse();
+/// }
+/// ```
+
+@optionalTypeArgs TResult maybeMap<TResult extends Object?>(TResult Function( _AnilistStudioEdge value)?  $default,{required TResult orElse(),}){
+final _that = this;
+switch (_that) {
+case _AnilistStudioEdge() when $default != null:
+return $default(_that);case _:
+  return orElse();
+
+}
+}
+/// A `switch`-like method, using callbacks.
+///
+/// Callbacks receives the raw object, upcasted.
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case final Subclass value:
+///     return ...;
+///   case final Subclass2 value:
+///     return ...;
+/// }
+/// ```
+
+@optionalTypeArgs TResult map<TResult extends Object?>(TResult Function( _AnilistStudioEdge value)  $default,){
+final _that = this;
+switch (_that) {
+case _AnilistStudioEdge():
+return $default(_that);case _:
+  throw StateError('Unexpected subclass');
+
+}
+}
+/// A variant of `map` that fallback to returning `null`.
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case final Subclass value:
+///     return ...;
+///   case _:
+///     return null;
+/// }
+/// ```
+
+@optionalTypeArgs TResult? mapOrNull<TResult extends Object?>(TResult? Function( _AnilistStudioEdge value)?  $default,){
+final _that = this;
+switch (_that) {
+case _AnilistStudioEdge() when $default != null:
+return $default(_that);case _:
+  return null;
+
+}
+}
+/// A variant of `when` that fallback to an `orElse` callback.
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case Subclass(:final field):
+///     return ...;
+///   case _:
+///     return orElse();
+/// }
+/// ```
+
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( bool? isMain,  AnilistStudioNode node)?  $default,{required TResult orElse(),}) {final _that = this;
+switch (_that) {
+case _AnilistStudioEdge() when $default != null:
+return $default(_that.isMain,_that.node);case _:
+  return orElse();
+
+}
+}
+/// A `switch`-like method, using callbacks.
+///
+/// As opposed to `map`, this offers destructuring.
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case Subclass(:final field):
+///     return ...;
+///   case Subclass2(:final field2):
+///     return ...;
+/// }
+/// ```
+
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( bool? isMain,  AnilistStudioNode node)  $default,) {final _that = this;
+switch (_that) {
+case _AnilistStudioEdge():
+return $default(_that.isMain,_that.node);case _:
+  throw StateError('Unexpected subclass');
+
+}
+}
+/// A variant of `when` that fallback to returning `null`
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case Subclass(:final field):
+///     return ...;
+///   case _:
+///     return null;
+/// }
+/// ```
+
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( bool? isMain,  AnilistStudioNode node)?  $default,) {final _that = this;
+switch (_that) {
+case _AnilistStudioEdge() when $default != null:
+return $default(_that.isMain,_that.node);case _:
+  return null;
+
+}
+}
+
+}
+
+/// @nodoc
+@JsonSerializable()
+
+class _AnilistStudioEdge implements AnilistStudioEdge {
+  const _AnilistStudioEdge({required this.isMain, required this.node});
+  factory _AnilistStudioEdge.fromJson(Map<String, dynamic> json) => _$AnilistStudioEdgeFromJson(json);
+
+@override final  bool? isMain;
+@override final  AnilistStudioNode node;
+
+/// Create a copy of AnilistStudioEdge
+/// with the given fields replaced by the non-null parameter values.
+@override @JsonKey(includeFromJson: false, includeToJson: false)
+@pragma('vm:prefer-inline')
+_$AnilistStudioEdgeCopyWith<_AnilistStudioEdge> get copyWith => __$AnilistStudioEdgeCopyWithImpl<_AnilistStudioEdge>(this, _$identity);
+
+@override
+Map<String, dynamic> toJson() {
+  return _$AnilistStudioEdgeToJson(this, );
+}
+
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _AnilistStudioEdge&&(identical(other.isMain, isMain) || other.isMain == isMain)&&(identical(other.node, node) || other.node == node));
+}
+
+@JsonKey(includeFromJson: false, includeToJson: false)
+@override
+int get hashCode => Object.hash(runtimeType,isMain,node);
+
+@override
+String toString() {
+  return 'AnilistStudioEdge(isMain: $isMain, node: $node)';
+}
+
+
+}
+
+/// @nodoc
+abstract mixin class _$AnilistStudioEdgeCopyWith<$Res> implements $AnilistStudioEdgeCopyWith<$Res> {
+  factory _$AnilistStudioEdgeCopyWith(_AnilistStudioEdge value, $Res Function(_AnilistStudioEdge) _then) = __$AnilistStudioEdgeCopyWithImpl;
+@override @useResult
+$Res call({
+ bool? isMain, AnilistStudioNode node
+});
+
+
+@override $AnilistStudioNodeCopyWith<$Res> get node;
+
+}
+/// @nodoc
+class __$AnilistStudioEdgeCopyWithImpl<$Res>
+    implements _$AnilistStudioEdgeCopyWith<$Res> {
+  __$AnilistStudioEdgeCopyWithImpl(this._self, this._then);
+
+  final _AnilistStudioEdge _self;
+  final $Res Function(_AnilistStudioEdge) _then;
+
+/// Create a copy of AnilistStudioEdge
+/// with the given fields replaced by the non-null parameter values.
+@override @pragma('vm:prefer-inline') $Res call({Object? isMain = freezed,Object? node = null,}) {
+  return _then(_AnilistStudioEdge(
+isMain: freezed == isMain ? _self.isMain : isMain // ignore: cast_nullable_to_non_nullable
+as bool?,node: null == node ? _self.node : node // ignore: cast_nullable_to_non_nullable
+as AnilistStudioNode,
+  ));
+}
+
+/// Create a copy of AnilistStudioEdge
+/// with the given fields replaced by the non-null parameter values.
+@override
+@pragma('vm:prefer-inline')
+$AnilistStudioNodeCopyWith<$Res> get node {
+  
+  return $AnilistStudioNodeCopyWith<$Res>(_self.node, (value) {
+    return _then(_self.copyWith(node: value));
+  });
+}
 }
 
 
@@ -2349,275 +3204,6 @@ class __$AnilistStudioNodeCopyWithImpl<$Res>
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as int,name: null == name ? _self.name : name // ignore: cast_nullable_to_non_nullable
 as String,
-  ));
-}
-
-
-}
-
-
-/// @nodoc
-mixin _$AnilistTrailer {
-
- String? get id; String? get site; String? get thumbnail;
-/// Create a copy of AnilistTrailer
-/// with the given fields replaced by the non-null parameter values.
-@JsonKey(includeFromJson: false, includeToJson: false)
-@pragma('vm:prefer-inline')
-$AnilistTrailerCopyWith<AnilistTrailer> get copyWith => _$AnilistTrailerCopyWithImpl<AnilistTrailer>(this as AnilistTrailer, _$identity);
-
-  /// Serializes this AnilistTrailer to a JSON map.
-  Map<String, dynamic> toJson();
-
-
-@override
-bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is AnilistTrailer&&(identical(other.id, id) || other.id == id)&&(identical(other.site, site) || other.site == site)&&(identical(other.thumbnail, thumbnail) || other.thumbnail == thumbnail));
-}
-
-@JsonKey(includeFromJson: false, includeToJson: false)
-@override
-int get hashCode => Object.hash(runtimeType,id,site,thumbnail);
-
-@override
-String toString() {
-  return 'AnilistTrailer(id: $id, site: $site, thumbnail: $thumbnail)';
-}
-
-
-}
-
-/// @nodoc
-abstract mixin class $AnilistTrailerCopyWith<$Res>  {
-  factory $AnilistTrailerCopyWith(AnilistTrailer value, $Res Function(AnilistTrailer) _then) = _$AnilistTrailerCopyWithImpl;
-@useResult
-$Res call({
- String? id, String? site, String? thumbnail
-});
-
-
-
-
-}
-/// @nodoc
-class _$AnilistTrailerCopyWithImpl<$Res>
-    implements $AnilistTrailerCopyWith<$Res> {
-  _$AnilistTrailerCopyWithImpl(this._self, this._then);
-
-  final AnilistTrailer _self;
-  final $Res Function(AnilistTrailer) _then;
-
-/// Create a copy of AnilistTrailer
-/// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? id = freezed,Object? site = freezed,Object? thumbnail = freezed,}) {
-  return _then(_self.copyWith(
-id: freezed == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
-as String?,site: freezed == site ? _self.site : site // ignore: cast_nullable_to_non_nullable
-as String?,thumbnail: freezed == thumbnail ? _self.thumbnail : thumbnail // ignore: cast_nullable_to_non_nullable
-as String?,
-  ));
-}
-
-}
-
-
-/// Adds pattern-matching-related methods to [AnilistTrailer].
-extension AnilistTrailerPatterns on AnilistTrailer {
-/// A variant of `map` that fallback to returning `orElse`.
-///
-/// It is equivalent to doing:
-/// ```dart
-/// switch (sealedClass) {
-///   case final Subclass value:
-///     return ...;
-///   case _:
-///     return orElse();
-/// }
-/// ```
-
-@optionalTypeArgs TResult maybeMap<TResult extends Object?>(TResult Function( _AnilistTrailer value)?  $default,{required TResult orElse(),}){
-final _that = this;
-switch (_that) {
-case _AnilistTrailer() when $default != null:
-return $default(_that);case _:
-  return orElse();
-
-}
-}
-/// A `switch`-like method, using callbacks.
-///
-/// Callbacks receives the raw object, upcasted.
-/// It is equivalent to doing:
-/// ```dart
-/// switch (sealedClass) {
-///   case final Subclass value:
-///     return ...;
-///   case final Subclass2 value:
-///     return ...;
-/// }
-/// ```
-
-@optionalTypeArgs TResult map<TResult extends Object?>(TResult Function( _AnilistTrailer value)  $default,){
-final _that = this;
-switch (_that) {
-case _AnilistTrailer():
-return $default(_that);case _:
-  throw StateError('Unexpected subclass');
-
-}
-}
-/// A variant of `map` that fallback to returning `null`.
-///
-/// It is equivalent to doing:
-/// ```dart
-/// switch (sealedClass) {
-///   case final Subclass value:
-///     return ...;
-///   case _:
-///     return null;
-/// }
-/// ```
-
-@optionalTypeArgs TResult? mapOrNull<TResult extends Object?>(TResult? Function( _AnilistTrailer value)?  $default,){
-final _that = this;
-switch (_that) {
-case _AnilistTrailer() when $default != null:
-return $default(_that);case _:
-  return null;
-
-}
-}
-/// A variant of `when` that fallback to an `orElse` callback.
-///
-/// It is equivalent to doing:
-/// ```dart
-/// switch (sealedClass) {
-///   case Subclass(:final field):
-///     return ...;
-///   case _:
-///     return orElse();
-/// }
-/// ```
-
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String? id,  String? site,  String? thumbnail)?  $default,{required TResult orElse(),}) {final _that = this;
-switch (_that) {
-case _AnilistTrailer() when $default != null:
-return $default(_that.id,_that.site,_that.thumbnail);case _:
-  return orElse();
-
-}
-}
-/// A `switch`-like method, using callbacks.
-///
-/// As opposed to `map`, this offers destructuring.
-/// It is equivalent to doing:
-/// ```dart
-/// switch (sealedClass) {
-///   case Subclass(:final field):
-///     return ...;
-///   case Subclass2(:final field2):
-///     return ...;
-/// }
-/// ```
-
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String? id,  String? site,  String? thumbnail)  $default,) {final _that = this;
-switch (_that) {
-case _AnilistTrailer():
-return $default(_that.id,_that.site,_that.thumbnail);case _:
-  throw StateError('Unexpected subclass');
-
-}
-}
-/// A variant of `when` that fallback to returning `null`
-///
-/// It is equivalent to doing:
-/// ```dart
-/// switch (sealedClass) {
-///   case Subclass(:final field):
-///     return ...;
-///   case _:
-///     return null;
-/// }
-/// ```
-
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String? id,  String? site,  String? thumbnail)?  $default,) {final _that = this;
-switch (_that) {
-case _AnilistTrailer() when $default != null:
-return $default(_that.id,_that.site,_that.thumbnail);case _:
-  return null;
-
-}
-}
-
-}
-
-/// @nodoc
-@JsonSerializable()
-
-class _AnilistTrailer implements AnilistTrailer {
-  const _AnilistTrailer({required this.id, required this.site, required this.thumbnail});
-  factory _AnilistTrailer.fromJson(Map<String, dynamic> json) => _$AnilistTrailerFromJson(json);
-
-@override final  String? id;
-@override final  String? site;
-@override final  String? thumbnail;
-
-/// Create a copy of AnilistTrailer
-/// with the given fields replaced by the non-null parameter values.
-@override @JsonKey(includeFromJson: false, includeToJson: false)
-@pragma('vm:prefer-inline')
-_$AnilistTrailerCopyWith<_AnilistTrailer> get copyWith => __$AnilistTrailerCopyWithImpl<_AnilistTrailer>(this, _$identity);
-
-@override
-Map<String, dynamic> toJson() {
-  return _$AnilistTrailerToJson(this, );
-}
-
-@override
-bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _AnilistTrailer&&(identical(other.id, id) || other.id == id)&&(identical(other.site, site) || other.site == site)&&(identical(other.thumbnail, thumbnail) || other.thumbnail == thumbnail));
-}
-
-@JsonKey(includeFromJson: false, includeToJson: false)
-@override
-int get hashCode => Object.hash(runtimeType,id,site,thumbnail);
-
-@override
-String toString() {
-  return 'AnilistTrailer(id: $id, site: $site, thumbnail: $thumbnail)';
-}
-
-
-}
-
-/// @nodoc
-abstract mixin class _$AnilistTrailerCopyWith<$Res> implements $AnilistTrailerCopyWith<$Res> {
-  factory _$AnilistTrailerCopyWith(_AnilistTrailer value, $Res Function(_AnilistTrailer) _then) = __$AnilistTrailerCopyWithImpl;
-@override @useResult
-$Res call({
- String? id, String? site, String? thumbnail
-});
-
-
-
-
-}
-/// @nodoc
-class __$AnilistTrailerCopyWithImpl<$Res>
-    implements _$AnilistTrailerCopyWith<$Res> {
-  __$AnilistTrailerCopyWithImpl(this._self, this._then);
-
-  final _AnilistTrailer _self;
-  final $Res Function(_AnilistTrailer) _then;
-
-/// Create a copy of AnilistTrailer
-/// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? id = freezed,Object? site = freezed,Object? thumbnail = freezed,}) {
-  return _then(_AnilistTrailer(
-id: freezed == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
-as String?,site: freezed == site ? _self.site : site // ignore: cast_nullable_to_non_nullable
-as String?,thumbnail: freezed == thumbnail ? _self.thumbnail : thumbnail // ignore: cast_nullable_to_non_nullable
-as String?,
   ));
 }
 
