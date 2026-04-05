@@ -3,6 +3,7 @@ import 'package:kadro_app/shared/domain/entities/media_presentation_data.dart';
 import 'package:kadro_app/shared/ui/widgets/cashed_image.dart';
 import 'package:kadro_app/shared/utils/ui_formatter.dart';
 import 'package:skeletonizer/skeletonizer.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class MediaInfoBottomSheet extends StatelessWidget {
   final MediaPresentationData media;
@@ -33,6 +34,8 @@ class MediaInfoBottomSheet extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final openSourceTap = onOpenSourceTap ?? () => _openAniListPage();
+
     return DraggableScrollableSheet(
       expand: false,
       initialChildSize: 0.55,
@@ -211,7 +214,7 @@ class MediaInfoBottomSheet extends StatelessWidget {
                   sliver: SliverToBoxAdapter(
                     child: _ActionBar(
                       onDetailsTap: onDetailsTap,
-                      onOpenSourceTap: onOpenSourceTap,
+                      onOpenSourceTap: openSourceTap,
                     ),
                   ),
                 ),
@@ -221,6 +224,12 @@ class MediaInfoBottomSheet extends StatelessWidget {
         );
       },
     );
+  }
+
+  Future<void> _openAniListPage() async {
+    final uri = Uri.https('anilist.co', '/anime/${media.id}');
+
+    await launchUrl(uri, mode: LaunchMode.externalApplication);
   }
 }
 
