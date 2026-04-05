@@ -1,10 +1,10 @@
-import 'package:kadro_app/features/search/domain/entities/anime_detail.dart';
+import 'package:kadro_app/shared/domain/entities/media_detail.dart';
 import 'package:kadro_app/shared/domain/entities/media_presentation_data.dart';
 
-final class AnimeDetailPresentationConverter {
-  const AnimeDetailPresentationConverter();
+final class MediaDetailPresentationConverter {
+  const MediaDetailPresentationConverter();
 
-  MediaPresentationData fromAnimeDetail(AnimeDetail detail) {
+  MediaPresentationData fromMediaDetail(MediaDetail detail) {
     return MediaPresentationData(
       id: detail.id,
       similarity: detail.similarity,

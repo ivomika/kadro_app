@@ -14,7 +14,7 @@ final class HistoryMediaBottomSheetLoading
     extends HistoryMediaBottomSheetState {}
 
 final class HistoryMediaBottomSheetLoaded extends HistoryMediaBottomSheetState {
-  final MediaPresentationData media;
+  final MediaDetail media;
 
   const HistoryMediaBottomSheetLoaded(this.media);
 

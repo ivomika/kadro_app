@@ -1,8 +1,8 @@
-import 'package:kadro_app/features/search/domain/entities/anime_detail.dart';
+import 'package:kadro_app/shared/domain/entities/media_detail.dart';
 import 'package:skeletonizer/skeletonizer.dart';
 
-class FakeAnimeDetail extends AnimeDetail {
-  const FakeAnimeDetail._({
+class FakeMediaDetail extends MediaDetail {
+  const FakeMediaDetail._({
     required super.id,
     required super.idMal,
     required super.type,
@@ -35,11 +35,11 @@ class FakeAnimeDetail extends AnimeDetail {
     required super.similarity,
   });
 
-  factory FakeAnimeDetail() => FakeAnimeDetail._(
+  factory FakeMediaDetail() => FakeMediaDetail._(
     id: 0,
     idMal: 0,
     type: BoneMock.name,
-    title: AnimeTitle(
+    title: MediaDetailTitle(
       romaji: BoneMock.title,
       english: BoneMock.title,
       nativeTitle: BoneMock.title,
@@ -56,25 +56,32 @@ class FakeAnimeDetail extends AnimeDetail {
     popularity: 0,
     trending: 0,
     favourites: 0,
-    genres: List.generate(5, (index) => BoneMock.name),
-    synonyms: List.generate(3, (index) => BoneMock.name),
+    genres: List.generate(5, (_) => BoneMock.name),
+    synonyms: List.generate(3, (_) => BoneMock.name),
     countryOfOrigin: BoneMock.name,
     source: BoneMock.name,
     isLicensed: false,
-    coverImage: const AnimeCoverImage(large: '', extraLarge: '', color: ''),
+    coverImage: const MediaDetailCoverImage(
+      large: '',
+      extraLarge: '',
+      color: '',
+    ),
     bannerImage: BoneMock.name,
-    startDate: const AnimeFuzzyDate(year: 2000, month: 12, day: 13),
-    endDate: const AnimeFuzzyDate(year: 2000, month: 12, day: 13),
-    studios: AnimeStudios(
+    startDate: const MediaDetailFuzzyDate(year: 2000, month: 12, day: 13),
+    endDate: const MediaDetailFuzzyDate(year: 2000, month: 12, day: 13),
+    studios: MediaDetailStudios(
       nodes: List.generate(
         5,
-        (index) =>
-            AnimeStudioNode(id: index, name: BoneMock.name, isMain: index == 0),
+        (index) => MediaDetailStudioNode(
+          id: index,
+          name: BoneMock.name,
+          isMain: index == 0,
+        ),
       ),
     ),
     tags: List.generate(
       6,
-      (index) => AnimeTag(
+      (_) => MediaDetailTag(
         name: BoneMock.name,
         rank: 80,
         isMediaSpoiler: false,
@@ -83,7 +90,7 @@ class FakeAnimeDetail extends AnimeDetail {
     ),
     rankings: List.generate(
       3,
-      (index) => AnimeRanking(
+      (index) => MediaDetailRanking(
         rank: index + 1,
         type: BoneMock.name,
         year: 2000,
@@ -93,6 +100,6 @@ class FakeAnimeDetail extends AnimeDetail {
       ),
     ),
     siteUrl: BoneMock.name,
-    similarity: 0.0,
+    similarity: 0,
   );
 }

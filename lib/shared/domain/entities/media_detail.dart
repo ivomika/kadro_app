@@ -1,11 +1,11 @@
 import 'package:flutter_core/flutter_core.dart';
 import 'package:html/parser.dart';
 
-class AnimeDetail extends Equatable {
+class MediaDetail extends Equatable {
   final int id;
   final int idMal;
   final String type;
-  final AnimeTitle title;
+  final MediaDetailTitle title;
   final double similarity;
   final String description;
   final String format;
@@ -24,18 +24,18 @@ class AnimeDetail extends Equatable {
   final String countryOfOrigin;
   final String source;
   final bool isLicensed;
-  final AnimeCoverImage coverImage;
+  final MediaDetailCoverImage coverImage;
   final String bannerImage;
-  final AnimeFuzzyDate startDate;
-  final AnimeFuzzyDate endDate;
-  final AnimeStudios studios;
-  final List<AnimeTag> tags;
-  final List<AnimeRanking> rankings;
+  final MediaDetailFuzzyDate startDate;
+  final MediaDetailFuzzyDate endDate;
+  final MediaDetailStudios studios;
+  final List<MediaDetailTag> tags;
+  final List<MediaDetailRanking> rankings;
   final String siteUrl;
 
   String get parsedDescription => _parseHtmlText();
 
-  const AnimeDetail({
+  const MediaDetail({
     required this.id,
     required this.idMal,
     required this.type,
@@ -108,12 +108,12 @@ class AnimeDetail extends Equatable {
   }
 }
 
-class AnimeTitle extends Equatable {
+class MediaDetailTitle extends Equatable {
   final String romaji;
   final String english;
   final String nativeTitle;
 
-  const AnimeTitle({
+  const MediaDetailTitle({
     required this.romaji,
     required this.english,
     required this.nativeTitle,
@@ -123,12 +123,12 @@ class AnimeTitle extends Equatable {
   List<Object?> get props => [romaji, english, nativeTitle];
 }
 
-class AnimeCoverImage extends Equatable {
+class MediaDetailCoverImage extends Equatable {
   final String large;
   final String extraLarge;
   final String color;
 
-  const AnimeCoverImage({
+  const MediaDetailCoverImage({
     required this.large,
     required this.extraLarge,
     required this.color,
@@ -138,12 +138,12 @@ class AnimeCoverImage extends Equatable {
   List<Object?> get props => [large, extraLarge, color];
 }
 
-class AnimeFuzzyDate extends Equatable {
+class MediaDetailFuzzyDate extends Equatable {
   final int year;
   final int month;
   final int day;
 
-  const AnimeFuzzyDate({
+  const MediaDetailFuzzyDate({
     required this.year,
     required this.month,
     required this.day,
@@ -153,21 +153,21 @@ class AnimeFuzzyDate extends Equatable {
   List<Object?> get props => [year, month, day];
 }
 
-class AnimeStudios extends Equatable {
-  final List<AnimeStudioNode> nodes;
+class MediaDetailStudios extends Equatable {
+  final List<MediaDetailStudioNode> nodes;
 
-  const AnimeStudios({required this.nodes});
+  const MediaDetailStudios({required this.nodes});
 
   @override
   List<Object?> get props => [nodes];
 }
 
-class AnimeStudioNode extends Equatable {
+class MediaDetailStudioNode extends Equatable {
   final int id;
   final String name;
   final bool isMain;
 
-  const AnimeStudioNode({
+  const MediaDetailStudioNode({
     required this.id,
     required this.name,
     required this.isMain,
@@ -177,13 +177,13 @@ class AnimeStudioNode extends Equatable {
   List<Object?> get props => [id, name, isMain];
 }
 
-class AnimeTag extends Equatable {
+class MediaDetailTag extends Equatable {
   final String name;
   final int rank;
   final bool isMediaSpoiler;
   final String category;
 
-  const AnimeTag({
+  const MediaDetailTag({
     required this.name,
     required this.rank,
     required this.isMediaSpoiler,
@@ -194,7 +194,7 @@ class AnimeTag extends Equatable {
   List<Object?> get props => [name, rank, isMediaSpoiler, category];
 }
 
-class AnimeRanking extends Equatable {
+class MediaDetailRanking extends Equatable {
   final int rank;
   final String type;
   final int year;
@@ -202,7 +202,7 @@ class AnimeRanking extends Equatable {
   final bool allTime;
   final String context;
 
-  const AnimeRanking({
+  const MediaDetailRanking({
     required this.rank,
     required this.type,
     required this.year,

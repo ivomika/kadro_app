@@ -1,15 +1,15 @@
-import 'package:kadro_app/features/search/data/models/anilist_response/anilist_response.dart';
-import 'package:kadro_app/features/search/domain/entities/anime_detail.dart';
+import 'package:kadro_app/shared/data/models/anilist_response.dart';
+import 'package:kadro_app/shared/domain/entities/media_detail.dart';
 
-final class AnimeDetailConverter {
-  const AnimeDetailConverter();
+final class MediaDetailConverter {
+  const MediaDetailConverter();
 
-  AnimeDetail fromResponse(AnilistMedia media, double similarity) {
-    return AnimeDetail(
+  MediaDetail fromResponse(AnilistMedia media, double similarity) {
+    return MediaDetail(
       id: media.id,
       idMal: media.idMal ?? -1,
       type: media.type ?? '',
-      title: AnimeTitle(
+      title: MediaDetailTitle(
         romaji: media.title.romaji ?? '',
         english: media.title.english ?? '',
         nativeTitle: media.title.nativeTitle ?? '',
@@ -31,26 +31,26 @@ final class AnimeDetailConverter {
       countryOfOrigin: media.countryOfOrigin ?? '',
       source: media.source ?? '',
       isLicensed: media.isLicensed ?? false,
-      coverImage: AnimeCoverImage(
+      coverImage: MediaDetailCoverImage(
         large: media.coverImage.large ?? '',
         extraLarge: media.coverImage.extraLarge ?? '',
         color: media.coverImage.color ?? '',
       ),
       bannerImage: media.bannerImage ?? '',
-      startDate: AnimeFuzzyDate(
+      startDate: MediaDetailFuzzyDate(
         year: media.startDate.year ?? -1,
         month: media.startDate.month ?? -1,
         day: media.startDate.day ?? -1,
       ),
-      endDate: AnimeFuzzyDate(
+      endDate: MediaDetailFuzzyDate(
         year: media.endDate.year ?? -1,
         month: media.endDate.month ?? -1,
         day: media.endDate.day ?? -1,
       ),
-      studios: AnimeStudios(
+      studios: MediaDetailStudios(
         nodes: media.studios.edges
             .map(
-              (studioEdge) => AnimeStudioNode(
+              (studioEdge) => MediaDetailStudioNode(
                 id: studioEdge.node.id,
                 name: studioEdge.node.name,
                 isMain: studioEdge.isMain ?? false,
@@ -60,7 +60,7 @@ final class AnimeDetailConverter {
       ),
       tags: media.tags
           .map(
-            (tag) => AnimeTag(
+            (tag) => MediaDetailTag(
               name: tag.name,
               rank: tag.rank ?? -1,
               isMediaSpoiler: tag.isMediaSpoiler ?? false,
@@ -70,7 +70,7 @@ final class AnimeDetailConverter {
           .toList(growable: false),
       rankings: media.rankings
           .map(
-            (ranking) => AnimeRanking(
+            (ranking) => MediaDetailRanking(
               rank: ranking.rank,
               type: ranking.type ?? '',
               year: ranking.year ?? -1,
