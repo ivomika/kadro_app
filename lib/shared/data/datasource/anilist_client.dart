@@ -1,11 +1,16 @@
 import 'package:flutter_core/flutter_core.dart';
 import 'package:kadro_app/shared/data/models/anilist_response.dart';
 
-final class AnilistClient extends BaseApiClient {
+abstract interface class AnilistDataSource {
+  Future<FetchResponse<AnilistResponse>> searchByAnilistId(int id);
+}
+
+final class AnilistClient extends BaseApiClient implements AnilistDataSource {
   static const String _baseUrl = 'https://graphql.anilist.co';
 
   AnilistClient() : super(_baseUrl);
 
+  @override
   Future<FetchResponse<AnilistResponse>> searchByAnilistId(int id) async {
     final request = GraphQlRequest(
       query: '''

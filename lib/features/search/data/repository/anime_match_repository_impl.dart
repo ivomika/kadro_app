@@ -6,7 +6,7 @@ import 'package:kadro_app/features/search/domain/entities/anime_match.dart';
 import 'package:kadro_app/features/search/domain/repository/i_anime_match_repository.dart';
 
 final class AnimeMatchRepositoryImpl implements IAnimeMatchRepository {
-  final TraceMoeClient _client;
+  final TraceMoeDataSource _client;
   final AnimeMatchConverter _converter;
 
   AnimeMatchRepositoryImpl(
@@ -19,9 +19,7 @@ final class AnimeMatchRepositoryImpl implements IAnimeMatchRepository {
     final result = await _client.searchByImage(file);
 
     if (result.isSuccess == false) return [];
-    return result
-        .data
-        !.result
+    return result.data!.result
         .map(_converter.fromResponse)
         .toList(growable: false);
   }
@@ -31,9 +29,7 @@ final class AnimeMatchRepositoryImpl implements IAnimeMatchRepository {
     final result = await _client.searchBuUrl(url);
 
     if (result.isSuccess == false) return [];
-    return result
-        .data
-        !.result
+    return result.data!.result
         .map(_converter.fromResponse)
         .toList(growable: false);
   }

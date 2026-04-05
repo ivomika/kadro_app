@@ -4,7 +4,7 @@ import 'package:kadro_app/shared/domain/entities/media_detail.dart';
 import 'package:kadro_app/shared/domain/repository/i_media_detail_repository.dart';
 
 final class MediaDetailRepositoryImpl implements IMediaDetailRepository {
-  final AnilistClient _client;
+  final AnilistDataSource _client;
   final MediaDetailConverter _converter;
 
   MediaDetailRepositoryImpl(
