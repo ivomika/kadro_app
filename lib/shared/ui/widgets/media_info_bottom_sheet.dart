@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:kadro_app/shared/domain/entities/media_presentation_data.dart';
 import 'package:kadro_app/shared/ui/widgets/cashed_image.dart';
 import 'package:kadro_app/shared/utils/ui_formatter.dart';
@@ -69,18 +70,25 @@ class MediaInfoBottomSheet extends StatelessWidget {
                   _FactEntry(
                     label: 'Romaji',
                     value: UIFormatter.display(media.title.romaji),
+                    copyValue: media.title.romaji.trim(),
                   ),
                   _FactEntry(
                     label: 'English',
                     value: UIFormatter.display(media.title.english),
+                    copyValue: media.title.english.trim(),
                   ),
                   _FactEntry(
                     label: 'Native',
                     value: UIFormatter.display(media.title.nativeTitle),
+                    copyValue: media.title.nativeTitle.trim(),
                   ),
                   _FactEntry(
                     label: 'Синонимы',
                     value: UIFormatter.joinNonEmpty(media.synonyms, take: 3),
+                    copyValue: media.synonyms
+                        .map((synonym) => synonym.trim())
+                        .where((synonym) => synonym.isNotEmpty)
+                        .join(', '),
                   ),
                 ],
                 cardBuilder: (entry) => _CompactTitleCard(entry: entry),
@@ -516,8 +524,9 @@ class _FactGridSection extends StatelessWidget {
 class _FactEntry {
   final String label;
   final String value;
+  final String? copyValue;
 
-  const _FactEntry({required this.label, required this.value});
+  const _FactEntry({required this.label, required this.value, this.copyValue});
 }
 
 class _CompactTitleCard extends StatelessWidget {
@@ -528,38 +537,75 @@ class _CompactTitleCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final canCopy = entry.copyValue?.isNotEmpty == true;
 
     return Card.filled(
       margin: EdgeInsets.zero,
       color: theme.colorScheme.surfaceContainerHighest,
-      child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Text(
-              entry.label,
-              maxLines: 1,
-              overflow: TextOverflow.ellipsis,
-              style: theme.textTheme.labelSmall?.copyWith(
-                color: theme.colorScheme.onSurfaceVariant,
+      child: InkWell(
+        onTap: canCopy ? () => _copyFactEntry(context, entry) : null,
+        borderRadius: BorderRadius.circular(12),
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Row(
+                children: [
+                  Expanded(
+                    child: Text(
+                      entry.label,
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                      style: theme.textTheme.labelSmall?.copyWith(
+                        color: theme.colorScheme.onSurfaceVariant,
+                      ),
+                    ),
+                  ),
+                  if (canCopy) ...[
+                    const SizedBox(width: 6),
+                    Icon(
+                      Icons.content_copy_rounded,
+                      size: 14,
+                      color: theme.colorScheme.onSurfaceVariant,
+                    ),
+                  ],
+                ],
               ),
-            ),
-            const SizedBox(height: 4),
-            Text(
-              entry.value,
-              maxLines: 1,
-              overflow: TextOverflow.ellipsis,
-              style: theme.textTheme.bodyMedium?.copyWith(
-                fontWeight: FontWeight.w700,
+              const SizedBox(height: 4),
+              Text(
+                entry.value,
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+                style: theme.textTheme.bodyMedium?.copyWith(
+                  fontWeight: FontWeight.w700,
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );
   }
+}
+
+Future<void> _copyFactEntry(BuildContext context, _FactEntry entry) async {
+  final value = entry.copyValue;
+  if (value == null || value.isEmpty) {
+    return;
+  }
+  final messenger = ScaffoldMessenger.of(context);
+  await Clipboard.setData(ClipboardData(text: value));
+
+  messenger
+    ..hideCurrentSnackBar()
+    ..showSnackBar(
+      SnackBar(
+        behavior: SnackBarBehavior.floating,
+        content: Text('${entry.label} скопировано'),
+      ),
+    );
 }
 
 class _FactCard extends StatelessWidget {
