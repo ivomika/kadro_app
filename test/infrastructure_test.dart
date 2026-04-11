@@ -8,11 +8,11 @@ import 'package:kadro_app/features/history/data/datasource/history_database.dart
 import 'package:kadro_app/features/history/data/repository/history_repository_impl.dart';
 import 'package:kadro_app/features/history/domain/entities/anime_history.dart';
 import 'package:kadro_app/flows/history/ui/bloc/history_media_bottom_sheet_bloc.dart';
-import 'package:kadro_app/flows/search/data/datasource/trace_moe_client.dart';
-import 'package:kadro_app/flows/search/data/models/anime_match_response/anime_match_response.dart';
-import 'package:kadro_app/flows/search/data/repository/anime_match_repository_impl.dart';
-import 'package:kadro_app/flows/search/domain/entities/anime_match.dart';
-import 'package:kadro_app/flows/search/domain/repository/i_anime_match_repository.dart';
+import 'package:kadro_app/features/search/data/datasource/trace_moe_client.dart';
+import 'package:kadro_app/features/search/data/anime_match_response/anime_match_response.dart';
+import 'package:kadro_app/features/search/data/repository/anime_match_repository_impl.dart';
+import 'package:kadro_app/features/search/domain/entities/anime_match.dart';
+import 'package:kadro_app/features/search/domain/repository/i_anime_match_repository.dart';
 import 'package:kadro_app/flows/search/domain/use_case/find_best_by_file_use_case.dart';
 import 'package:kadro_app/flows/search/domain/use_case/find_best_by_url_use_case.dart';
 import 'package:kadro_app/shared/data/datasource/anilist_client.dart';

@@ -1,9 +1,9 @@
 import 'dart:io';
 
-import 'package:kadro_app/flows/search/data/converters/anime_match_converter.dart';
-import 'package:kadro_app/flows/search/data/datasource/trace_moe_client.dart';
-import 'package:kadro_app/flows/search/domain/entities/anime_match.dart';
-import 'package:kadro_app/flows/search/domain/repository/i_anime_match_repository.dart';
+import 'package:kadro_app/features/search/data/converters/anime_match_converter.dart';
+import 'package:kadro_app/features/search/data/datasource/trace_moe_client.dart';
+import 'package:kadro_app/features/search/domain/entities/anime_match.dart';
+import 'package:kadro_app/features/search/domain/repository/i_anime_match_repository.dart';
 
 final class AnimeMatchRepositoryImpl implements IAnimeMatchRepository {
   final TraceMoeDataSource _client;
