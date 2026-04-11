@@ -11,9 +11,9 @@ import 'package:kadro_app/features/search/data/repository/anime_match_repository
 import 'package:kadro_app/features/history/data/repository/history_repository_impl.dart';
 import 'package:kadro_app/features/search/domain/repository/i_anime_match_repository.dart';
 import 'package:kadro_app/features/history/domain/repository/i_history_repository.dart';
-import 'package:kadro_app/shared/data/datasource/anilist_client.dart';
-import 'package:kadro_app/shared/data/repository/media_detail_repository_impl.dart';
-import 'package:kadro_app/shared/domain/repository/i_media_detail_repository.dart';
+import 'package:kadro_app/features/detail/data/datasource/anilist_client.dart';
+import 'package:kadro_app/features/detail/data/repository/media_detail_repository_impl.dart';
+import 'package:kadro_app/features/detail/domain/repository/i_media_detail_repository.dart';
 
 class MainApp extends StatelessWidget {
   const MainApp({super.key});

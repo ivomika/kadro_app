@@ -1,4 +1,4 @@
-import 'package:kadro_app/shared/domain/entities/media_detail.dart';
+import 'package:kadro_app/features/detail/domain/entities/media_detail.dart';
 import 'package:skeletonizer/skeletonizer.dart';
 
 class FakeMediaDetail extends MediaDetail {

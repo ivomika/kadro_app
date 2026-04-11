@@ -1,5 +1,5 @@
-import 'package:kadro_app/shared/data/models/anilist_response.dart';
-import 'package:kadro_app/shared/domain/entities/media_detail.dart';
+import 'package:kadro_app/features/detail/data/models/anilist_response.dart';
+import 'package:kadro_app/features/detail/domain/entities/media_detail.dart';
 
 final class MediaDetailConverter {
   const MediaDetailConverter();

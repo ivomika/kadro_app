@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:kadro_app/shared/domain/entities/media_presentation_data.dart';
+import 'package:kadro_app/features/detail/domain/entities/media_detail.dart';
 import 'package:kadro_app/shared/ui/widgets/cashed_image.dart';
 import 'package:kadro_app/shared/utils/ui_formatter.dart';
 import 'package:skeletonizer/skeletonizer.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class MediaInfoBottomSheet extends StatelessWidget {
-  final MediaPresentationData media;
+  final MediaDetail media;
   final bool isLoading;
   final VoidCallback? onDetailsTap;
   final VoidCallback? onOpenSourceTap;
@@ -177,10 +177,10 @@ class MediaInfoBottomSheet extends StatelessWidget {
                 padding: const EdgeInsets.fromLTRB(16, 0, 16, 12),
                 sliver: SliverToBoxAdapter(
                   child: _ChipGroup(
-                    labels: media.studios
+                    labels: media.studios.nodes
                         .map(_studioLabel)
                         .toList(growable: false),
-                    highlighted: media.studios
+                    highlighted: media.studios.nodes
                         .where((studio) => studio.isMain)
                         .map((studio) => studio.name)
                         .toSet(),
@@ -210,8 +210,8 @@ class MediaInfoBottomSheet extends StatelessWidget {
               SliverPadding(
                 padding: const EdgeInsets.fromLTRB(16, 0, 16, 12),
                 sliver: SliverToBoxAdapter(
-                  child: _DescriptionCard(
-                    text: UIFormatter.display(media.description),
+                    child: _DescriptionCard(
+                    text: UIFormatter.display(media.parsedDescription),
                   ),
                 ),
               ),
@@ -242,7 +242,7 @@ class MediaInfoBottomSheet extends StatelessWidget {
 }
 
 class _SheetHeader extends StatelessWidget {
-  final MediaPresentationData media;
+  final MediaDetail media;
 
   const _SheetHeader({required this.media});
 
@@ -273,7 +273,7 @@ class _SheetHeader extends StatelessWidget {
 }
 
 class _PreviewCard extends StatelessWidget {
-  final MediaPresentationData media;
+  final MediaDetail media;
 
   const _PreviewCard({required this.media});
 
@@ -344,19 +344,19 @@ class _PreviewCard extends StatelessWidget {
   }
 }
 
-String _resolvePreviewUrl(MediaPresentationData media) {
+String _resolvePreviewUrl(MediaDetail media) {
   if (media.bannerImage.isNotEmpty) {
     return media.bannerImage;
   }
 
-  if (media.coverImageExtraLarge.isNotEmpty) {
-    return media.coverImageExtraLarge;
+  if (media.coverImage.extraLarge.isNotEmpty) {
+    return media.coverImage.extraLarge;
   }
 
-  return media.coverImageLarge;
+  return media.coverImage.large;
 }
 
-String _studioLabel(MediaPresentationStudio studio) {
+String _studioLabel(MediaDetailStudioNode studio) {
   if (studio.isMain) {
     return '${studio.name} · основная';
   }
@@ -372,7 +372,7 @@ String _licenseLabel(bool isLicensed) {
   return 'Без лицензии';
 }
 
-String _displayTitle(MediaPresentationTitle title) {
+String _displayTitle(MediaDetailTitle title) {
   if (title.english.trim().isNotEmpty) {
     return title.english;
   }
@@ -384,7 +384,7 @@ String _displayTitle(MediaPresentationTitle title) {
   return UIFormatter.display(title.nativeTitle);
 }
 
-String _seasonLabel(MediaPresentationData media) {
+String _seasonLabel(MediaDetail media) {
   if (media.season.trim().isEmpty || media.seasonYear <= 0) {
     return UIFormatter.placeholder;
   }
@@ -392,7 +392,7 @@ String _seasonLabel(MediaPresentationData media) {
   return '${media.season} ${media.seasonYear}';
 }
 
-String _bestRanking(List<MediaPresentationRanking> rankings) {
+String _bestRanking(List<MediaDetailRanking> rankings) {
   if (rankings.isEmpty) {
     return UIFormatter.placeholder;
   }
@@ -438,7 +438,7 @@ Color _resolveChipForegroundColor({
 }
 
 class _StatusChips extends StatelessWidget {
-  final MediaPresentationData media;
+  final MediaDetail media;
 
   const _StatusChips({required this.media});
 

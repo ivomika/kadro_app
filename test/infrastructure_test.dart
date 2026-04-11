@@ -15,12 +15,11 @@ import 'package:kadro_app/features/search/domain/entities/anime_match.dart';
 import 'package:kadro_app/features/search/domain/repository/i_anime_match_repository.dart';
 import 'package:kadro_app/flows/search/domain/use_case/find_best_by_file_use_case.dart';
 import 'package:kadro_app/flows/search/domain/use_case/find_best_by_url_use_case.dart';
-import 'package:kadro_app/shared/data/datasource/anilist_client.dart';
-import 'package:kadro_app/shared/data/models/anilist_response.dart';
-import 'package:kadro_app/shared/data/repository/media_detail_repository_impl.dart';
-import 'package:kadro_app/shared/domain/converters/media_detail_presentation_converter.dart';
-import 'package:kadro_app/shared/domain/entities/media_detail.dart';
-import 'package:kadro_app/shared/domain/repository/i_media_detail_repository.dart';
+import 'package:kadro_app/features/detail/data/datasource/anilist_client.dart';
+import 'package:kadro_app/features/detail/data/models/anilist_response.dart';
+import 'package:kadro_app/features/detail/data/repository/media_detail_repository_impl.dart';
+import 'package:kadro_app/features/detail/domain/entities/media_detail.dart';
+import 'package:kadro_app/features/detail/domain/repository/i_media_detail_repository.dart';
 
 void main() {
   group('MediaDetailRepositoryImpl', () {
@@ -371,28 +370,20 @@ void main() {
     });
   });
 
-  group('MediaDetailPresentationConverter', () {
-    test('maps media detail to presentation data and strips html', () {
-      _logTest(
-        'MediaDetailPresentationConverter',
-        'maps detail and strips html',
-      );
+  group('MediaDetail', () {
+    test('parsedDescription strips html', () {
+      _logTest('MediaDetail', 'parsedDescription strips html');
       final detail = _buildMediaDetail(
         id: 42,
         similarity: 0.77,
         description: '<b>Hello</b> world',
       );
 
-      final presentation = const MediaDetailPresentationConverter()
-          .fromMediaDetail(detail);
-
-      expect(presentation.id, 42);
-      expect(presentation.similarity, 0.77);
-      expect(presentation.description, 'Hello world');
-      expect(presentation.title.romaji, detail.title.romaji);
-      expect(presentation.rankings.first.rank, detail.rankings.first.rank);
-      expect(() => presentation.synonyms.add('new'), throwsUnsupportedError);
-      _logStep('Verified html stripping and immutable collections');
+      expect(detail.parsedDescription, 'Hello world');
+      expect(detail.id, 42);
+      expect(detail.similarity, 0.77);
+      expect(detail.title.romaji, 'Romaji 42');
+      _logStep('Verified html stripping on MediaDetail itself');
     });
   });
 

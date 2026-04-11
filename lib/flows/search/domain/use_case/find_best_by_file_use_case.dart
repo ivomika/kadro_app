@@ -2,8 +2,8 @@ import 'dart:io';
 
 import 'package:flutter_core/flutter_core.dart';
 import 'package:kadro_app/features/search/domain/repository/i_anime_match_repository.dart';
-import 'package:kadro_app/shared/domain/entities/media_detail.dart';
-import 'package:kadro_app/shared/domain/repository/i_media_detail_repository.dart';
+import 'package:kadro_app/features/detail/domain/entities/media_detail.dart';
+import 'package:kadro_app/features/detail/domain/repository/i_media_detail_repository.dart';
 
 final class FindBestByFileUseCase
     implements IUseCase<File, Future<MediaDetail?>> {

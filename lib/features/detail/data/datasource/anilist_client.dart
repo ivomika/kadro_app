@@ -1,5 +1,5 @@
 import 'package:flutter_core/flutter_core.dart';
-import 'package:kadro_app/shared/data/models/anilist_response.dart';
+import 'package:kadro_app/features/detail/data/models/anilist_response.dart';
 
 abstract interface class AnilistDataSource {
   Future<FetchResponse<AnilistResponse>> searchByAnilistId(int id);

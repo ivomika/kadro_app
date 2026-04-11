@@ -1,7 +1,7 @@
-import 'package:kadro_app/shared/data/converters/media_detail_converter.dart';
-import 'package:kadro_app/shared/data/datasource/anilist_client.dart';
-import 'package:kadro_app/shared/domain/entities/media_detail.dart';
-import 'package:kadro_app/shared/domain/repository/i_media_detail_repository.dart';
+import 'package:kadro_app/features/detail/data/converters/media_detail_converter.dart';
+import 'package:kadro_app/features/detail/data/datasource/anilist_client.dart';
+import 'package:kadro_app/features/detail/domain/entities/media_detail.dart';
+import 'package:kadro_app/features/detail/domain/repository/i_media_detail_repository.dart';
 
 final class MediaDetailRepositoryImpl implements IMediaDetailRepository {
   final AnilistDataSource _client;
