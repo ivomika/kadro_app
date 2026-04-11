@@ -2,8 +2,8 @@ import 'dart:async';
 
 import 'package:bloc/bloc.dart';
 import 'package:flutter_core/flutter_core.dart';
-import 'package:kadro_app/flows/history/domain/entities/anime_history.dart';
-import 'package:kadro_app/flows/history/domain/repository/i_history_repository.dart';
+import 'package:kadro_app/features/history/domain/entities/anime_history.dart';
+import 'package:kadro_app/features/history/domain/repository/i_history_repository.dart';
 import 'package:kadro_app/flows/history/domain/use_cases/load_history_use_case.dart';
 import 'package:kadro_app/flows/history/domain/use_cases/update_history_use_case.dart';
 

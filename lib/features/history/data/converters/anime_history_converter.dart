@@ -1,6 +1,6 @@
 import 'package:drift/drift.dart';
-import 'package:kadro_app/flows/history/data/datasource/history_database.dart';
-import 'package:kadro_app/flows/history/domain/entities/anime_history.dart';
+import 'package:kadro_app/features/history/data/datasource/history_database.dart';
+import 'package:kadro_app/features/history/domain/entities/anime_history.dart';
 
 final class AnimeHistoryConverter {
   const AnimeHistoryConverter();

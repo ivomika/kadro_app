@@ -2,7 +2,7 @@ import 'dart:async';
 
 import 'package:bloc/bloc.dart';
 import 'package:flutter_core/flutter_core.dart';
-import 'package:kadro_app/flows/history/domain/entities/anime_history.dart';
+import 'package:kadro_app/features/history/domain/entities/anime_history.dart';
 import 'package:kadro_app/shared/domain/entities/media_detail.dart';
 import 'package:kadro_app/shared/domain/repository/i_media_detail_repository.dart';
 

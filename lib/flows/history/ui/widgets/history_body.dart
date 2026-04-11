@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:kadro_app/flows/history/domain/entities/anime_history.dart';
+import 'package:kadro_app/features/history/domain/entities/anime_history.dart';
 import 'package:kadro_app/flows/history/ui/bloc/history_screen_bloc.dart';
 import 'package:kadro_app/flows/history/ui/widgets/history_media_info_bottom_sheet.dart';
 import 'package:kadro_app/flows/history/ui/widgets/history_list_tile.dart';
