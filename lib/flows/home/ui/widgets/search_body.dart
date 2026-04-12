@@ -36,7 +36,7 @@ class SearchBody extends StatelessWidget {
               );
             },
           ),
-        )
+        ),
       ],
     );
   }
@@ -45,40 +45,47 @@ class SearchBody extends StatelessWidget {
     final bloc = context.read<SearchScreenBloc>();
     final messenger = ScaffoldMessenger.of(context);
 
-    FilePickerResult? result = await FilePicker.platform.pickFiles();
+    final result = await FilePicker.platform.pickFiles();
 
     if (result != null) {
-      File file = File(result.files.single.path!);
+      final file = File(result.files.single.path!);
       bloc.add(FindAnimeByFileEvent(file));
     } else {
-      messenger.showSnackBar(SnackBar(content: Text('Файл не выбран')));
+      messenger.showSnackBar(
+        const SnackBar(content: Text('Файл не выбран')),
+      );
     }
   }
 
   void _searchByUrl(String value, BuildContext context) {
-    final bloc = context.read<SearchScreenBloc>();
-
-    bloc.add(FindAnimeByUrlEvent(value));
+    context.read<SearchScreenBloc>().add(FindAnimeByUrlEvent(value));
   }
 
   void _searchListener(BuildContext context, SearchScreenState state) {
     if (state is SearchScreenLoading) {
+      final searchBloc = context.read<SearchScreenBloc>();
+
       showModalBottomSheet(
-          context: context,
-          enableDrag: true,
-          useSafeArea: true,
-          showDragHandle: true,
-          useRootNavigator: true,
-          scrollControlDisabledMaxHeightRatio: 1,
-          builder: (context) => const SearchBottomSheet()
+        context: context,
+        enableDrag: true,
+        useSafeArea: true,
+        showDragHandle: true,
+        useRootNavigator: true,
+        scrollControlDisabledMaxHeightRatio: 1,
+        builder: (context) => BlocProvider.value(
+          value: searchBloc,
+          child: const SearchBottomSheet(),
+        ),
       );
     }
 
-    if(state is SearchScreenError){
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+    if (state is SearchScreenError) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
           behavior: SnackBarBehavior.floating,
-          content: Text(state.error)
-      ));
+          content: Text(state.error),
+        ),
+      );
     }
   }
 }

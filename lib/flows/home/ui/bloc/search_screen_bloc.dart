@@ -3,11 +3,13 @@ import 'dart:io';
 
 import 'package:bloc/bloc.dart';
 import 'package:flutter_core/flutter_core.dart';
+import 'package:kadro_app/features/detail/domain/entities/media_detail.dart';
+import 'package:kadro_app/features/detail/domain/repository/i_media_detail_repository.dart';
+import 'package:kadro_app/features/history/domain/entities/anime_history.dart';
+import 'package:kadro_app/features/history/domain/repository/i_history_repository.dart';
 import 'package:kadro_app/features/search/domain/repository/i_anime_match_repository.dart';
 import 'package:kadro_app/flows/home/domain/use_case/find_best_by_file_use_case.dart';
 import 'package:kadro_app/flows/home/domain/use_case/find_best_by_url_use_case.dart';
-import 'package:kadro_app/features/detail/domain/entities/media_detail.dart';
-import 'package:kadro_app/features/detail/domain/repository/i_media_detail_repository.dart';
 
 part 'search_screen_event.dart';
 part 'search_screen_state.dart';
@@ -15,9 +17,13 @@ part 'search_screen_state.dart';
 class SearchScreenBloc extends Bloc<SearchScreenEvent, SearchScreenState> {
   final IAnimeMatchRepository _matchRepository;
   final IMediaDetailRepository _detailRepository;
+  final IHistoryRepository _historyRepository;
 
-  SearchScreenBloc(this._matchRepository, this._detailRepository)
-    : super(SearchScreenInitial()) {
+  SearchScreenBloc(
+    this._matchRepository,
+    this._detailRepository,
+    this._historyRepository,
+  ) : super(SearchScreenInitial()) {
     on<FindAnimeByFileEvent>(_findAnimeByFile);
     on<FindAnimeByUrlEvent>(_findAnimeByUrl);
   }
@@ -38,6 +44,7 @@ class SearchScreenBloc extends Bloc<SearchScreenEvent, SearchScreenState> {
         return;
       }
 
+      await _saveMatchToHistory(result);
       emit(SearchScreenLoaded(result));
     } on ClientErrorException catch (e) {
       if (_hasError(e)) {
@@ -50,7 +57,7 @@ class SearchScreenBloc extends Bloc<SearchScreenEvent, SearchScreenState> {
         emit(SearchScreenError((e.response!.data as Map)['error']));
         return;
       }
-      emit(SearchScreenError('Ошибка сервера '));
+      emit(SearchScreenError('Ошибка сервера'));
     } catch (e) {
       emit(SearchScreenError(e.toString()));
     }
@@ -72,6 +79,7 @@ class SearchScreenBloc extends Bloc<SearchScreenEvent, SearchScreenState> {
         return;
       }
 
+      await _saveMatchToHistory(result);
       emit(SearchScreenLoaded(result));
     } on ClientErrorException catch (e) {
       if (_hasError(e)) {
@@ -84,7 +92,7 @@ class SearchScreenBloc extends Bloc<SearchScreenEvent, SearchScreenState> {
         emit(SearchScreenError((e.response!.data as Map)['error']));
         return;
       }
-      emit(SearchScreenError('Ошибка сервера '));
+      emit(SearchScreenError('Ошибка сервера'));
     } catch (e) {
       emit(SearchScreenError(e.toString()));
     }
@@ -99,5 +107,22 @@ class SearchScreenBloc extends Bloc<SearchScreenEvent, SearchScreenState> {
     }
 
     return true;
+  }
+
+  Future<void> _saveMatchToHistory(MediaDetail match) async {
+    await _historyRepository.create(
+      AnimeHistory.from(
+        anilist: match.id,
+        name: match.title.romaji,
+        imageUrl: match.coverImage.large,
+        similarity: match.similarity,
+        format: match.format,
+        status: match.status,
+        season: match.season,
+        seasonYear: match.seasonYear,
+        episodes: match.episodes,
+        description: match.parsedDescription,
+      ),
+    );
   }
 }

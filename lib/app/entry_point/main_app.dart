@@ -2,9 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kadro_app/app/router/routing.dart';
 import 'package:kadro_app/app/theme/app_theme.dart';
-import 'package:kadro_app/features/history/domain/entities/anime_history.dart';
-import 'package:kadro_app/flows/browse_history/ui/bloc/history_screen_bloc.dart';
-import 'package:kadro_app/flows/home/ui/bloc/search_screen_bloc.dart';
 import 'package:kadro_app/features/history/data/datasource/history_database.dart';
 import 'package:kadro_app/features/search/data/datasource/trace_moe_client.dart';
 import 'package:kadro_app/features/search/data/repository/anime_match_repository_impl.dart';
@@ -44,51 +41,12 @@ class MainApp extends StatelessWidget {
               HistoryRepositoryImpl(context.read<HistoryDriftDatabase>()),
         ),
       ],
-      child: MultiBlocProvider(
-        providers: [
-          BlocProvider(
-            create: (context) =>
-                HistoryScreenBloc(context.read<IHistoryRepository>())
-                  ..add(LoadHistory()),
-          ),
-          BlocProvider(
-            create: (context) => SearchScreenBloc(
-              context.read<IAnimeMatchRepository>(),
-              context.read<IMediaDetailRepository>(),
-            ),
-          ),
-        ],
-        child: BlocListener<SearchScreenBloc, SearchScreenState>(
-          listener: _searchListener,
-          child: MaterialApp.router(
-            theme: AppTheme.light,
-            darkTheme: AppTheme.dark,
-            themeMode: ThemeMode.system,
-            routerConfig: router,
-          ),
-        ),
+      child: MaterialApp.router(
+        theme: AppTheme.light,
+        darkTheme: AppTheme.dark,
+        themeMode: ThemeMode.system,
+        routerConfig: router,
       ),
     );
-  }
-
-  void _searchListener(BuildContext context, SearchScreenState state) {
-    if (state is SearchScreenLoaded) {
-      context.read<HistoryScreenBloc>().add(
-        UpdateHistory(
-          AnimeHistory.from(
-            anilist: state.match.id,
-            name: state.match.title.romaji,
-            imageUrl: state.match.coverImage.large,
-            similarity: state.match.similarity,
-            format: state.match.format,
-            status: state.match.status,
-            season: state.match.season,
-            seasonYear: state.match.seasonYear,
-            episodes: state.match.episodes,
-            description: state.match.parsedDescription,
-          ),
-        ),
-      );
-    }
   }
 }

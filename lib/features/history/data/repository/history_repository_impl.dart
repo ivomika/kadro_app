@@ -14,10 +14,20 @@ final class HistoryRepositoryImpl implements IHistoryRepository {
   }) : _converter = converter;
 
   @override
+  Stream<List<AnimeHistory>> watchAll() {
+    final query = _database.select(_database.animeHistoryTable)
+      ..orderBy([(table) => OrderingTerm.desc(table.id)]);
+
+    return query.watch().map(
+      (rows) => rows.map(_converter.fromTableData).toList(growable: false),
+    );
+  }
+
+  @override
   Future<List<AnimeHistory>> all() async {
     final rows = await (_database.select(_database.animeHistoryTable)
-      ..orderBy([(table) => OrderingTerm.desc(table.id)]))
-      .get();
+          ..orderBy([(table) => OrderingTerm.desc(table.id)]))
+        .get();
 
     return rows.map(_converter.fromTableData).toList(growable: false);
   }
@@ -25,8 +35,8 @@ final class HistoryRepositoryImpl implements IHistoryRepository {
   @override
   Future<AnimeHistory> byId(String id) async {
     final row = await (_database.select(_database.animeHistoryTable)
-      ..where((table) => table.uuid.equals(id)))
-      .getSingleOrNull();
+          ..where((table) => table.uuid.equals(id)))
+        .getSingleOrNull();
 
     if (row == null) {
       throw StateError('AnimeHistory with id=$id not found');
@@ -38,9 +48,9 @@ final class HistoryRepositoryImpl implements IHistoryRepository {
   @override
   Future<AnimeHistory> create(AnimeHistory model) async {
     await _database.into(_database.animeHistoryTable).insert(
-      _converter.toInsertCompanion(model),
-      mode: InsertMode.insertOrAbort,
-    );
+          _converter.toInsertCompanion(model),
+          mode: InsertMode.insertOrAbort,
+        );
 
     return byId(model.id);
   }
@@ -48,16 +58,16 @@ final class HistoryRepositoryImpl implements IHistoryRepository {
   @override
   Future<AnimeHistory> delete(AnimeHistory model) async {
     final existingRow = await (_database.select(_database.animeHistoryTable)
-      ..where((table) => table.uuid.equals(model.id)))
-      .getSingleOrNull();
+          ..where((table) => table.uuid.equals(model.id)))
+        .getSingleOrNull();
 
     if (existingRow == null) {
       throw StateError('AnimeHistory with id=${model.id} not found');
     }
 
     await (_database.delete(_database.animeHistoryTable)
-      ..where((table) => table.uuid.equals(model.id)))
-      .go();
+          ..where((table) => table.uuid.equals(model.id)))
+        .go();
 
     return _converter.fromTableData(existingRow);
   }
@@ -73,24 +83,23 @@ final class HistoryRepositoryImpl implements IHistoryRepository {
     final likePattern = '%$trimmedRequest%';
 
     final rows = await (_database.select(_database.animeHistoryTable)
-      ..where(
+          ..where(
             (table) =>
-        table.uuid.like(likePattern) |
-        table.name.like(likePattern)
-      )
-      ..orderBy([(table) => OrderingTerm.desc(table.id)]))
-      .get();
+                table.uuid.like(likePattern) | table.name.like(likePattern),
+          )
+          ..orderBy([(table) => OrderingTerm.desc(table.id)]))
+        .get();
 
-    return rows.map(_converter.fromTableData).toList();
+    return rows.map(_converter.fromTableData).toList(growable: false);
   }
 
   @override
   Future<AnimeHistory> update(AnimeHistory model) async {
     final updatedRowsCount = await (_database.update(_database.animeHistoryTable)
-      ..where((table) => table.uuid.equals(model.id)))
+          ..where((table) => table.uuid.equals(model.id)))
         .write(
-      _converter.toUpdateCompanion(model),
-    );
+          _converter.toUpdateCompanion(model),
+        );
 
     if (updatedRowsCount == 0) {
       throw StateError('AnimeHistory with id=${model.id} not found');
