@@ -4,8 +4,8 @@ import 'dart:io';
 import 'package:bloc/bloc.dart';
 import 'package:flutter_core/flutter_core.dart';
 import 'package:kadro_app/features/search/domain/repository/i_anime_match_repository.dart';
-import 'package:kadro_app/flows/search/domain/use_case/find_best_by_file_use_case.dart';
-import 'package:kadro_app/flows/search/domain/use_case/find_best_by_url_use_case.dart';
+import 'package:kadro_app/flows/home/domain/use_case/find_best_by_file_use_case.dart';
+import 'package:kadro_app/flows/home/domain/use_case/find_best_by_url_use_case.dart';
 import 'package:kadro_app/features/detail/domain/entities/media_detail.dart';
 import 'package:kadro_app/features/detail/domain/repository/i_media_detail_repository.dart';
 

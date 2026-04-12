@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:kadro_app/flows/search/ui/bloc/search_screen_bloc.dart';
+import 'package:kadro_app/flows/home/ui/bloc/search_screen_bloc.dart';
 import 'package:kadro_app/features/detail/domain/entities/fake_media_detail.dart';
 import 'package:kadro_app/shared/ui/widgets/error_placeholder.dart';
 import 'package:kadro_app/features/detail/ui/media_info_bottom_sheet.dart';

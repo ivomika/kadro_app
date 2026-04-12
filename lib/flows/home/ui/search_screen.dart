@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:kadro_app/flows/search/ui/widgets/search_body.dart';
+import 'package:kadro_app/flows/home/ui/widgets/search_body.dart';
 
 class SearchScreen extends StatelessWidget {
   const SearchScreen({super.key});

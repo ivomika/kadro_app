@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kadro_app/features/history/domain/entities/anime_history.dart';
-import 'package:kadro_app/flows/history/ui/bloc/history_media_bottom_sheet_bloc.dart';
+import 'package:kadro_app/flows/browse_history/ui/bloc/history_media_bottom_sheet_bloc.dart';
 import 'package:kadro_app/features/detail/domain/entities/fake_media_detail.dart';
 import 'package:kadro_app/features/detail/domain/repository/i_media_detail_repository.dart';
 import 'package:kadro_app/shared/ui/widgets/error_placeholder.dart';

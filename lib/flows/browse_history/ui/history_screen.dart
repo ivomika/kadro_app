@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:kadro_app/flows/history/ui/widgets/history_body.dart';
+import 'package:kadro_app/flows/browse_history/ui/widgets/history_body.dart';
 
 class HistoryScreen extends StatelessWidget {
   const HistoryScreen({super.key});

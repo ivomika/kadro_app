@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:kadro_app/flows/search/ui/bloc/search_screen_bloc.dart';
+import 'package:kadro_app/flows/home/ui/bloc/search_screen_bloc.dart';
 import 'package:validators/validators.dart';
 
 enum SearchInputType { attachFile, sendText, loading }

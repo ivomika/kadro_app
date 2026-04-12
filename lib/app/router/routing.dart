@@ -1,6 +1,6 @@
 import 'package:go_router/go_router.dart';
-import 'package:kadro_app/flows/history/ui/history_screen.dart';
-import 'package:kadro_app/flows/search/ui/search_screen.dart';
+import 'package:kadro_app/flows/browse_history/ui/history_screen.dart';
+import 'package:kadro_app/flows/home/ui/search_screen.dart';
 import 'package:kadro_app/shared/ui/layouts/main_app_layout.dart';
 
 final router = GoRouter(
