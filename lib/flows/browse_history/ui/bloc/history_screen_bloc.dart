@@ -18,9 +18,7 @@ class HistoryScreenBloc extends Bloc<HistoryScreenEvent, HistoryScreenState> {
 
     _historySubscription = _repository.watchAll().listen(
       (history) => add(_HistoryUpdated(history)),
-      onError: (Object error, StackTrace stackTrace) {
-        add(_HistoryUpdateFailed(error.toString()));
-      },
+      onError: (error, stackTrace) =>  add(_HistoryUpdateFailed(error.toString()))
     );
   }
 

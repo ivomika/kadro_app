@@ -1,10 +1,7 @@
 import 'package:flutter_core/flutter_core.dart';
 import 'package:kadro_app/features/history/domain/entities/anime_history.dart';
 
-abstract interface class IHistoryRepository
-    implements
-        BaseRepository<AnimeHistory, String>,
-        SearchRepository<AnimeHistory, String, String> {
+abstract interface class IHistoryRepository implements BaseRepository<AnimeHistory, String>, SearchRepository<AnimeHistory, String, String> {
   Stream<List<AnimeHistory>> watchAll();
 
   @override
