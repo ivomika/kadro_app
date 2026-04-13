@@ -10,14 +10,12 @@ class MediaInfoBottomSheet extends StatelessWidget {
   final MediaDetail media;
   final bool isLoading;
   final VoidCallback? onDetailsTap;
-  final VoidCallback? onOpenSourceTap;
 
   const MediaInfoBottomSheet({
     super.key,
     required this.media,
     this.isLoading = false,
     this.onDetailsTap,
-    this.onOpenSourceTap,
   });
 
   static const _titleGridDelegate = SliverGridDelegateWithFixedCrossAxisCount(
@@ -35,8 +33,6 @@ class MediaInfoBottomSheet extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final openSourceTap = onOpenSourceTap ?? () => _openAniListPage();
-
     return DraggableScrollableSheet(
       expand: false,
       initialChildSize: 0.55,
@@ -222,7 +218,7 @@ class MediaInfoBottomSheet extends StatelessWidget {
                   sliver: SliverToBoxAdapter(
                     child: _ActionBar(
                       onDetailsTap: onDetailsTap,
-                      onOpenSourceTap: openSourceTap,
+                      onOpenSourceTap: _openAniListPage,
                     ),
                   ),
                 ),
