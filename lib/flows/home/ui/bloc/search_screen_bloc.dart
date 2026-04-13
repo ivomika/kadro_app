@@ -5,11 +5,11 @@ import 'package:bloc/bloc.dart';
 import 'package:flutter_core/flutter_core.dart';
 import 'package:kadro_app/features/detail/domain/entities/media_detail.dart';
 import 'package:kadro_app/features/detail/domain/repository/i_media_detail_repository.dart';
-import 'package:kadro_app/features/history/domain/entities/anime_history.dart';
 import 'package:kadro_app/features/history/domain/repository/i_history_repository.dart';
 import 'package:kadro_app/features/search/domain/repository/i_anime_match_repository.dart';
 import 'package:kadro_app/flows/home/domain/use_case/find_best_by_file_use_case.dart';
 import 'package:kadro_app/flows/home/domain/use_case/find_best_by_url_use_case.dart';
+import 'package:kadro_app/flows/home/domain/use_case/save_to_history_use_case.dart';
 
 part 'search_screen_event.dart';
 part 'search_screen_state.dart';
@@ -44,7 +44,7 @@ class SearchScreenBloc extends Bloc<SearchScreenEvent, SearchScreenState> {
         return;
       }
 
-      await _saveMatchToHistory(result);
+      await SaveToHistoryUseCase(_historyRepository).execute(result);
       emit(SearchScreenLoaded(result));
     } on ClientErrorException catch (e) {
       if (_hasError(e)) {
@@ -79,7 +79,7 @@ class SearchScreenBloc extends Bloc<SearchScreenEvent, SearchScreenState> {
         return;
       }
 
-      await _saveMatchToHistory(result);
+      await SaveToHistoryUseCase(_historyRepository).execute(result);
       emit(SearchScreenLoaded(result));
     } on ClientErrorException catch (e) {
       if (_hasError(e)) {
@@ -107,22 +107,5 @@ class SearchScreenBloc extends Bloc<SearchScreenEvent, SearchScreenState> {
     }
 
     return true;
-  }
-
-  Future<void> _saveMatchToHistory(MediaDetail match) async {
-    await _historyRepository.create(
-      AnimeHistory.from(
-        anilist: match.id,
-        name: match.title.romaji,
-        imageUrl: match.coverImage.large,
-        similarity: match.similarity,
-        format: match.format,
-        status: match.status,
-        season: match.season,
-        seasonYear: match.seasonYear,
-        episodes: match.episodes,
-        description: match.parsedDescription,
-      ),
-    );
   }
 }

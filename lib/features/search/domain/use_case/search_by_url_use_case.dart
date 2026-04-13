@@ -14,7 +14,7 @@ class SearchByUrlUseCase implements IUseCase<String, Future<List<AnimeMatch>>> {
       throw NotNullableError<String>('url');
     }
 
-    if(url.isEmpty){
+    if(url.trim().isEmpty){
       throw Exception('url is empty');
     }
 
