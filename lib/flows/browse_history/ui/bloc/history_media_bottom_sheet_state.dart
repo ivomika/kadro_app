@@ -1,4 +1,4 @@
-part of 'history_media_bottom_sheet_bloc.dart';
+part of 'history_media_bottom_sheet_cubit.dart';
 
 sealed class HistoryMediaBottomSheetState extends Equatable {
   const HistoryMediaBottomSheetState();

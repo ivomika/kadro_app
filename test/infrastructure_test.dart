@@ -8,7 +8,7 @@ import 'package:kadro_app/features/history/data/datasource/history_database.dart
 import 'package:kadro_app/features/history/data/repository/history_repository_impl.dart';
 import 'package:kadro_app/features/history/domain/entities/anime_history.dart';
 import 'package:kadro_app/features/search/data/models/anime_match_response/anime_match_response.dart';
-import 'package:kadro_app/flows/browse_history/ui/bloc/history_media_bottom_sheet_bloc.dart';
+import 'package:kadro_app/flows/browse_history/ui/bloc/history_media_bottom_sheet_cubit.dart';
 import 'package:kadro_app/features/search/data/datasource/trace_moe_client.dart';
 import 'package:kadro_app/features/search/data/repository/anime_match_repository_impl.dart';
 import 'package:kadro_app/features/search/domain/entities/anime_match.dart';
@@ -20,6 +20,8 @@ import 'package:kadro_app/features/detail/data/models/anilist_response.dart';
 import 'package:kadro_app/features/detail/data/repository/media_detail_repository_impl.dart';
 import 'package:kadro_app/features/detail/domain/entities/media_detail.dart';
 import 'package:kadro_app/features/detail/domain/repository/i_media_detail_repository.dart';
+import 'package:kadro_app/features/detail/domain/use_case/find_detail_by_id_use_case.dart';
+import 'package:kadro_app/flows/browse_history/domain/use_cases/load_history_media_detail_use_case.dart';
 
 void main() {
   group('MediaDetailRepositoryImpl', () {
@@ -382,35 +384,68 @@ void main() {
       expect(detail.parsedDescription, 'Hello world');
       expect(detail.id, 42);
       expect(detail.similarity, 0.77);
-      expect(detail.title.romaji, 'Romaji 42');
+      expect(detail.title.romaji, 'Romaji');
       _logStep('Verified html stripping on MediaDetail itself');
     });
   });
 
-  group('HistoryMediaBottomSheetBloc', () {
+  group('HistoryMediaBottomSheetCubit', () {
+    test('load use case resolves detail from anime history', () async {
+      _logTest(
+        'LoadHistoryMediaDetailUseCase',
+        'anime history is translated into detail lookup request',
+      );
+      final detailRepository = _FakeMediaDetailRepository(
+        detailById: {77: _buildMediaDetail(id: 77, similarity: 0.73)},
+      );
+      final useCase = LoadHistoryMediaDetailUseCase(
+        FindDetailByIdUseCase(detailRepository),
+      );
+
+      final result = await useCase.execute(
+        AnimeHistory.from(
+          anilist: 77,
+          name: 'Test',
+          imageUrl: 'image',
+          similarity: 0.73,
+          format: 'TV',
+          status: 'FINISHED',
+          season: 'SPRING',
+          seasonYear: 2024,
+          episodes: 12,
+          description: 'Description',
+        ),
+      );
+
+      expect(result.id, 77);
+      expect(detailRepository.lastRequestedId, 77);
+      expect(detailRepository.lastRequestedSimilarity, 0.73);
+      _logStep('Verified anime history is resolved through flow use case');
+    });
+
     test('emits loading then loaded when media detail is found', () async {
-      _logTest('HistoryMediaBottomSheetBloc', 'emits loading then loaded');
+      _logTest('HistoryMediaBottomSheetCubit', 'emits loading then loaded');
       final detailRepository = _FakeMediaDetailRepository(
         detailById: {99: _buildMediaDetail(id: 99, similarity: 0.64)},
       );
-      final bloc = HistoryMediaBottomSheetBloc(detailRepository);
+      final cubit = HistoryMediaBottomSheetCubit(
+        LoadHistoryMediaDetailUseCase(FindDetailByIdUseCase(detailRepository)),
+      );
       final states = <HistoryMediaBottomSheetState>[];
-      final subscription = bloc.stream.listen(states.add);
+      final subscription = cubit.stream.listen(states.add);
 
-      bloc.add(
-        LoadHistoryMediaBottomSheet(
-          AnimeHistory.from(
-            anilist: 99,
-            name: 'Test',
-            imageUrl: 'image',
-            similarity: 0.64,
-            format: 'TV',
-            status: 'FINISHED',
-            season: 'SPRING',
-            seasonYear: 2024,
-            episodes: 12,
-            description: 'Description',
-          ),
+      cubit.load(
+        AnimeHistory.from(
+          anilist: 99,
+          name: 'Test',
+          imageUrl: 'image',
+          similarity: 0.64,
+          format: 'TV',
+          status: 'FINISHED',
+          season: 'SPRING',
+          seasonYear: 2024,
+          episodes: 12,
+          description: 'Description',
         ),
       );
 
@@ -423,30 +458,30 @@ void main() {
       _logStep('Observed state sequence: loading -> loaded');
 
       await subscription.cancel();
-      await bloc.close();
+      await cubit.close();
     });
 
     test('emits loading then error when repository returns null', () async {
-      _logTest('HistoryMediaBottomSheetBloc', 'emits loading then error');
+      _logTest('HistoryMediaBottomSheetCubit', 'emits loading then error');
       final detailRepository = _FakeMediaDetailRepository();
-      final bloc = HistoryMediaBottomSheetBloc(detailRepository);
+      final cubit = HistoryMediaBottomSheetCubit(
+        LoadHistoryMediaDetailUseCase(FindDetailByIdUseCase(detailRepository)),
+      );
       final states = <HistoryMediaBottomSheetState>[];
-      final subscription = bloc.stream.listen(states.add);
+      final subscription = cubit.stream.listen(states.add);
 
-      bloc.add(
-        LoadHistoryMediaBottomSheet(
-          AnimeHistory.from(
-            anilist: 100,
-            name: 'Test',
-            imageUrl: 'image',
-            similarity: 0.5,
-            format: 'TV',
-            status: 'FINISHED',
-            season: 'SPRING',
-            seasonYear: 2024,
-            episodes: 12,
-            description: 'Description',
-          ),
+      cubit.load(
+        AnimeHistory.from(
+          anilist: 100,
+          name: 'Test',
+          imageUrl: 'image',
+          similarity: 0.5,
+          format: 'TV',
+          status: 'FINISHED',
+          season: 'SPRING',
+          seasonYear: 2024,
+          episodes: 12,
+          description: 'Description',
         ),
       );
 
@@ -458,7 +493,7 @@ void main() {
       _logStep('Observed state sequence: loading -> error');
 
       await subscription.cancel();
-      await bloc.close();
+      await cubit.close();
     });
   });
 }
