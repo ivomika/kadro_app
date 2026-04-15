@@ -3,9 +3,9 @@ import 'dart:io';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:kadro_app/flows/home/ui/bloc/search_screen_bloc.dart';
-import 'package:kadro_app/flows/home/ui/widgets/search_bottom_sheet.dart';
-import 'package:kadro_app/flows/home/ui/widgets/search_input.dart';
+import 'package:kadro_app/flows/find_anime/ui/bloc/search_screen_bloc.dart';
+import 'package:kadro_app/flows/find_anime/ui/widgets/search_bottom_sheet.dart';
+import 'package:kadro_app/flows/find_anime/ui/widgets/search_input.dart';
 
 class SearchBody extends StatelessWidget {
   const SearchBody({super.key});
@@ -26,13 +26,11 @@ class SearchBody extends StatelessWidget {
             listener: _searchListener,
             builder: (context, state) {
               if (state is SearchScreenLoading) {
-                return const Center(
-                  child: CircularProgressIndicator(),
-                );
+                return const Center(child: CircularProgressIndicator());
               }
 
               return const Center(
-                child: Text('Добавь изображение!'),
+                child: Text('Р”РѕР±Р°РІСЊ РёР·РѕР±СЂР°Р¶РµРЅРёРµ!'),
               );
             },
           ),
@@ -52,7 +50,7 @@ class SearchBody extends StatelessWidget {
       bloc.add(FindAnimeByFileEvent(file));
     } else {
       messenger.showSnackBar(
-        const SnackBar(content: Text('Файл не выбран')),
+        const SnackBar(content: Text('Р¤Р°Р№Р» РЅРµ РІС‹Р±СЂР°РЅ')),
       );
     }
   }

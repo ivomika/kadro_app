@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:kadro_app/flows/home/ui/bloc/search_screen_bloc.dart';
+import 'package:kadro_app/flows/find_anime/ui/bloc/search_screen_bloc.dart';
 import 'package:validators/validators.dart';
 
 enum SearchInputType { attachFile, sendText, loading }
@@ -9,11 +9,7 @@ class SearchInput extends StatefulWidget {
   final VoidCallback onAttach;
   final void Function(String value) onSend;
 
-  const SearchInput({
-    super.key,
-    required this.onAttach,
-    required this.onSend
-  });
+  const SearchInput({super.key, required this.onAttach, required this.onSend});
 
   @override
   State<SearchInput> createState() => _SearchInputState();
@@ -56,7 +52,7 @@ class _SearchInputState extends State<SearchInput> {
                 selectAllOnFocus: true,
                 controller: _searchController,
                 focusNode: _searchFocusNode,
-                decoration: InputDecoration(labelText: 'Поиск'),
+                decoration: InputDecoration(labelText: 'РџРѕРёСЃРє'),
                 validator: _urlValidator,
                 onChanged: _onChangeText,
                 onTapOutside: (_) => _unfocusSearchTextField(),
@@ -64,9 +60,9 @@ class _SearchInputState extends State<SearchInput> {
               ),
             ),
             _SearchInputButton(
-                type: _type,
-                onAttach: () => _onAttach(),
-                onSend: () => _onSend(_searchController.text)
+              type: _type,
+              onAttach: () => _onAttach(),
+              onSend: () => _onSend(_searchController.text),
             ),
           ],
         ),
@@ -92,14 +88,14 @@ class _SearchInputState extends State<SearchInput> {
   }
 
   void _searchListener(BuildContext context, SearchScreenState state) {
-    if(state is SearchScreenLoading){
+    if (state is SearchScreenLoading) {
       setState(() {
         _type = SearchInputType.loading;
       });
       return;
     }
 
-    if(_searchController.text.trim().isEmpty){
+    if (_searchController.text.trim().isEmpty) {
       setState(() {
         _type = SearchInputType.attachFile;
       });
@@ -111,9 +107,9 @@ class _SearchInputState extends State<SearchInput> {
     });
   }
 
-  void _onSend(String value){
+  void _onSend(String value) {
     _unfocusSearchTextField();
-    if(_formKey.currentState!.validate() == false) return;
+    if (_formKey.currentState!.validate() == false) return;
 
     widget.onSend(value);
   }
@@ -125,8 +121,8 @@ class _SearchInputState extends State<SearchInput> {
   }
 
   String? _urlValidator(String? value) {
-    if(isURL(value) == false){
-      return 'Это не похоже на ссылку';
+    if (isURL(value) == false) {
+      return 'Р­С‚Рѕ РЅРµ РїРѕС…РѕР¶Рµ РЅР° СЃСЃС‹Р»РєСѓ';
     }
 
     return null;

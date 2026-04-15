@@ -4,25 +4,23 @@ import 'dart:io';
 import 'package:bloc/bloc.dart';
 import 'package:flutter_core/flutter_core.dart';
 import 'package:kadro_app/features/detail/domain/entities/media_detail.dart';
-import 'package:kadro_app/features/detail/domain/repository/i_media_detail_repository.dart';
-import 'package:kadro_app/features/history/domain/repository/i_history_repository.dart';
-import 'package:kadro_app/features/search/domain/repository/i_anime_match_repository.dart';
-import 'package:kadro_app/flows/home/domain/use_case/find_best_by_file_use_case.dart';
-import 'package:kadro_app/flows/home/domain/use_case/find_best_by_url_use_case.dart';
-import 'package:kadro_app/flows/home/domain/use_case/save_to_history_use_case.dart';
+import 'package:kadro_app/flows/find_anime/domain/use_cases/find_anime_by_file_flow_use_case.dart';
+import 'package:kadro_app/flows/find_anime/domain/use_cases/find_anime_by_url_flow_use_case.dart';
+import 'package:kadro_app/flows/find_anime/domain/use_cases/save_anime_detail_to_history_flow_use_case.dart';
 
 part 'search_screen_event.dart';
 part 'search_screen_state.dart';
 
 class SearchScreenBloc extends Bloc<SearchScreenEvent, SearchScreenState> {
-  final IAnimeMatchRepository _matchRepository;
-  final IMediaDetailRepository _detailRepository;
-  final IHistoryRepository _historyRepository;
+  final FindAnimeByFileFlowUseCase _findAnimeByFileFlowUseCase;
+  final FindAnimeByUrlFlowUseCase _findAnimeByUrlFlowUseCase;
+  final SaveAnimeDetailToHistoryFlowUseCase
+  _saveAnimeDetailToHistoryFlowUseCase;
 
   SearchScreenBloc(
-    this._matchRepository,
-    this._detailRepository,
-    this._historyRepository,
+    this._findAnimeByFileFlowUseCase,
+    this._findAnimeByUrlFlowUseCase,
+    this._saveAnimeDetailToHistoryFlowUseCase,
   ) : super(SearchScreenInitial()) {
     on<FindAnimeByFileEvent>(_findAnimeByFile);
     on<FindAnimeByUrlEvent>(_findAnimeByUrl);
@@ -34,30 +32,27 @@ class SearchScreenBloc extends Bloc<SearchScreenEvent, SearchScreenState> {
   ) async {
     emit(SearchScreenLoading());
     try {
-      final result = await FindBestByFileUseCase(
-        _matchRepository,
-        _detailRepository,
-      ).execute(event.file);
+      final result = await _findAnimeByFileFlowUseCase.execute(event.file);
 
       if (result == null) {
-        emit(SearchScreenError('Не удалось найти'));
+        emit(SearchScreenError('РќРµ СѓРґР°Р»РѕСЃСЊ РЅР°Р№С‚Рё'));
         return;
       }
 
-      await SaveToHistoryUseCase(_historyRepository).execute(result);
+      await _saveAnimeDetailToHistoryFlowUseCase.execute(result);
       emit(SearchScreenLoaded(result));
     } on ClientErrorException catch (e) {
       if (_hasError(e)) {
         emit(SearchScreenError((e.response!.data as Map)['error']));
         return;
       }
-      emit(SearchScreenError('Клиентская ошибка'));
+      emit(SearchScreenError('РљР»РёРµРЅС‚СЃРєР°СЏ РѕС€РёР±РєР°'));
     } on ServerErrorException catch (e) {
       if (_hasError(e)) {
         emit(SearchScreenError((e.response!.data as Map)['error']));
         return;
       }
-      emit(SearchScreenError('Ошибка сервера'));
+      emit(SearchScreenError('РћС€РёР±РєР° СЃРµСЂРІРµСЂР°'));
     } catch (e) {
       emit(SearchScreenError(e.toString()));
     }
@@ -69,30 +64,27 @@ class SearchScreenBloc extends Bloc<SearchScreenEvent, SearchScreenState> {
   ) async {
     emit(SearchScreenLoading());
     try {
-      final result = await FindBestByUrlUseCase(
-        _matchRepository,
-        _detailRepository,
-      ).execute(event.url);
+      final result = await _findAnimeByUrlFlowUseCase.execute(event.url);
 
       if (result == null) {
-        emit(SearchScreenError('Не удалось найти'));
+        emit(SearchScreenError('РќРµ СѓРґР°Р»РѕСЃСЊ РЅР°Р№С‚Рё'));
         return;
       }
 
-      await SaveToHistoryUseCase(_historyRepository).execute(result);
+      await _saveAnimeDetailToHistoryFlowUseCase.execute(result);
       emit(SearchScreenLoaded(result));
     } on ClientErrorException catch (e) {
       if (_hasError(e)) {
         emit(SearchScreenError((e.response!.data as Map)['error']));
         return;
       }
-      emit(SearchScreenError('Клиентская ошибка'));
+      emit(SearchScreenError('РљР»РёРµРЅС‚СЃРєР°СЏ РѕС€РёР±РєР°'));
     } on ServerErrorException catch (e) {
       if (_hasError(e)) {
         emit(SearchScreenError((e.response!.data as Map)['error']));
         return;
       }
-      emit(SearchScreenError('Ошибка сервера'));
+      emit(SearchScreenError('РћС€РёР±РєР° СЃРµСЂРІРµСЂР°'));
     } catch (e) {
       emit(SearchScreenError(e.toString()));
     }

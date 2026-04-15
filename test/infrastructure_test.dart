@@ -13,15 +13,18 @@ import 'package:kadro_app/features/search/data/datasource/trace_moe_client.dart'
 import 'package:kadro_app/features/search/data/repository/anime_match_repository_impl.dart';
 import 'package:kadro_app/features/search/domain/entities/anime_match.dart';
 import 'package:kadro_app/features/search/domain/repository/i_anime_match_repository.dart';
-import 'package:kadro_app/flows/home/domain/use_case/find_best_by_file_use_case.dart';
-import 'package:kadro_app/flows/home/domain/use_case/find_best_by_url_use_case.dart';
 import 'package:kadro_app/features/detail/data/datasource/anilist_client.dart';
 import 'package:kadro_app/features/detail/data/models/anilist_response.dart';
 import 'package:kadro_app/features/detail/data/repository/media_detail_repository_impl.dart';
 import 'package:kadro_app/features/detail/domain/entities/media_detail.dart';
 import 'package:kadro_app/features/detail/domain/repository/i_media_detail_repository.dart';
 import 'package:kadro_app/features/detail/domain/use_case/find_detail_by_id_use_case.dart';
+import 'package:kadro_app/features/search/domain/use_case/search_by_file_use_case.dart';
+import 'package:kadro_app/features/search/domain/use_case/search_by_url_use_case.dart';
+import 'package:kadro_app/features/search/domain/use_case/select_best_anime_match_use_case.dart';
 import 'package:kadro_app/flows/browse_history/domain/use_cases/load_history_media_detail_use_case.dart';
+import 'package:kadro_app/flows/find_anime/domain/use_cases/find_anime_by_file_flow_use_case.dart';
+import 'package:kadro_app/flows/find_anime/domain/use_cases/find_anime_by_url_flow_use_case.dart';
 
 void main() {
   group('MediaDetailRepositoryImpl', () {
@@ -248,15 +251,58 @@ void main() {
     });
   });
 
-  group('FindBestByFileUseCase', () {
+  group('SelectBestAnimeMatchUseCase', () {
+    test('returns null for empty matches', () {
+      _logTest(
+        'SelectBestAnimeMatchUseCase',
+        'empty input returns null instead of throwing',
+      );
+
+      final result = SelectBestAnimeMatchUseCase().execute(const []);
+
+      expect(result, isNull);
+      _logStep('Verified empty match list is handled gracefully');
+    });
+
+    test('returns the match with highest similarity', () {
+      _logTest(
+        'SelectBestAnimeMatchUseCase',
+        'highest similarity match is selected',
+      );
+
+      final result = SelectBestAnimeMatchUseCase().execute(const [
+        AnimeMatch(
+          anilist: 1,
+          filename: 'a.jpg',
+          similarity: 0.51,
+          video: 'video-a',
+          image: 'image-a',
+        ),
+        AnimeMatch(
+          anilist: 2,
+          filename: 'b.jpg',
+          similarity: 0.93,
+          video: 'video-b',
+          image: 'image-b',
+        ),
+      ]);
+
+      expect(result?.anilist, 2);
+      expect(result?.similarity, 0.93);
+      _logStep('Verified best match selection lives in search feature');
+    });
+  });
+
+  group('FindAnimeByFileFlowUseCase', () {
     test('returns null when file is null', () async {
-      _logTest('FindBestByFileUseCase', 'null file returns null');
+      _logTest('FindAnimeByFileFlowUseCase', 'null file returns null');
       final matchRepository = _FakeAnimeMatchRepository();
       final detailRepository = _FakeMediaDetailRepository();
 
-      final result = await FindBestByFileUseCase(
-        matchRepository,
-        detailRepository,
+      final result = await FindAnimeByFileFlowUseCase(
+        SearchByFileUseCase(matchRepository),
+        SelectBestAnimeMatchUseCase(),
+        FindDetailByIdUseCase(detailRepository),
       ).execute();
 
       expect(result, isNull);
@@ -266,13 +312,17 @@ void main() {
     });
 
     test('returns null when trace.moe returns no matches', () async {
-      _logTest('FindBestByFileUseCase', 'empty trace.moe result returns null');
+      _logTest(
+        'FindAnimeByFileFlowUseCase',
+        'empty trace.moe result returns null',
+      );
       final matchRepository = _FakeAnimeMatchRepository(imageResults: const []);
       final detailRepository = _FakeMediaDetailRepository();
 
-      final result = await FindBestByFileUseCase(
-        matchRepository,
-        detailRepository,
+      final result = await FindAnimeByFileFlowUseCase(
+        SearchByFileUseCase(matchRepository),
+        SelectBestAnimeMatchUseCase(),
+        FindDetailByIdUseCase(detailRepository),
       ).execute(File('test/fixtures/test.jpg'));
 
       expect(result, isNull);
@@ -282,7 +332,10 @@ void main() {
     });
 
     test('loads detail for the match with highest similarity', () async {
-      _logTest('FindBestByFileUseCase', 'highest similarity match is selected');
+      _logTest(
+        'FindAnimeByFileFlowUseCase',
+        'highest similarity match is selected',
+      );
       final expectedDetail = _buildMediaDetail(id: 2, similarity: 0.93);
       final matchRepository = _FakeAnimeMatchRepository(
         imageResults: const [
@@ -306,9 +359,10 @@ void main() {
         detailById: {2: expectedDetail},
       );
 
-      final result = await FindBestByFileUseCase(
-        matchRepository,
-        detailRepository,
+      final result = await FindAnimeByFileFlowUseCase(
+        SearchByFileUseCase(matchRepository),
+        SelectBestAnimeMatchUseCase(),
+        FindDetailByIdUseCase(detailRepository),
       ).execute(File('test/fixtures/test.jpg'));
 
       expect(result, expectedDetail);
@@ -318,15 +372,16 @@ void main() {
     });
   });
 
-  group('FindBestByUrlUseCase', () {
+  group('FindAnimeByUrlFlowUseCase', () {
     test('returns null for blank url', () async {
-      _logTest('FindBestByUrlUseCase', 'blank url returns null');
+      _logTest('FindAnimeByUrlFlowUseCase', 'blank url returns null');
       final matchRepository = _FakeAnimeMatchRepository();
       final detailRepository = _FakeMediaDetailRepository();
 
-      final result = await FindBestByUrlUseCase(
-        matchRepository,
-        detailRepository,
+      final result = await FindAnimeByUrlFlowUseCase(
+        SearchByUrlUseCase(matchRepository),
+        SelectBestAnimeMatchUseCase(),
+        FindDetailByIdUseCase(detailRepository),
       ).execute('   ');
 
       expect(result, isNull);
@@ -336,7 +391,7 @@ void main() {
     });
 
     test('loads detail for the best url match', () async {
-      _logTest('FindBestByUrlUseCase', 'best url match loads detail');
+      _logTest('FindAnimeByUrlFlowUseCase', 'best url match loads detail');
       final expectedDetail = _buildMediaDetail(id: 7, similarity: 0.88);
       final matchRepository = _FakeAnimeMatchRepository(
         urlResults: const [
@@ -360,9 +415,10 @@ void main() {
         detailById: {7: expectedDetail},
       );
 
-      final result = await FindBestByUrlUseCase(
-        matchRepository,
-        detailRepository,
+      final result = await FindAnimeByUrlFlowUseCase(
+        SearchByUrlUseCase(matchRepository),
+        SelectBestAnimeMatchUseCase(),
+        FindDetailByIdUseCase(detailRepository),
       ).execute('https://example.com/image.jpg');
 
       expect(result, expectedDetail);
