@@ -25,6 +25,7 @@ import 'package:kadro_app/features/search/domain/use_case/select_best_anime_matc
 import 'package:kadro_app/flows/browse_history/domain/use_cases/load_history_media_detail_use_case.dart';
 import 'package:kadro_app/flows/find_anime/domain/use_cases/find_anime_by_file_flow_use_case.dart';
 import 'package:kadro_app/flows/find_anime/domain/use_cases/find_anime_by_url_flow_use_case.dart';
+import 'package:kadro_app/shared/utils/plain_text_from_html.dart';
 
 void main() {
   group('MediaDetailRepositoryImpl', () {
@@ -428,20 +429,20 @@ void main() {
     });
   });
 
-  group('MediaDetail', () {
-    test('parsedDescription strips html', () {
-      _logTest('MediaDetail', 'parsedDescription strips html');
+  group('plainTextFromHtml', () {
+    test('strips html from text', () {
+      _logTest('plainTextFromHtml', 'strips html from text');
       final detail = _buildMediaDetail(
         id: 42,
         similarity: 0.77,
         description: '<b>Hello</b> world',
       );
 
-      expect(detail.parsedDescription, 'Hello world');
+      expect(plainTextFromHtml(detail.description), 'Hello world');
       expect(detail.id, 42);
       expect(detail.similarity, 0.77);
       expect(detail.title.romaji, 'Romaji');
-      _logStep('Verified html stripping on MediaDetail itself');
+      _logStep('Verified html stripping is handled by explicit utility');
     });
   });
 

@@ -1,5 +1,4 @@
 import 'package:flutter_core/flutter_core.dart';
-import 'package:html/parser.dart';
 
 class MediaDetail extends Equatable {
   final int id;
@@ -32,8 +31,6 @@ class MediaDetail extends Equatable {
   final List<MediaDetailTag> tags;
   final List<MediaDetailRanking> rankings;
   final String siteUrl;
-
-  String get parsedDescription => _parseHtmlText();
 
   const MediaDetail({
     required this.id,
@@ -101,11 +98,6 @@ class MediaDetail extends Equatable {
     siteUrl,
     similarity,
   ];
-
-  String _parseHtmlText() {
-    final document = parse(description);
-    return document.body?.text ?? description;
-  }
 }
 
 class MediaDetailTitle extends Equatable {

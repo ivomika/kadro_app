@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:kadro_app/features/detail/domain/entities/media_detail.dart';
 import 'package:kadro_app/shared/ui/widgets/cashed_image.dart';
+import 'package:kadro_app/shared/utils/plain_text_from_html.dart';
 import 'package:kadro_app/shared/utils/ui_formatter.dart';
 import 'package:skeletonizer/skeletonizer.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -206,8 +207,10 @@ class MediaInfoBottomSheet extends StatelessWidget {
               SliverPadding(
                 padding: const EdgeInsets.fromLTRB(16, 0, 16, 12),
                 sliver: SliverToBoxAdapter(
-                    child: _DescriptionCard(
-                    text: UIFormatter.display(media.parsedDescription),
+                  child: _DescriptionCard(
+                    text: UIFormatter.display(
+                      plainTextFromHtml(media.description),
+                    ),
                   ),
                 ),
               ),
