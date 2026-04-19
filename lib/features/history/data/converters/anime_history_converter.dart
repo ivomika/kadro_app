@@ -23,7 +23,7 @@ final class AnimeHistoryConverter {
 
   AnimeHistoryTableCompanion toInsertCompanion(AnimeHistory model) {
     return AnimeHistoryTableCompanion.insert(
-      uuid: Value(model.id),
+      uuid: model.id,
       anilist: model.anilist,
       name: model.name,
       imageUrl: model.imageUrl,
