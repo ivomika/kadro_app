@@ -8,7 +8,7 @@ import 'package:skeletonizer/skeletonizer.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class MediaInfoBottomSheet extends StatelessWidget {
-  final MediaDetail media;
+  final MediaDetail? media;
   final bool isLoading;
   final VoidCallback? onDetailsTap;
 
@@ -34,6 +34,8 @@ class MediaInfoBottomSheet extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final sheetData = _MediaInfoSheetData.fromMedia(media);
+
     return DraggableScrollableSheet(
       expand: false,
       initialChildSize: 0.55,
@@ -50,15 +52,21 @@ class MediaInfoBottomSheet extends StatelessWidget {
             slivers: [
               SliverPadding(
                 padding: const EdgeInsets.fromLTRB(16, 8, 16, 0),
-                sliver: SliverToBoxAdapter(child: _SheetHeader(media: media)),
+                sliver: SliverToBoxAdapter(
+                  child: _SheetHeader(media: sheetData),
+                ),
               ),
               SliverPadding(
                 padding: const EdgeInsets.fromLTRB(16, 12, 16, 0),
-                sliver: SliverToBoxAdapter(child: _PreviewCard(media: media)),
+                sliver: SliverToBoxAdapter(
+                  child: _PreviewCard(media: sheetData),
+                ),
               ),
               SliverPadding(
                 padding: const EdgeInsets.fromLTRB(16, 12, 16, 0),
-                sliver: SliverToBoxAdapter(child: _StatusChips(media: media)),
+                sliver: SliverToBoxAdapter(
+                  child: _StatusChips(media: sheetData),
+                ),
               ),
               _FactGridSection(
                 title: 'Названия',
@@ -66,23 +74,26 @@ class MediaInfoBottomSheet extends StatelessWidget {
                 entries: [
                   _FactEntry(
                     label: 'Romaji',
-                    value: UIFormatter.display(media.title.romaji),
-                    copyValue: media.title.romaji.trim(),
+                    value: UIFormatter.display(sheetData.title.romaji),
+                    copyValue: sheetData.title.romaji.trim(),
                   ),
                   _FactEntry(
                     label: 'English',
-                    value: UIFormatter.display(media.title.english),
-                    copyValue: media.title.english.trim(),
+                    value: UIFormatter.display(sheetData.title.english),
+                    copyValue: sheetData.title.english.trim(),
                   ),
                   _FactEntry(
                     label: 'Native',
-                    value: UIFormatter.display(media.title.nativeTitle),
-                    copyValue: media.title.nativeTitle.trim(),
+                    value: UIFormatter.display(sheetData.title.nativeTitle),
+                    copyValue: sheetData.title.nativeTitle.trim(),
                   ),
                   _FactEntry(
                     label: 'Синонимы',
-                    value: UIFormatter.joinNonEmpty(media.synonyms, take: 3),
-                    copyValue: media.synonyms
+                    value: UIFormatter.joinNonEmpty(
+                      sheetData.synonyms,
+                      take: 3,
+                    ),
+                    copyValue: sheetData.synonyms
                         .map((synonym) => synonym.trim())
                         .where((synonym) => synonym.isNotEmpty)
                         .join(', '),
@@ -94,46 +105,46 @@ class MediaInfoBottomSheet extends StatelessWidget {
                 title: 'Релиз и формат',
                 delegate: _metaGridDelegate,
                 entries: [
-                  _FactEntry(label: 'Сезон', value: _seasonLabel(media)),
+                  _FactEntry(label: 'Сезон', value: _seasonLabel(sheetData)),
                   _FactEntry(
                     label: 'Тип / формат',
                     value:
-                        '${UIFormatter.display(media.type)} / ${UIFormatter.display(media.format)}',
+                        '${UIFormatter.display(sheetData.type)} / ${UIFormatter.display(sheetData.format)}',
                   ),
                   _FactEntry(
                     label: 'Дата старта',
                     value: UIFormatter.date(
-                      media.startDate.year,
-                      media.startDate.month,
-                      media.startDate.day,
+                      sheetData.startDate.year,
+                      sheetData.startDate.month,
+                      sheetData.startDate.day,
                     ),
                   ),
                   _FactEntry(
                     label: 'Дата финала',
                     value: UIFormatter.date(
-                      media.endDate.year,
-                      media.endDate.month,
-                      media.endDate.day,
+                      sheetData.endDate.year,
+                      sheetData.endDate.month,
+                      sheetData.endDate.day,
                     ),
                   ),
                   _FactEntry(
                     label: 'Эпизодов',
-                    value: UIFormatter.positiveNumber(media.episodes),
+                    value: UIFormatter.positiveNumber(sheetData.episodes),
                   ),
                   _FactEntry(
                     label: 'Длительность',
                     value: UIFormatter.positiveNumber(
-                      media.duration,
+                      sheetData.duration,
                       suffix: ' мин',
                     ),
                   ),
                   _FactEntry(
                     label: 'Страна',
-                    value: UIFormatter.display(media.countryOfOrigin),
+                    value: UIFormatter.display(sheetData.countryOfOrigin),
                   ),
                   _FactEntry(
                     label: 'Источник',
-                    value: UIFormatter.display(media.source),
+                    value: UIFormatter.display(sheetData.source),
                   ),
                 ],
                 cardBuilder: (entry) => _FactCard(entry: entry),
@@ -144,27 +155,27 @@ class MediaInfoBottomSheet extends StatelessWidget {
                 entries: [
                   _FactEntry(
                     label: 'Средний балл',
-                    value: UIFormatter.positiveNumber(media.averageScore),
+                    value: UIFormatter.positiveNumber(sheetData.averageScore),
                   ),
                   _FactEntry(
                     label: 'Средняя оценка',
-                    value: UIFormatter.positiveNumber(media.meanScore),
+                    value: UIFormatter.positiveNumber(sheetData.meanScore),
                   ),
                   _FactEntry(
                     label: 'Популярность',
-                    value: UIFormatter.positiveNumber(media.popularity),
+                    value: UIFormatter.positiveNumber(sheetData.popularity),
                   ),
                   _FactEntry(
                     label: 'Тренд',
-                    value: UIFormatter.signedNumber(media.trending),
+                    value: UIFormatter.signedNumber(sheetData.trending),
                   ),
                   _FactEntry(
                     label: 'В избранном',
-                    value: UIFormatter.positiveNumber(media.favourites),
+                    value: UIFormatter.positiveNumber(sheetData.favourites),
                   ),
                   _FactEntry(
                     label: 'Лучший ранг',
-                    value: _bestRanking(media.rankings),
+                    value: _bestRanking(sheetData.rankings),
                   ),
                 ],
                 cardBuilder: (entry) => _FactCard(entry: entry),
@@ -174,10 +185,10 @@ class MediaInfoBottomSheet extends StatelessWidget {
                 padding: const EdgeInsets.fromLTRB(16, 0, 16, 12),
                 sliver: SliverToBoxAdapter(
                   child: _ChipGroup(
-                    labels: media.studios.nodes
+                    labels: sheetData.studios.nodes
                         .map(_studioLabel)
                         .toList(growable: false),
-                    highlighted: media.studios.nodes
+                    highlighted: sheetData.studios.nodes
                         .where((studio) => studio.isMain)
                         .map((studio) => studio.name)
                         .toSet(),
@@ -190,13 +201,13 @@ class MediaInfoBottomSheet extends StatelessWidget {
                 sliver: SliverToBoxAdapter(
                   child: _ChipGroup(
                     labels: [
-                      ...media.genres,
-                      ...media.tags
+                      ...sheetData.genres,
+                      ...sheetData.tags
                           .where((tag) => tag.isMediaSpoiler == false)
                           .take(8)
                           .map((tag) => tag.name),
                     ],
-                    warning: media.tags
+                    warning: sheetData.tags
                         .where((tag) => tag.rank >= 85)
                         .map((tag) => tag.name)
                         .toSet(),
@@ -209,7 +220,7 @@ class MediaInfoBottomSheet extends StatelessWidget {
                 sliver: SliverToBoxAdapter(
                   child: _DescriptionCard(
                     text: UIFormatter.display(
-                      plainTextFromHtml(media.description),
+                      plainTextFromHtml(sheetData.description),
                     ),
                   ),
                 ),
@@ -221,7 +232,7 @@ class MediaInfoBottomSheet extends StatelessWidget {
                   sliver: SliverToBoxAdapter(
                     child: _ActionBar(
                       onDetailsTap: onDetailsTap,
-                      onOpenSourceTap: _openAniListPage,
+                      onOpenSourceTap: media == null ? null : _openAniListPage,
                     ),
                   ),
                 ),
@@ -234,14 +245,177 @@ class MediaInfoBottomSheet extends StatelessWidget {
   }
 
   Future<void> _openAniListPage() async {
-    final uri = Uri.https('anilist.co', '/anime/${media.id}');
+    final uri = Uri.https('anilist.co', '/anime/${media!.id}');
 
     await launchUrl(uri, mode: LaunchMode.externalApplication);
   }
 }
 
+final class _MediaInfoSheetData {
+  final int id;
+  final String type;
+  final MediaDetailTitle title;
+  final double similarity;
+  final String description;
+  final String format;
+  final String status;
+  final int episodes;
+  final int duration;
+  final String season;
+  final int seasonYear;
+  final int averageScore;
+  final int meanScore;
+  final int popularity;
+  final int trending;
+  final int favourites;
+  final List<String> genres;
+  final List<String> synonyms;
+  final String countryOfOrigin;
+  final String source;
+  final bool isLicensed;
+  final MediaDetailCoverImage coverImage;
+  final String bannerImage;
+  final MediaDetailFuzzyDate startDate;
+  final MediaDetailFuzzyDate endDate;
+  final MediaDetailStudios studios;
+  final List<MediaDetailTag> tags;
+  final List<MediaDetailRanking> rankings;
+
+  const _MediaInfoSheetData({
+    required this.id,
+    required this.type,
+    required this.title,
+    required this.similarity,
+    required this.description,
+    required this.format,
+    required this.status,
+    required this.episodes,
+    required this.duration,
+    required this.season,
+    required this.seasonYear,
+    required this.averageScore,
+    required this.meanScore,
+    required this.popularity,
+    required this.trending,
+    required this.favourites,
+    required this.genres,
+    required this.synonyms,
+    required this.countryOfOrigin,
+    required this.source,
+    required this.isLicensed,
+    required this.coverImage,
+    required this.bannerImage,
+    required this.startDate,
+    required this.endDate,
+    required this.studios,
+    required this.tags,
+    required this.rankings,
+  });
+
+  factory _MediaInfoSheetData.fromMedia(MediaDetail? media) {
+    if (media != null) {
+      return _MediaInfoSheetData(
+        id: media.id,
+        type: media.type,
+        title: media.title,
+        similarity: media.similarity,
+        description: media.description,
+        format: media.format,
+        status: media.status,
+        episodes: media.episodes,
+        duration: media.duration,
+        season: media.season,
+        seasonYear: media.seasonYear,
+        averageScore: media.averageScore,
+        meanScore: media.meanScore,
+        popularity: media.popularity,
+        trending: media.trending,
+        favourites: media.favourites,
+        genres: media.genres,
+        synonyms: media.synonyms,
+        countryOfOrigin: media.countryOfOrigin,
+        source: media.source,
+        isLicensed: media.isLicensed,
+        coverImage: media.coverImage,
+        bannerImage: media.bannerImage,
+        startDate: media.startDate,
+        endDate: media.endDate,
+        studios: media.studios,
+        tags: media.tags,
+        rankings: media.rankings,
+      );
+    }
+
+    return _MediaInfoSheetData(
+      id: 0,
+      type: BoneMock.name,
+      title: MediaDetailTitle(
+        romaji: BoneMock.title,
+        english: BoneMock.title,
+        nativeTitle: BoneMock.title,
+      ),
+      similarity: 0,
+      description: BoneMock.longParagraph,
+      format: BoneMock.name,
+      status: BoneMock.name,
+      episodes: 24,
+      duration: 24,
+      season: BoneMock.name,
+      seasonYear: 2000,
+      averageScore: 0,
+      meanScore: 0,
+      popularity: 0,
+      trending: 0,
+      favourites: 0,
+      genres: List.generate(5, (_) => BoneMock.name),
+      synonyms: List.generate(3, (_) => BoneMock.name),
+      countryOfOrigin: BoneMock.name,
+      source: BoneMock.name,
+      isLicensed: false,
+      coverImage: const MediaDetailCoverImage(
+        large: '',
+        extraLarge: '',
+        color: '',
+      ),
+      bannerImage: BoneMock.name,
+      startDate: const MediaDetailFuzzyDate(year: 2000, month: 12, day: 13),
+      endDate: const MediaDetailFuzzyDate(year: 2000, month: 12, day: 13),
+      studios: MediaDetailStudios(
+        nodes: List.generate(
+          5,
+          (index) => MediaDetailStudioNode(
+            id: index,
+            name: BoneMock.name,
+            isMain: index == 0,
+          ),
+        ),
+      ),
+      tags: List.generate(
+        6,
+        (_) => MediaDetailTag(
+          name: BoneMock.name,
+          rank: 80,
+          isMediaSpoiler: false,
+          category: BoneMock.name,
+        ),
+      ),
+      rankings: List.generate(
+        3,
+        (index) => MediaDetailRanking(
+          rank: index + 1,
+          type: BoneMock.name,
+          year: 2000,
+          season: BoneMock.name,
+          allTime: false,
+          context: BoneMock.name,
+        ),
+      ),
+    );
+  }
+}
+
 class _SheetHeader extends StatelessWidget {
-  final MediaDetail media;
+  final _MediaInfoSheetData media;
 
   const _SheetHeader({required this.media});
 
@@ -272,7 +446,7 @@ class _SheetHeader extends StatelessWidget {
 }
 
 class _PreviewCard extends StatelessWidget {
-  final MediaDetail media;
+  final _MediaInfoSheetData media;
 
   const _PreviewCard({required this.media});
 
@@ -343,7 +517,7 @@ class _PreviewCard extends StatelessWidget {
   }
 }
 
-String _resolvePreviewUrl(MediaDetail media) {
+String _resolvePreviewUrl(_MediaInfoSheetData media) {
   if (media.bannerImage.isNotEmpty) {
     return media.bannerImage;
   }
@@ -383,7 +557,7 @@ String _displayTitle(MediaDetailTitle title) {
   return UIFormatter.display(title.nativeTitle);
 }
 
-String _seasonLabel(MediaDetail media) {
+String _seasonLabel(_MediaInfoSheetData media) {
   if (media.season.trim().isEmpty || media.seasonYear <= 0) {
     return UIFormatter.placeholder;
   }
@@ -437,7 +611,7 @@ Color _resolveChipForegroundColor({
 }
 
 class _StatusChips extends StatelessWidget {
-  final MediaDetail media;
+  final _MediaInfoSheetData media;
 
   const _StatusChips({required this.media});
 

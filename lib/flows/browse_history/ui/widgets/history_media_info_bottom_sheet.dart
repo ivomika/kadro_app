@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:kadro_app/features/detail/ui/fake_media_detail.dart';
 import 'package:kadro_app/features/detail/ui/media_info_bottom_sheet.dart';
 import 'package:kadro_app/features/history/domain/entities/anime_history.dart';
 import 'package:kadro_app/flows/browse_history/ui/bloc/history_media_bottom_sheet_cubit.dart';
@@ -39,7 +38,7 @@ class _HistoryMediaInfoBottomSheetView extends StatelessWidget {
         final isLoading = state is HistoryMediaBottomSheetLoading;
         final detail = state is HistoryMediaBottomSheetLoaded
             ? state.media
-            : FakeMediaDetail();
+            : null;
 
         return MediaInfoBottomSheet(media: detail, isLoading: isLoading);
       },
