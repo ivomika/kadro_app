@@ -32,7 +32,8 @@ migrate_working_dir/
 .pub/
 /build/
 /coverage/
-docs/codex_context.md
+docs/generated
+.codex/
 
 # Symbolication related
 app.*.symbols
