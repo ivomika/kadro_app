@@ -11,19 +11,19 @@ import 'package:kadro_app/flows/find_anime/domain/use_cases/find_anime_by_file_f
 import 'package:kadro_app/flows/find_anime/domain/use_cases/find_anime_by_url_flow_use_case.dart';
 import 'package:kadro_app/flows/find_anime/domain/use_cases/save_anime_detail_to_history_flow_use_case.dart';
 
-import 'search_screen_bloc.dart';
+import 'find_anime_screen_bloc.dart';
 
-final class SearchScreenBlocFactory {
-  const SearchScreenBlocFactory._();
+final class FindAnimeScreenBlocFactory {
+  const FindAnimeScreenBlocFactory._();
 
-  static SearchScreenBloc create(BuildContext context) {
+  static FindAnimeScreenBloc create(BuildContext context) {
     final animeMatchRepository = context.read<IAnimeMatchRepository>();
     final mediaDetailRepository = context.read<IMediaDetailRepository>();
     final historyRepository = context.read<IHistoryRepository>();
     final selectBestAnimeMatchUseCase = SelectBestAnimeMatchUseCase();
     final findDetailByIdUseCase = FindDetailByIdUseCase(mediaDetailRepository);
 
-    return SearchScreenBloc(
+    return FindAnimeScreenBloc(
       FindAnimeByFileFlowUseCase(
         SearchByFileUseCase(animeMatchRepository),
         selectBestAnimeMatchUseCase,

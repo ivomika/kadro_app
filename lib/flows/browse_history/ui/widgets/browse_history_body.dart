@@ -1,27 +1,27 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kadro_app/features/history/domain/entities/anime_history.dart';
-import 'package:kadro_app/flows/browse_history/ui/bloc/history_screen_bloc.dart';
-import 'package:kadro_app/flows/browse_history/ui/widgets/history_media_info_bottom_sheet.dart';
-import 'package:kadro_app/flows/browse_history/ui/widgets/history_list_tile.dart';
+import 'package:kadro_app/flows/browse_history/ui/bloc/browse_history_screen_bloc.dart';
+import 'package:kadro_app/flows/browse_history/ui/widgets/browse_history_list_tile.dart';
+import 'package:kadro_app/flows/browse_history/ui/widgets/browse_history_media_info_bottom_sheet.dart';
 
-class HistoryBody extends StatelessWidget {
-  const HistoryBody({super.key});
+class BrowseHistoryBody extends StatelessWidget {
+  const BrowseHistoryBody({super.key});
 
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final textTheme = theme.textTheme;
 
-    return BlocBuilder<HistoryScreenBloc, HistoryScreenState>(
+    return BlocBuilder<BrowseHistoryScreenBloc, BrowseHistoryScreenState>(
       builder: (context, state) {
-        if (state is HistoryScreenLoading) {
+        if (state is BrowseHistoryScreenLoading) {
           return const SliverFillRemaining(
             child: Center(child: CircularProgressIndicator()),
           );
         }
 
-        if (state is HistoryScreenError) {
+        if (state is BrowseHistoryScreenError) {
           return SliverFillRemaining(
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
@@ -38,7 +38,7 @@ class HistoryBody extends StatelessWidget {
           );
         }
 
-        if (state is HistoryScreenLoaded) {
+        if (state is BrowseHistoryScreenLoaded) {
           if (state.history.isEmpty) {
             return const SliverFillRemaining(
               child: Center(child: Text('Пусто')),
@@ -54,7 +54,7 @@ class HistoryBody extends StatelessWidget {
               itemBuilder: (context, index) {
                 final tile = state.history.elementAt(index);
 
-                return HistoryListTile(
+                return BrowseHistoryListTile(
                   title: tile.name,
                   description: tile.description,
                   imageUrl: tile.imageUrl,
@@ -84,7 +84,8 @@ class HistoryBody extends StatelessWidget {
       showDragHandle: true,
       useRootNavigator: true,
       scrollControlDisabledMaxHeightRatio: 1,
-      builder: (modalContext) => HistoryMediaInfoBottomSheet(anime: anime),
+      builder: (modalContext) =>
+          BrowseHistoryMediaInfoBottomSheet(anime: anime),
     );
   }
 }

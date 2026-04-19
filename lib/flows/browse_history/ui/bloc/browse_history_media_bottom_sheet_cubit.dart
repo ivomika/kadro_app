@@ -6,22 +6,23 @@ import 'package:kadro_app/features/detail/domain/entities/media_detail.dart';
 import 'package:kadro_app/features/history/domain/entities/anime_history.dart';
 import 'package:kadro_app/flows/browse_history/domain/use_cases/load_history_media_detail_use_case.dart';
 
-part 'history_media_bottom_sheet_state.dart';
+part 'browse_history_media_bottom_sheet_state.dart';
 
-class HistoryMediaBottomSheetCubit extends Cubit<HistoryMediaBottomSheetState> {
+class BrowseHistoryMediaBottomSheetCubit
+    extends Cubit<BrowseHistoryMediaBottomSheetState> {
   final LoadHistoryMediaDetailUseCase _loadHistoryMediaDetailUseCase;
 
-  HistoryMediaBottomSheetCubit(this._loadHistoryMediaDetailUseCase)
-    : super(HistoryMediaBottomSheetInitial());
+  BrowseHistoryMediaBottomSheetCubit(this._loadHistoryMediaDetailUseCase)
+    : super(BrowseHistoryMediaBottomSheetInitial());
 
   FutureOr<void> load(AnimeHistory anime) async {
-    emit(HistoryMediaBottomSheetLoading());
+    emit(BrowseHistoryMediaBottomSheetLoading());
 
     try {
       final media = await _loadHistoryMediaDetailUseCase.execute(anime);
-      emit(HistoryMediaBottomSheetLoaded(media));
+      emit(BrowseHistoryMediaBottomSheetLoaded(media));
     } catch (error) {
-      emit(HistoryMediaBottomSheetError(error.toString()));
+      emit(BrowseHistoryMediaBottomSheetError(error.toString()));
     }
   }
 }

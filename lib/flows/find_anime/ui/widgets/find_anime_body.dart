@@ -3,12 +3,12 @@ import 'dart:io';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:kadro_app/flows/find_anime/ui/bloc/search_screen_bloc.dart';
-import 'package:kadro_app/flows/find_anime/ui/widgets/search_bottom_sheet.dart';
-import 'package:kadro_app/flows/find_anime/ui/widgets/search_input.dart';
+import 'package:kadro_app/flows/find_anime/ui/bloc/find_anime_screen_bloc.dart';
+import 'package:kadro_app/flows/find_anime/ui/widgets/find_anime_bottom_sheet.dart';
+import 'package:kadro_app/flows/find_anime/ui/widgets/find_anime_input.dart';
 
-class SearchBody extends StatelessWidget {
-  const SearchBody({super.key});
+class FindAnimeBody extends StatelessWidget {
+  const FindAnimeBody({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -16,16 +16,16 @@ class SearchBody extends StatelessWidget {
       children: [
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 16).copyWith(top: 8),
-          child: SearchInput(
+          child: FindAnimeInput(
             onAttach: () => _searchButtonTap(context),
             onSend: (value) => _searchByUrl(value, context),
           ),
         ),
         Expanded(
-          child: BlocConsumer<SearchScreenBloc, SearchScreenState>(
+          child: BlocConsumer<FindAnimeScreenBloc, FindAnimeScreenState>(
             listener: _searchListener,
             builder: (context, state) {
-              if (state is SearchScreenLoading) {
+              if (state is FindAnimeScreenLoading) {
                 return const Center(child: CircularProgressIndicator());
               }
 
@@ -40,7 +40,7 @@ class SearchBody extends StatelessWidget {
   }
 
   void _searchButtonTap(BuildContext context) async {
-    final bloc = context.read<SearchScreenBloc>();
+    final bloc = context.read<FindAnimeScreenBloc>();
     final messenger = ScaffoldMessenger.of(context);
 
     final result = await FilePicker.platform.pickFiles();
@@ -56,12 +56,12 @@ class SearchBody extends StatelessWidget {
   }
 
   void _searchByUrl(String value, BuildContext context) {
-    context.read<SearchScreenBloc>().add(FindAnimeByUrlEvent(value));
+    context.read<FindAnimeScreenBloc>().add(FindAnimeByUrlEvent(value));
   }
 
-  void _searchListener(BuildContext context, SearchScreenState state) {
-    if (state is SearchScreenLoading) {
-      final searchBloc = context.read<SearchScreenBloc>();
+  void _searchListener(BuildContext context, FindAnimeScreenState state) {
+    if (state is FindAnimeScreenLoading) {
+      final searchBloc = context.read<FindAnimeScreenBloc>();
 
       showModalBottomSheet(
         context: context,
@@ -72,12 +72,12 @@ class SearchBody extends StatelessWidget {
         scrollControlDisabledMaxHeightRatio: 1,
         builder: (context) => BlocProvider.value(
           value: searchBloc,
-          child: const SearchBottomSheet(),
+          child: const FindAnimeBottomSheet(),
         ),
       );
     }
 
-    if (state is SearchScreenError) {
+    if (state is FindAnimeScreenError) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           behavior: SnackBarBehavior.floating,

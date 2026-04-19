@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:kadro_app/shared/ui/widgets/cashed_image.dart';
 import 'package:kadro_app/shared/utils/ui_formatter.dart';
 
-class HistoryListTile extends StatelessWidget {
+class BrowseHistoryListTile extends StatelessWidget {
   static const double _cardRadius = 12;
   static const double _posterRadius = 10;
   static const double _posterWidth = 84;
@@ -19,7 +19,7 @@ class HistoryListTile extends StatelessWidget {
   final int seasonYear;
   final VoidCallback onTap;
 
-  const HistoryListTile({
+  const BrowseHistoryListTile({
     super.key,
     required this.title,
     required this.description,
@@ -87,10 +87,12 @@ class _HistoryHeader extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         ClipRRect(
-          borderRadius: BorderRadius.circular(HistoryListTile._posterRadius),
+          borderRadius: BorderRadius.circular(
+            BrowseHistoryListTile._posterRadius,
+          ),
           child: SizedBox(
-            width: HistoryListTile._posterWidth,
-            height: HistoryListTile._posterHeight,
+            width: BrowseHistoryListTile._posterWidth,
+            height: BrowseHistoryListTile._posterHeight,
             child: CashedImage(url: imageUrl),
           ),
         ),

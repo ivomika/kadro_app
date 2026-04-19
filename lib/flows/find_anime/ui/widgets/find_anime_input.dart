@@ -1,22 +1,26 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:kadro_app/flows/find_anime/ui/bloc/search_screen_bloc.dart';
+import 'package:kadro_app/flows/find_anime/ui/bloc/find_anime_screen_bloc.dart';
 import 'package:validators/validators.dart';
 
-enum SearchInputType { attachFile, sendText, loading }
+enum FindAnimeInputType { attachFile, sendText, loading }
 
-class SearchInput extends StatefulWidget {
+class FindAnimeInput extends StatefulWidget {
   final VoidCallback onAttach;
   final void Function(String value) onSend;
 
-  const SearchInput({super.key, required this.onAttach, required this.onSend});
+  const FindAnimeInput({
+    super.key,
+    required this.onAttach,
+    required this.onSend,
+  });
 
   @override
-  State<SearchInput> createState() => _SearchInputState();
+  State<FindAnimeInput> createState() => _FindAnimeInputState();
 }
 
-class _SearchInputState extends State<SearchInput> {
-  late SearchInputType _type;
+class _FindAnimeInputState extends State<FindAnimeInput> {
+  late FindAnimeInputType _type;
   late TextEditingController _searchController;
   late GlobalKey<FormState> _formKey;
   late FocusNode _searchFocusNode;
@@ -25,7 +29,7 @@ class _SearchInputState extends State<SearchInput> {
   void initState() {
     super.initState();
     _formKey = GlobalKey<FormState>();
-    _type = SearchInputType.attachFile;
+    _type = FindAnimeInputType.attachFile;
     _searchController = TextEditingController();
     _searchFocusNode = FocusNode();
   }
@@ -39,7 +43,7 @@ class _SearchInputState extends State<SearchInput> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocListener<SearchScreenBloc, SearchScreenState>(
+    return BlocListener<FindAnimeScreenBloc, FindAnimeScreenState>(
       listener: _searchListener,
       child: Form(
         key: _formKey,
@@ -59,7 +63,7 @@ class _SearchInputState extends State<SearchInput> {
                 onFieldSubmitted: _onSend,
               ),
             ),
-            _SearchInputButton(
+            _FindAnimeInputButton(
               type: _type,
               onAttach: () => _onAttach(),
               onSend: () => _onSend(_searchController.text),
@@ -73,13 +77,13 @@ class _SearchInputState extends State<SearchInput> {
   void _onChangeText(String value) {
     if (value.trim().isEmpty) {
       setState(() {
-        _type = SearchInputType.attachFile;
+        _type = FindAnimeInputType.attachFile;
       });
       return;
     }
 
     setState(() {
-      _type = SearchInputType.sendText;
+      _type = FindAnimeInputType.sendText;
     });
   }
 
@@ -87,23 +91,23 @@ class _SearchInputState extends State<SearchInput> {
     _searchFocusNode.unfocus();
   }
 
-  void _searchListener(BuildContext context, SearchScreenState state) {
-    if (state is SearchScreenLoading) {
+  void _searchListener(BuildContext context, FindAnimeScreenState state) {
+    if (state is FindAnimeScreenLoading) {
       setState(() {
-        _type = SearchInputType.loading;
+        _type = FindAnimeInputType.loading;
       });
       return;
     }
 
     if (_searchController.text.trim().isEmpty) {
       setState(() {
-        _type = SearchInputType.attachFile;
+        _type = FindAnimeInputType.attachFile;
       });
       return;
     }
 
     setState(() {
-      _type = SearchInputType.sendText;
+      _type = FindAnimeInputType.sendText;
     });
   }
 
@@ -129,12 +133,12 @@ class _SearchInputState extends State<SearchInput> {
   }
 }
 
-class _SearchInputButton extends StatelessWidget {
-  final SearchInputType type;
+class _FindAnimeInputButton extends StatelessWidget {
+  final FindAnimeInputType type;
   final VoidCallback onAttach;
   final VoidCallback onSend;
 
-  const _SearchInputButton({
+  const _FindAnimeInputButton({
     required this.type,
     required this.onAttach,
     required this.onSend,
@@ -153,17 +157,17 @@ class _SearchInputButton extends StatelessWidget {
         );
       },
       child: switch (type) {
-        SearchInputType.attachFile => IconButton.filled(
+        FindAnimeInputType.attachFile => IconButton.filled(
           key: ValueKey(type.toString()),
           onPressed: onAttach,
           icon: Icon(Icons.attach_file),
         ),
-        SearchInputType.sendText => IconButton.filled(
+        FindAnimeInputType.sendText => IconButton.filled(
           key: ValueKey(type.toString()),
           onPressed: onSend,
           icon: Icon(Icons.search),
         ),
-        SearchInputType.loading => SizedBox(
+        FindAnimeInputType.loading => SizedBox(
           key: ValueKey(type.toString()),
           width: 48,
           height: 48,

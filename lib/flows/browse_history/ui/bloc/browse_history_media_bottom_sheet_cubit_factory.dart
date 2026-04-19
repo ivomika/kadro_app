@@ -5,16 +5,16 @@ import 'package:kadro_app/features/detail/domain/use_case/find_detail_by_id_use_
 import 'package:kadro_app/features/history/domain/entities/anime_history.dart';
 import 'package:kadro_app/flows/browse_history/domain/use_cases/load_history_media_detail_use_case.dart';
 
-import 'history_media_bottom_sheet_cubit.dart';
+import 'browse_history_media_bottom_sheet_cubit.dart';
 
-final class HistoryMediaBottomSheetCubitFactory {
-  const HistoryMediaBottomSheetCubitFactory._();
+final class BrowseHistoryMediaBottomSheetCubitFactory {
+  const BrowseHistoryMediaBottomSheetCubitFactory._();
 
-  static HistoryMediaBottomSheetCubit create(
+  static BrowseHistoryMediaBottomSheetCubit create(
     BuildContext context,
     AnimeHistory anime,
   ) {
-    return HistoryMediaBottomSheetCubit(
+    return BrowseHistoryMediaBottomSheetCubit(
       LoadHistoryMediaDetailUseCase(
         FindDetailByIdUseCase(context.read<IMediaDetailRepository>()),
       ),

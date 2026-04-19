@@ -8,7 +8,7 @@ import 'package:kadro_app/features/history/data/datasource/history_database.dart
 import 'package:kadro_app/features/history/data/repository/history_repository_impl.dart';
 import 'package:kadro_app/features/history/domain/entities/anime_history.dart';
 import 'package:kadro_app/features/search/data/models/anime_match_response/anime_match_response.dart';
-import 'package:kadro_app/flows/browse_history/ui/bloc/history_media_bottom_sheet_cubit.dart';
+import 'package:kadro_app/flows/browse_history/ui/bloc/browse_history_media_bottom_sheet_cubit.dart';
 import 'package:kadro_app/features/search/data/datasource/trace_moe_client.dart';
 import 'package:kadro_app/features/search/data/repository/anime_match_repository_impl.dart';
 import 'package:kadro_app/features/search/domain/entities/anime_match.dart';
@@ -446,7 +446,7 @@ void main() {
     });
   });
 
-  group('HistoryMediaBottomSheetCubit', () {
+  group('BrowseHistoryMediaBottomSheetCubit', () {
     test('load use case resolves detail from anime history', () async {
       _logTest(
         'LoadHistoryMediaDetailUseCase',
@@ -481,14 +481,17 @@ void main() {
     });
 
     test('emits loading then loaded when media detail is found', () async {
-      _logTest('HistoryMediaBottomSheetCubit', 'emits loading then loaded');
+      _logTest(
+        'BrowseHistoryMediaBottomSheetCubit',
+        'emits loading then loaded',
+      );
       final detailRepository = _FakeMediaDetailRepository(
         detailById: {99: _buildMediaDetail(id: 99, similarity: 0.64)},
       );
-      final cubit = HistoryMediaBottomSheetCubit(
+      final cubit = BrowseHistoryMediaBottomSheetCubit(
         LoadHistoryMediaDetailUseCase(FindDetailByIdUseCase(detailRepository)),
       );
-      final states = <HistoryMediaBottomSheetState>[];
+      final states = <BrowseHistoryMediaBottomSheetState>[];
       final subscription = cubit.stream.listen(states.add);
 
       cubit.load(
@@ -509,9 +512,9 @@ void main() {
       await Future<void>.delayed(Duration.zero);
       await Future<void>.delayed(Duration.zero);
 
-      expect(states[0], isA<HistoryMediaBottomSheetLoading>());
-      expect(states[1], isA<HistoryMediaBottomSheetLoaded>());
-      expect((states[1] as HistoryMediaBottomSheetLoaded).media.id, 99);
+      expect(states[0], isA<BrowseHistoryMediaBottomSheetLoading>());
+      expect(states[1], isA<BrowseHistoryMediaBottomSheetLoaded>());
+      expect((states[1] as BrowseHistoryMediaBottomSheetLoaded).media.id, 99);
       _logStep('Observed state sequence: loading -> loaded');
 
       await subscription.cancel();
@@ -519,12 +522,15 @@ void main() {
     });
 
     test('emits loading then error when repository returns null', () async {
-      _logTest('HistoryMediaBottomSheetCubit', 'emits loading then error');
+      _logTest(
+        'BrowseHistoryMediaBottomSheetCubit',
+        'emits loading then error',
+      );
       final detailRepository = _FakeMediaDetailRepository();
-      final cubit = HistoryMediaBottomSheetCubit(
+      final cubit = BrowseHistoryMediaBottomSheetCubit(
         LoadHistoryMediaDetailUseCase(FindDetailByIdUseCase(detailRepository)),
       );
-      final states = <HistoryMediaBottomSheetState>[];
+      final states = <BrowseHistoryMediaBottomSheetState>[];
       final subscription = cubit.stream.listen(states.add);
 
       cubit.load(
@@ -545,8 +551,8 @@ void main() {
       await Future<void>.delayed(Duration.zero);
       await Future<void>.delayed(Duration.zero);
 
-      expect(states[0], isA<HistoryMediaBottomSheetLoading>());
-      expect(states[1], isA<HistoryMediaBottomSheetError>());
+      expect(states[0], isA<BrowseHistoryMediaBottomSheetLoading>());
+      expect(states[1], isA<BrowseHistoryMediaBottomSheetError>());
       _logStep('Observed state sequence: loading -> error');
 
       await subscription.cancel();
