@@ -30,7 +30,7 @@ class FindAnimeBody extends StatelessWidget {
               }
 
               return const Center(
-                child: Text('Р”РѕР±Р°РІСЊ РёР·РѕР±СЂР°Р¶РµРЅРёРµ!'),
+                child: Text('Добавь изображение!'),
               );
             },
           ),
@@ -50,7 +50,7 @@ class FindAnimeBody extends StatelessWidget {
       bloc.add(FindAnimeByFileEvent(file));
     } else {
       messenger.showSnackBar(
-        const SnackBar(content: Text('Р¤Р°Р№Р» РЅРµ РІС‹Р±СЂР°РЅ')),
+        const SnackBar(content: Text('Файл не выбран')),
       );
     }
   }

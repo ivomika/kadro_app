@@ -12,7 +12,7 @@ class BrowseHistoryScreen extends StatelessWidget {
       create: BrowseHistoryScreenBlocFactory.create,
       child: CustomScrollView(
         slivers: [
-          SliverAppBar(title: Text('РСЃС‚РѕСЂРёСЏ')),
+          SliverAppBar(title: Text('История')),
           BrowseHistoryBody(),
         ],
       ),

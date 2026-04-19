@@ -56,7 +56,7 @@ class _FindAnimeInputState extends State<FindAnimeInput> {
                 selectAllOnFocus: true,
                 controller: _searchController,
                 focusNode: _searchFocusNode,
-                decoration: InputDecoration(labelText: 'РџРѕРёСЃРє'),
+                decoration: InputDecoration(labelText: 'Поиск'),
                 validator: _urlValidator,
                 onChanged: _onChangeText,
                 onTapOutside: (_) => _unfocusSearchTextField(),
@@ -126,7 +126,7 @@ class _FindAnimeInputState extends State<FindAnimeInput> {
 
   String? _urlValidator(String? value) {
     if (isURL(value) == false) {
-      return 'Р­С‚Рѕ РЅРµ РїРѕС…РѕР¶Рµ РЅР° СЃСЃС‹Р»РєСѓ';
+      return 'Это не похоже на ссылку';
     }
 
     return null;

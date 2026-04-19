@@ -12,7 +12,7 @@ class FindAnimeScreen extends StatelessWidget {
       create: FindAnimeScreenBlocFactory.create,
       child: Column(
         children: [
-          AppBar(title: Text('РџРѕРёСЃРє')),
+          AppBar(title: Text('Поиск')),
           Expanded(child: FindAnimeBody()),
         ],
       ),
