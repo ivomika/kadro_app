@@ -29,9 +29,8 @@ class $AnimeHistoryTableTable extends AnimeHistoryTable
     aliasedName,
     false,
     type: DriftSqlType.string,
-    requiredDuringInsert: false,
+    requiredDuringInsert: true,
     defaultConstraints: GeneratedColumn.constraintIsAlways('UNIQUE'),
-    clientDefault: () => const Uuid().v4(),
   );
   static const VerificationMeta _anilistMeta = const VerificationMeta(
     'anilist',
@@ -170,6 +169,8 @@ class $AnimeHistoryTableTable extends AnimeHistoryTable
         _uuidMeta,
         uuid.isAcceptableOrUnknown(data['uuid']!, _uuidMeta),
       );
+    } else if (isInserting) {
+      context.missing(_uuidMeta);
     }
     if (data.containsKey('anilist')) {
       context.handle(
@@ -554,7 +555,7 @@ class AnimeHistoryTableCompanion
   });
   AnimeHistoryTableCompanion.insert({
     this.id = const Value.absent(),
-    this.uuid = const Value.absent(),
+    required String uuid,
     required int anilist,
     required String name,
     required String imageUrl,
@@ -565,7 +566,8 @@ class AnimeHistoryTableCompanion
     required int seasonYear,
     required int episodes,
     required String description,
-  }) : anilist = Value(anilist),
+  }) : uuid = Value(uuid),
+       anilist = Value(anilist),
        name = Value(name),
        imageUrl = Value(imageUrl),
        similarity = Value(similarity),
@@ -713,7 +715,7 @@ abstract class _$HistoryDriftDatabase extends GeneratedDatabase {
 typedef $$AnimeHistoryTableTableCreateCompanionBuilder =
     AnimeHistoryTableCompanion Function({
       Value<int> id,
-      Value<String> uuid,
+      required String uuid,
       required int anilist,
       required String name,
       required String imageUrl,
@@ -1002,7 +1004,7 @@ class $$AnimeHistoryTableTableTableManager
           createCompanionCallback:
               ({
                 Value<int> id = const Value.absent(),
-                Value<String> uuid = const Value.absent(),
+                required String uuid,
                 required int anilist,
                 required String name,
                 required String imageUrl,
