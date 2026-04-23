@@ -10,13 +10,11 @@ import 'package:url_launcher/url_launcher.dart';
 class MediaInfoBottomSheet extends StatelessWidget {
   final MediaDetail? media;
   final bool isLoading;
-  final VoidCallback? onDetailsTap;
 
   const MediaInfoBottomSheet({
     super.key,
     required this.media,
     this.isLoading = false,
-    this.onDetailsTap,
   });
 
   static const _titleGridDelegate = SliverGridDelegateWithFixedCrossAxisCount(
@@ -231,7 +229,6 @@ class MediaInfoBottomSheet extends StatelessWidget {
                   padding: const EdgeInsets.fromLTRB(16, 4, 16, 12),
                   sliver: SliverToBoxAdapter(
                     child: _ActionBar(
-                      onDetailsTap: onDetailsTap,
                       onOpenSourceTap: media == null ? null : _openAniListPage,
                     ),
                   ),
@@ -892,29 +889,18 @@ class _DescriptionCard extends StatelessWidget {
 }
 
 class _ActionBar extends StatelessWidget {
-  final VoidCallback? onDetailsTap;
   final VoidCallback? onOpenSourceTap;
 
-  const _ActionBar({this.onDetailsTap, this.onOpenSourceTap});
+  const _ActionBar({this.onOpenSourceTap});
 
   @override
   Widget build(BuildContext context) {
-    return Row(
-      children: [
-        Expanded(
-          child: FilledButton(
-            onPressed: onDetailsTap,
-            child: const Text('Подробнее'),
-          ),
-        ),
-        const SizedBox(width: 8),
-        Expanded(
-          child: FilledButton.tonal(
-            onPressed: onOpenSourceTap,
-            child: const Text('Открыть AniList'),
-          ),
-        ),
-      ],
+    return SizedBox(
+      width: double.infinity,
+      child: FilledButton.tonal(
+        onPressed: onOpenSourceTap,
+        child: const Text('Открыть AniList'),
+      ),
     );
   }
 }
