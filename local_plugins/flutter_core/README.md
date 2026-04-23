@@ -1,39 +1,54 @@
-<!--
-This README describes the package. If you publish this package to pub.dev,
-this README's contents appear on the landing page for your package.
+# flutter_core
 
-For information about how to write a good package README, see the guide for
-[writing package pages](https://dart.dev/tools/pub/writing-package-pages).
+`flutter_core` is a lightweight shared package with reusable networking,
+repository, logging, and storage primitives for Flutter applications.
 
-For general information about developing packages, see the Dart guide for
-[creating packages](https://dart.dev/guides/libraries/create-packages)
-and the Flutter guide for
-[developing packages and plugins](https://flutter.dev/to/develop-packages).
--->
+## HTTP clients
 
-TODO: Put a short description of the package here that helps potential users
-know whether this package might be useful for them.
-
-## Features
-
-TODO: List what your package can do. Maybe include images, gifs, or videos.
-
-## Getting started
-
-TODO: List prerequisites and provide or point to information on how to
-start using the package.
-
-## Usage
-
-TODO: Include short and useful examples for package users. Add longer examples
-to `/example` folder.
+Use `BaseApiClient` when you need a typed `Dio` client with existing core
+logging, retry, and error-routing behavior.
 
 ```dart
-const like = 'sample';
+final class TraceMoeClient extends BaseApiClient {
+  TraceMoeClient() : super('https://api.trace.moe');
+}
 ```
 
-## Additional information
+`fetch()` and `upload()` return `FetchResponse<T>` and keep transport failures
+in the existing `UnauthorizedException`, `ClientErrorException`, and
+`ServerErrorException` flow.
 
-TODO: Tell users more about the package: where to find more information, how to
-contribute to the package, how to file issues, what response they can expect
-from the package authors, and more.
+## GraphQL clients
+
+Use `GraphQlClientMixin` on top of `BaseApiClient` to keep GraphQL requests in
+the same `Dio`/retry/interceptor pipeline.
+
+```dart
+final class ExampleGraphQlClient extends BaseApiClient with GraphQlClientMixin {
+  ExampleGraphQlClient() : super('https://example.com/graphql');
+
+  Future<GraphQlResponse<ExampleQueryData>> itemById(int id) {
+    return query(
+      GraphQlRequest(
+        operationName: 'ItemById',
+        query: '''
+          query ItemById(\$id: Int!) {
+            item(id: \$id) {
+              id
+            }
+          }
+        ''',
+        variables: {'id': id},
+      ),
+      factory: ExampleQueryData.fromJson,
+    );
+  }
+}
+```
+
+`GraphQlResponse<T>` treats GraphQL payload errors as a failed response even
+when the HTTP status is `200`, so repository code can continue using the
+familiar `isSuccess` check.
+
+A real project example is available in Kadro's `AnilistClient`, which uses the
+same mixin and response abstractions against AniList.

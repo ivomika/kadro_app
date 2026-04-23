@@ -12,11 +12,13 @@ import 'package:kadro_app/flows/browse_history/ui/bloc/browse_history_media_bott
 import 'package:kadro_app/features/search/data/datasource/trace_moe_client.dart';
 import 'package:kadro_app/features/search/data/repository/anime_match_repository_impl.dart';
 import 'package:kadro_app/features/search/domain/entities/anime_match.dart';
+import 'package:kadro_app/features/search/domain/exceptions/anime_match_search_exception.dart';
 import 'package:kadro_app/features/search/domain/repository/i_anime_match_repository.dart';
 import 'package:kadro_app/features/detail/data/datasource/anilist_client.dart';
 import 'package:kadro_app/features/detail/data/models/anilist_response.dart';
 import 'package:kadro_app/features/detail/data/repository/media_detail_repository_impl.dart';
 import 'package:kadro_app/features/detail/domain/entities/media_detail.dart';
+import 'package:kadro_app/features/detail/domain/exceptions/media_detail_exception.dart';
 import 'package:kadro_app/features/detail/domain/repository/i_media_detail_repository.dart';
 import 'package:kadro_app/features/detail/domain/use_case/find_detail_by_id_use_case.dart';
 import 'package:kadro_app/features/search/domain/use_case/search_by_file_use_case.dart';
@@ -36,11 +38,9 @@ void main() {
       );
       final repository = MediaDetailRepositoryImpl(
         _FakeAnilistDataSource(
-          response: FetchResponse(
+          response: GraphQlResponse(
             statusCode: 200,
-            data: AnilistResponse(
-              data: AnilistData(media: _buildAnilistMedia(id: 55)),
-            ),
+            data: AnilistData(media: _buildAnilistMedia(id: 55)),
             headers: const {},
           ),
         ),
@@ -55,26 +55,32 @@ void main() {
       _logStep('Verified datasource payload was converted into MediaDetail');
     });
 
-    test('returns null when datasource fails', () async {
+    test('throws domain exception when datasource fails', () async {
       _logTest(
         'MediaDetailRepositoryImpl',
-        'failed datasource response returns null',
+        'failed datasource response is converted into domain exception',
       );
       final repository = MediaDetailRepositoryImpl(
         _FakeAnilistDataSource(
-          response: const FetchResponse(
-            statusCode: 500,
+          response: const GraphQlResponse(
+            statusCode: 200,
             data: null,
             headers: {},
-            error: {'message': 'server error'},
+            errors: [GraphQlError(message: 'server error')],
+            error: {
+              'errors': [
+                {'message': 'server error'},
+              ],
+            },
           ),
         ),
       );
 
-      final result = await repository.searchByAnilistId(55, 0.87);
-
-      expect(result, isNull);
-      _logStep('Verified failed datasource response is handled safely');
+      await expectLater(
+        repository.searchByAnilistId(55, 0.87),
+        throwsA(isA<MediaDetailException>()),
+      );
+      _logStep('Verified GraphQL payload error becomes MediaDetailException');
     });
   });
 
@@ -115,10 +121,10 @@ void main() {
       _logStep('Verified image search response mapping');
     });
 
-    test('returns empty list when url datasource fails', () async {
+    test('throws domain exception when url datasource fails', () async {
       _logTest(
         'AnimeMatchRepositoryImpl',
-        'failed url datasource response returns empty list',
+        'failed url datasource response throws domain exception',
       );
       final repository = AnimeMatchRepositoryImpl(
         _FakeTraceMoeDataSource(
@@ -131,12 +137,11 @@ void main() {
         ),
       );
 
-      final result = await repository.searchByUrl(
-        'https://example.com/image.jpg',
+      await expectLater(
+        repository.searchByUrl('https://example.com/image.jpg'),
+        throwsA(isA<AnimeMatchSearchException>()),
       );
-
-      expect(result, isEmpty);
-      _logStep('Verified repository shields callers from failed datasource');
+      _logStep('Verified repository surfaces a domain search exception');
     });
   });
 
@@ -614,12 +619,12 @@ final class _FakeMediaDetailRepository implements IMediaDetailRepository {
 }
 
 final class _FakeAnilistDataSource implements AnilistDataSource {
-  final FetchResponse<AnilistResponse> response;
+  final GraphQlResponse<AnilistData> response;
 
   const _FakeAnilistDataSource({required this.response});
 
   @override
-  Future<FetchResponse<AnilistResponse>> searchByAnilistId(int id) async {
+  Future<GraphQlResponse<AnilistData>> searchByAnilistId(int id) async {
     _logStep('FakeAnilistDataSource.searchByAnilistId($id)');
     return response;
   }

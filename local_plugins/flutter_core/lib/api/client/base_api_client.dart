@@ -10,12 +10,11 @@ import 'package:flutter_core/api/exceptions/exceptions.dart';
 import 'package:flutter_core/api/fetchers/fetchers.dart';
 import 'package:flutter_core/api/types/types.dart';
 
-
-class BaseApiClient{
+class BaseApiClient {
   final Talker _talker = Talker();
   final Dio _dioClient = Dio();
   final String baseUrl;
-  BaseApiClient(this.baseUrl){
+  BaseApiClient(this.baseUrl) {
     _dioClient.options.baseUrl = baseUrl;
     _dioClient.interceptors.add(
       RerouteInterceptor(_talker, runtimeType.toString()),
@@ -23,40 +22,40 @@ class BaseApiClient{
   }
 
   FutureOr<FetchResponse<T>> fetch<T>(
-      RequestMethod method,
-      String url,
-      {
-        Map<String, dynamic> queryParams = const {},
-        Map<String, dynamic> body = const {},
-        required JsonFactory<T> factory
-      }
-  ) async => _processData(
-      await _fetch(
-        method.fetcher,
-        url,
-        queryParams: queryParams,
-        body: body,
-        retry: _retry()
-      ),
-      factory
+    RequestMethod method,
+    String url, {
+    Map<String, dynamic> queryParams = const {},
+    Map<String, dynamic> body = const {},
+    Map<String, String> headers = const {},
+    required JsonFactory<T> factory,
+  }) async => _processData(
+    await _fetch(
+      method.fetcher,
+      url,
+      queryParams: queryParams,
+      body: body,
+      headers: headers,
+      retry: _retry(),
+    ),
+    factory,
   );
 
   FutureOr<FetchResponse<T>> upload<T>(
-      File file,
-      String url,
-      {
-        Map<String, dynamic> queryParams = const {},
-        Map<String, dynamic> body = const {},
-        required JsonFactory<T> factory
-      }
-  ) async => _processData(
-      await _upload(
-          file,
-          url,
-          queryParams: queryParams,
-          retry: _retry()
-      ),
-      factory
+    File file,
+    String url, {
+    Map<String, dynamic> queryParams = const {},
+    Map<String, dynamic> body = const {},
+    Map<String, String> headers = const {},
+    required JsonFactory<T> factory,
+  }) async => _processData(
+    await _upload(
+      file,
+      url,
+      queryParams: queryParams,
+      headers: headers,
+      retry: _retry(),
+    ),
+    factory,
   );
 }
 
@@ -64,100 +63,97 @@ extension BaseApiClientLocalInterface on BaseApiClient {
   static const int _retryCount = 5;
   static const int _debugRetryCount = 1;
 
-  int Function() _retry(){
+  int Function() _retry() {
     var retryCount = 0;
 
     return () => retryCount++;
   }
 
   Future<Response?> _fetch<T>(
-      BaseFetcher fetcher,
-      String url,
-      {
-        Map<String, dynamic> queryParams = const {},
-        T? body,
-        Map<String, String> headers = const {},
-        int Function()? retry,
+    BaseFetcher fetcher,
+    String url, {
+    Map<String, dynamic> queryParams = const {},
+    T? body,
+    Map<String, String> headers = const {},
+    int Function()? retry,
+  }) async {
+    Response? response;
+    try {
+      response = await fetcher.fetch(
+        _dioClient,
+        url,
+        queryParams,
+        body,
+        headers,
+      );
+    } on UnauthorizedException {
+      rethrow;
+    } on ClientErrorException {
+      rethrow;
+    } on ServerErrorException catch (e) {
+      response = e.response;
+
+      if (retry == null) {
+        return response;
       }
-  ) async {
-      Response? response;
-      try {
-        response = await fetcher.fetch(
-            _dioClient,
-            url,
-            queryParams,
-            body,
-            headers
+
+      final retryNum = retry.call();
+      if (retryNum < (kDebugMode ? _debugRetryCount : _retryCount)) {
+        _talker.debug('Retry after 2 seconds | #$retryNum');
+        await Future.delayed(Duration(seconds: 2));
+        response = await _fetch(
+          fetcher,
+          url,
+          queryParams: queryParams,
+          body: body,
+          retry: retry,
         );
-      } on UnauthorizedException{
+      } else {
         rethrow;
-      } on ClientErrorException{
-        rethrow;
-      } on ServerErrorException catch(e){
-        response = e.response;
-
-        if(retry == null){
-          return response;
-        }
-
-        final retryNum = retry.call();
-        if(retryNum < (kDebugMode ? _debugRetryCount : _retryCount)){
-          _talker.debug('Retry after 2 seconds | #$retryNum');
-          await Future.delayed(Duration(seconds: 2),);
-          response = await _fetch(
-              fetcher,
-              url,
-              queryParams: queryParams,
-              body: body,
-              retry: retry
-          );
-        }else{
-          rethrow;
-        }
-      } on DioException catch(e){
-        response = e.response;
       }
-      catch(e){
-        _talker.error('Request Error', e);
-      }
+    } on DioException catch (e) {
+      response = e.response;
+    } catch (e) {
+      _talker.error('Request Error', e);
+    }
 
-      return response;
+    return response;
   }
 
-  FetchResponse<T> _processData<T>(Response? response, JsonFactory<T> factory){
-    if(response == null || response.data == null || response.data is Map == false){
+  FetchResponse<T> _processData<T>(Response? response, JsonFactory<T> factory) {
+    if (response == null ||
+        response.data == null ||
+        response.data is Map == false) {
       return FetchResponse(
-          statusCode: response?.statusCode ?? 0,
-          data: null,
-          headers: response?.headers.map ?? {}
+        statusCode: response?.statusCode ?? 0,
+        data: null,
+        headers: response?.headers.map ?? {},
       );
     }
 
-    if(response.success){
+    if (response.success) {
       return FetchResponse<T>(
-          statusCode: response.statusCode ?? 0,
-          data: factory(response.data),
-          headers: response.headers.map
+        statusCode: response.statusCode ?? 0,
+        data: factory(response.data),
+        headers: response.headers.map,
       );
     }
 
     return FetchResponse(
-        statusCode: response.statusCode ?? 0,
-        data: response.data,
-        headers: response.headers.map,
-        error: response.data
+      statusCode: response.statusCode ?? 0,
+      data: response.data,
+      headers: response.headers.map,
+      error: response.data,
     );
   }
 
   Future<Response?> _upload<T>(
-      File file,
-      String url,
-      {
-        Map<String, dynamic> queryParams = const {},
-        Map<String, String> headers = const {},
-        int Function()? retry,
-      }
-  ) async {
+    File file,
+    String url, {
+    Map<String, dynamic> queryParams = const {},
+    Map<String, String> headers = const {},
+    int Function()? retry,
+  }) async {
     final form = FormData.fromMap({
       'file': await MultipartFile.fromFile(
         file.path,
@@ -166,12 +162,12 @@ extension BaseApiClientLocalInterface on BaseApiClient {
     });
 
     return await _fetch(
-        FormDataFetcher(),
-        url,
-        queryParams: queryParams,
-        body: form,
-        headers: headers,
-        retry: retry
+      FormDataFetcher(),
+      url,
+      queryParams: queryParams,
+      body: form,
+      headers: headers,
+      retry: retry,
     );
   }
 }

@@ -21,12 +21,13 @@ final class MediaDetailRepositoryImpl implements IMediaDetailRepository {
       final result = await _client.searchByAnilistId(id);
       if (result.isSuccess == false) {
         throw MediaDetailException(
-          extractErrorMessage(result.error) ??
+          result.primaryErrorMessage ??
+              extractErrorMessage(result.error) ??
               'Не удалось загрузить детали аниме',
         );
       }
 
-      return _converter.fromResponse(result.data!.data.media, similarity);
+      return _converter.fromResponse(result.data!.media, similarity);
     } on ClientErrorException catch (error) {
       throw MediaDetailException(
         extractErrorMessage(error.response?.data) ??

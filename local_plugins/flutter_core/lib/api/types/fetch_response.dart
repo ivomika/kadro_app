@@ -1,9 +1,9 @@
 import 'package:equatable/equatable.dart';
 
-class FetchResponse<T> extends Equatable{
+class FetchResponse<T> extends Equatable {
   final int statusCode;
   final T? data;
-  final Map<String, dynamic>? error;
+  final Object? error;
   final Map<String, List<String>> headers;
   bool get isSuccess => statusCode >= 200 && statusCode < 300;
 
@@ -13,7 +13,6 @@ class FetchResponse<T> extends Equatable{
     required this.headers,
     this.error,
   });
-
 
   @override
   List<Object?> get props => [statusCode, data, error, headers];
