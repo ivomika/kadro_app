@@ -13,6 +13,15 @@ abstract interface class GraphQlClient {
     required JsonFactory<T> factory,
   });
 
+  FutureOr<GraphQlResponse<TData>>
+  executeOperation<TData, TVariables extends GraphQlVariables>(
+    GraphQlOperation<TData, TVariables> operation, {
+    String path = '',
+    RequestMethod method = RequestMethod.post,
+    Map<String, dynamic> queryParams = const {},
+    Map<String, String> headers = const {},
+  });
+
   FutureOr<GraphQlResponse<T>> query<T>(
     GraphQlRequest request, {
     String path = '',
@@ -21,12 +30,28 @@ abstract interface class GraphQlClient {
     required JsonFactory<T> factory,
   });
 
+  FutureOr<GraphQlResponse<TData>>
+  queryOperation<TData, TVariables extends GraphQlVariables>(
+    GraphQlQueryOperation<TData, TVariables> operation, {
+    String path = '',
+    Map<String, dynamic> queryParams = const {},
+    Map<String, String> headers = const {},
+  });
+
   FutureOr<GraphQlResponse<T>> mutate<T>(
     GraphQlRequest request, {
     String path = '',
     Map<String, dynamic> queryParams = const {},
     Map<String, String> headers = const {},
     required JsonFactory<T> factory,
+  });
+
+  FutureOr<GraphQlResponse<TData>>
+  mutateOperation<TData, TVariables extends GraphQlVariables>(
+    GraphQlMutationOperation<TData, TVariables> operation, {
+    String path = '',
+    Map<String, dynamic> queryParams = const {},
+    Map<String, String> headers = const {},
   });
 }
 
@@ -53,6 +78,25 @@ mixin GraphQlClientMixin on BaseApiClient implements GraphQlClient {
   }
 
   @override
+  Future<GraphQlResponse<TData>>
+  executeOperation<TData, TVariables extends GraphQlVariables>(
+    GraphQlOperation<TData, TVariables> operation, {
+    String path = '',
+    RequestMethod method = RequestMethod.post,
+    Map<String, dynamic> queryParams = const {},
+    Map<String, String> headers = const {},
+  }) {
+    return executeGraphQl(
+      operation.toRequest(),
+      path: path,
+      method: method,
+      queryParams: queryParams,
+      headers: headers,
+      factory: operation.factory,
+    );
+  }
+
+  @override
   Future<GraphQlResponse<T>> query<T>(
     GraphQlRequest request, {
     String path = '',
@@ -71,6 +115,23 @@ mixin GraphQlClientMixin on BaseApiClient implements GraphQlClient {
   }
 
   @override
+  Future<GraphQlResponse<TData>>
+  queryOperation<TData, TVariables extends GraphQlVariables>(
+    GraphQlQueryOperation<TData, TVariables> operation, {
+    String path = '',
+    Map<String, dynamic> queryParams = const {},
+    Map<String, String> headers = const {},
+  }) {
+    return executeOperation(
+      operation,
+      path: path,
+      method: RequestMethod.post,
+      queryParams: queryParams,
+      headers: headers,
+    );
+  }
+
+  @override
   Future<GraphQlResponse<T>> mutate<T>(
     GraphQlRequest request, {
     String path = '',
@@ -85,6 +146,23 @@ mixin GraphQlClientMixin on BaseApiClient implements GraphQlClient {
       queryParams: queryParams,
       headers: headers,
       factory: factory,
+    );
+  }
+
+  @override
+  Future<GraphQlResponse<TData>>
+  mutateOperation<TData, TVariables extends GraphQlVariables>(
+    GraphQlMutationOperation<TData, TVariables> operation, {
+    String path = '',
+    Map<String, dynamic> queryParams = const {},
+    Map<String, String> headers = const {},
+  }) {
+    return executeOperation(
+      operation,
+      path: path,
+      method: RequestMethod.post,
+      queryParams: queryParams,
+      headers: headers,
     );
   }
 }

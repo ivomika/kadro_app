@@ -28,23 +28,20 @@ final class ExampleGraphQlClient extends BaseApiClient with GraphQlClientMixin {
   ExampleGraphQlClient() : super('https://example.com/graphql');
 
   Future<GraphQlResponse<ExampleQueryData>> itemById(int id) {
-    return query(
-      GraphQlRequest(
-        operationName: 'ItemById',
-        query: '''
-          query ItemById(\$id: Int!) {
-            item(id: \$id) {
-              id
-            }
-          }
-        ''',
-        variables: {'id': id},
+    return queryOperation(
+      ExampleItemByIdQuery(
+        variables: ExampleItemByIdVariables(id: id),
       ),
-      factory: ExampleQueryData.fromJson,
     );
   }
 }
 ```
+
+Recommended layering:
+
+- keep the GraphQL document inside a dedicated operation object
+- keep request variables in a typed variables object
+- let the client execute operations instead of assembling ad-hoc payload maps
 
 `GraphQlResponse<T>` treats GraphQL payload errors as a failed response even
 when the HTTP status is `200`, so repository code can continue using the

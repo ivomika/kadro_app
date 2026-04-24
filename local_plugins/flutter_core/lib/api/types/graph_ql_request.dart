@@ -1,22 +1,21 @@
 import 'package:equatable/equatable.dart';
+import 'package:flutter_core/api/types/graph_ql_document.dart';
 
 final class GraphQlRequest extends Equatable {
-  final String query;
+  final GraphQlDocument document;
   final Map<String, dynamic> variables;
-  final String? operationName;
   final Map<String, dynamic> extensions;
 
   const GraphQlRequest({
-    required this.query,
+    required this.document,
     this.variables = const {},
-    this.operationName,
     this.extensions = const {},
   });
 
   Map<String, dynamic> toJson() {
-    final payload = <String, dynamic>{'query': query};
+    final payload = <String, dynamic>{'query': document.source};
 
-    if (operationName case final String operationName
+    if (document.operationName case final String operationName
         when operationName.trim().isNotEmpty) {
       payload['operationName'] = operationName.trim();
     }
@@ -33,5 +32,5 @@ final class GraphQlRequest extends Equatable {
   }
 
   @override
-  List<Object?> get props => [query, variables, operationName, extensions];
+  List<Object?> get props => [document, variables, extensions];
 }
